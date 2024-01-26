@@ -4,12 +4,11 @@ import sendVerificationEmailAndUpdate from "@/lib/email/sendVerificationEmailAnd
 import prisma from "@/prisma";
 import { hash } from "bcrypt";
 
-export default async function registerUser(user: { name: string, username: string, email: string, password: string }) {
+export default async function registerUser(user: { username: string, email: string, password: string }) {
 
     try {
         const createdUser = await prisma.user.create({
             data: {
-                name: user.name,
                 username: user.username,
                 email: user.email,
                 hashedPassword: await hash(user.password, 10)

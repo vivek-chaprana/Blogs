@@ -1,171 +1,142 @@
 "use client";
-import PasswordStrength from "@/components/PasswordStrength";
+
 import registerUser from "@/lib/actions/auth/registerUser";
 import { WEBAPP_URL } from "@/lib/constants";
-import {
-  EnvelopeIcon,
-  EyeIcon,
-  EyeSlashIcon,
-  KeyIcon,
-  UserIcon,
-} from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Checkbox, Input, Link } from "@nextui-org/react";
-import { passwordStrength } from "check-password-strength";
+import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { CgMail } from "react-icons/cg";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 import { z } from "zod";
+import PasswordStrength from "./PasswordStrength";
 
-const FormSchema = z
-  .object({
-    name: z
-      .string()
-      .min(2, "Name must be atleast 2 characters")
-      .max(100, "Name must be less than 45 characters")
-      .regex(new RegExp("^[a-zA-Z ]+$"), "No special character allowed!"),
-    username: z.string(),
-    email: z.string().email("Please enter a valid email address"),
-    password: z
-      .string()
-      .min(7, "Password must be at least 7 characters ")
-      .max(50, "Password must be less than 50 characters"),
-    confirmPassword: z
-      .string()
-      .min(7, "Password must be at least 7 characters ")
-      .max(50, "Password must be less than 50 characters"),
-    accepted: z.literal(true, {
-      errorMap: () => ({
-        message: "Please accept all terms",
-      }),
+const FormSchema = z.object({
+  username: z
+    .string()
+    .regex(new RegExp("^[a-zA-Z0-9_]+$"), "No special character allowed!")
+    .min(1, "Username is required."),
+  email: z.string().email("Please enter a valid email address"),
+  password: z
+    .string()
+    .min(7, "Password must be at least 7 characters ")
+    .max(50, "Password must be less than 50 characters")
+    .refine((password) => /(?=.*[a-z])(?=.*[A-Z])/.test(password), {
+      message: "Password must have a mix of uppercase and lowercase letters",
+    })
+    .refine((password) => /[0-9]/.test(password), {
+      message: "Password must contain at least 1 number",
     }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password and confirm password doesn't match!",
-    path: ["confirmPassword"],
-  });
+});
 
 type InputType = z.infer<typeof FormSchema>;
 
-const SignUpForm = () => {
+export default function SignUpForm() {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
-    control,
     watch,
     formState: { errors },
   } = useForm<InputType>({ resolver: zodResolver(FormSchema) });
 
-  const [passStrength, setPassStrength] = useState(0);
-  const [isVisiblePass, setIsVisiblePass] = useState(false);
-
-  useEffect(() => {
-    setPassStrength(passwordStrength(watch().password).id);
-  }, [watch().password]);
-
-  const toggleVisblePass = () => setIsVisiblePass((prev) => !prev);
-
-  const saveUser: SubmitHandler<InputType> = async (data) => {
-    const { accepted, confirmPassword, ...user } = data;
+  const signUp = async (data: InputType) => {
     try {
-      const result = await registerUser(user);
-      alert("The User Registered Successfully.");
+      setIsLoading(true);
+      const createdUser = await registerUser(data);
+      alert("Account created successfully!");
 
       await signIn("credentials", {
-        username: user.username,
-        password: user.password,
-        callbackUrl: `${WEBAPP_URL}/auth/verify?email=${result.email}`,
+        username: data.username,
+        password: data.password,
+        callbackUrl: `${WEBAPP_URL}/auth/verify?email=${
+          createdUser.email ?? data.email
+        }`,
       });
 
+      setIsLoading(false);
       reset();
     } catch (error) {
-      alert("Something Went Wrong!");
-      console.error(error);
+      alert("Something went wrong!");
+      console.log(error);
     }
   };
+
   return (
-    <form
-      onSubmit={handleSubmit(saveUser)}
-      className="grid grid-cols-2 gap-3 p-2 place-self-stretch shadow border rounded-md"
-    >
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit(signUp)}>
       <Input
-        errorMessage={errors.name?.message}
-        isInvalid={!!errors.name}
-        {...register("name")}
-        label="Name"
-        startContent={<UserIcon className="w-4" />}
-      />
-      <Input
+        {...register("username")}
         errorMessage={errors.username?.message}
         isInvalid={!!errors.username}
-        {...register("username")}
+        type="text"
         label="Username"
-        startContent={<UserIcon className="w-4" />}
-      />
-      <Input
-        errorMessage={errors.email?.message}
-        isInvalid={!!errors.email}
-        {...register("email")}
-        className="col-span-2"
-        label="Email"
-        startContent={<EnvelopeIcon className="w-4" />}
-      />{" "}
-      <Input
-        errorMessage={errors.password?.message}
-        isInvalid={!!errors.password}
-        {...register("password")}
-        className="col-span-2"
-        label="Password"
-        type={isVisiblePass ? "text" : "password"}
-        startContent={<KeyIcon className="w-4" />}
-        endContent={
-          isVisiblePass ? (
-            <EyeSlashIcon
-              className="w-4 cursor-pointer"
-              onClick={toggleVisblePass}
-            />
-          ) : (
-            <EyeIcon
-              className="w-4 cursor-pointer"
-              onClick={toggleVisblePass}
-            />
-          )
+        placeholder=""
+        labelPlacement="outside"
+        variant="bordered"
+        autoComplete="off"
+        startContent={
+          <div className="pointer-events-none flex items-center ">
+            <span className="text-default-400 text-sm ">{WEBAPP_URL}/</span>
+          </div>
         }
       />
-      <PasswordStrength passStrength={passStrength} />
       <Input
-        errorMessage={errors.confirmPassword?.message}
-        isInvalid={!!errors.confirmPassword}
-        {...register("confirmPassword")}
-        className="col-span-2"
-        label="Confirm Password"
-        type={isVisiblePass ? "text" : "password"}
-        startContent={<KeyIcon className="w-4" />}
+        {...register("email")}
+        errorMessage={errors.email?.message}
+        isInvalid={!!errors.email}
+        type="email"
+        label="Email"
+        placeholder="you@blogs.write"
+        labelPlacement="outside"
+        variant="bordered"
+        startContent={
+          <CgMail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+        }
       />
-      <Controller
-        control={control}
-        name="accepted"
-        render={({ field }) => (
-          <Checkbox
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            className="col-span-2"
+      <Input
+        {...register("password")}
+        errorMessage={errors.password?.message}
+        isInvalid={!!errors.password}
+        label="Password"
+        labelPlacement="outside"
+        placeholder="********"
+        variant="bordered"
+        autoComplete="off"
+        startContent={
+          <RiLockPasswordFill className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+        }
+        endContent={
+          <button
+            className="focus:outline-none"
+            type="button"
+            onClick={toggleVisibility}
           >
-            I Accept The <Link href="/terms">Terms</Link>
-          </Checkbox>
-        )}
+            {isVisible ? (
+              <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+            ) : (
+              <FaEye className="text-2xl text-default-400 pointer-events-none" />
+            )}
+          </button>
+        }
+        type={isVisible ? "text" : "password"}
       />
-      {!!errors.accepted && (
-        <p className="text-red-500">{errors.accepted.message}</p>
-      )}
-      <div className="flex justify-center col-span-2">
-        <Button className="w-48" color="primary" type="submit">
-          Submit
-        </Button>
-      </div>
+
+      <PasswordStrength password={watch().password} />
+
+      <Button
+        type="submit"
+        color="primary"
+        className="w-full p-0"
+        isLoading={isLoading}
+      >
+        Sign up for free
+      </Button>
     </form>
   );
-};
-
-export default SignUpForm;
+}
