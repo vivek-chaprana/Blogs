@@ -35,19 +35,20 @@ model Session {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String    @unique
-  emailVerified  DateTime?
-  image          String?
-  username       String    @unique
-  hashedPassword String?
-  role           String    @default("user")
-  provider       String    @default("email")
-  isVerified     Boolean   @default(false)
-  lastEmailSent  DateTime?
-  accounts       Account[]
-  sessions       Session[]
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String?
+  email                  String    @unique
+  emailVerified          DateTime?
+  image                  String?
+  username               String    @unique
+  hashedPassword         String?
+  role                   String    @default("user")
+  provider               String    @default("email")
+  isVerified             Boolean   @default(false)
+  hasCompletedOnboarding Boolean   @default(false)
+  lastEmailSent          DateTime?
+  accounts               Account[]
+  sessions               Session[]
 }
 
 model VerificationToken {

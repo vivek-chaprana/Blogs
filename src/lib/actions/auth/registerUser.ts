@@ -1,6 +1,6 @@
 "use server";
 
-import sendVerificationEmailAndUpdate from "@/lib/email/sendVerificationEmailAndUpdate";
+import { sendVerificationEmail } from "@/lib/email";
 import prisma from "@/prisma";
 import { hash } from "bcrypt";
 
@@ -16,7 +16,7 @@ export default async function registerUser(user: { username: string, email: stri
             }
         })
 
-        await sendVerificationEmailAndUpdate({ id: createdUser.id, email: createdUser.email });
+        await sendVerificationEmail({ email: user.email });
 
         return createdUser;
 

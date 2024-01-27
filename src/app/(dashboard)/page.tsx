@@ -6,8 +6,11 @@ export default async function Home() {
   const { user } = session ?? {};
   console.log("Session : ", session);
 
+  let task = !user?.isVerified ? "Verify Email" : !user?.hasCompletedOnboarding ? "Getting Started" : "Home";
+
   return (
     <main>
+      <h1>{task}</h1>
       <br />
       <br />
       <div className="flex">

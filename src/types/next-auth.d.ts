@@ -9,6 +9,7 @@ declare module "next-auth" {
             isVerified: boolean;
             emailVerified: Date | null | undefined;
             image: string | null | undefined;
+            hasCompletedOnboarding: boolean;
         } & DefaultUser;
     }
 
@@ -18,6 +19,7 @@ declare module "next-auth" {
         isVerified: boolean;
         emailVerified: Date | null | undefined;
         image: string | null | undefined;
+        hasCompletedOnboarding: boolean;
     }
 }
 
@@ -29,5 +31,6 @@ declare module "next-auth/jwt" {
         emailVerified: Date | null | undefined;
         isVerified: boolean;
         image: string | null | undefined;
+        hasCompletedOnboarding: boolean;
     }
 }

@@ -4,9 +4,11 @@ import registerUser from "@/lib/actions/auth/registerUser";
 import { WEBAPP_URL } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { CgMail } from "react-icons/cg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -37,6 +39,7 @@ export default function SignUpForm() {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -50,16 +53,8 @@ export default function SignUpForm() {
     try {
       setIsLoading(true);
       const createdUser = await registerUser(data);
-      alert("Account created successfully!");
-
-      await signIn("credentials", {
-        username: data.username,
-        password: data.password,
-        callbackUrl: `${WEBAPP_URL}/auth/verify?email=${
-          createdUser.email ?? data.email
-        }`,
-      });
-
+      toast.success("Account created successfully");
+      router.push("/auth/verify?email=" + (createdUser.email ?? data.email));
       setIsLoading(false);
       reset();
     } catch (error) {
@@ -137,6 +132,7 @@ export default function SignUpForm() {
       >
         Sign up for free
       </Button>
+      <Button className="w-full" as={Link} href="/auth/login" >Login Instead</Button>
     </form>
   );
 }

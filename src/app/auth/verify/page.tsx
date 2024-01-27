@@ -1,48 +1,74 @@
-"use client";
+import EmptyScreen from "@/components/EmptyScreen";
+import ResendEmailBtn from "@/components/ResendEmailBtn";
+import { authOptions } from "@/lib/auth/auth-options";
+import { Button } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { FaCheck } from "react-icons/fa";
+import { IoMailOpenOutline } from "react-icons/io5";
+import { RxCross1 } from "react-icons/rx";
 
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+export default async function VerifyPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  const email = searchParams.email;
+  const success = searchParams.success;
 
-export default function Page() {
-  const searchParams = useSearchParams();
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
 
-  const email = searchParams.get("email");
-  const error = searchParams.get("error");
-  const success = searchParams.get("success");
-
-  const { data, update } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    const interval = setInterval(() => update(), 1000 * 60 * 5); // Refresh every 5 minutes
-    return () => clearInterval(interval);
-  }, [update]);
-
-  useEffect(() => {
-    const visibilityHandler = () =>
-      document.visibilityState === "visible" && !!success && update();
-    window.addEventListener("visibilitychange", visibilityHandler, false);
-    return () =>
-      window.removeEventListener("visibilitychange", visibilityHandler, false);
-  }, [update]);
-
-  if (data?.user?.isVerified) {
-    alert("Email Verified!");
-    router.push("/");
+  if (user && user?.emailVerified) {
+    const url = user.hasCompletedOnboarding ? "/" : "/getting-started";
+    redirect(url);
   }
 
-  if (error) return <h1>{error}</h1>;
-
   return (
-    <main>
-      <h1>Verify page</h1>
-      <br />
-      <p>Verifying {email}</p>
-      <br />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <br />
-      {/* <button onClick={handleEmailResend}>Resend</button> */}
+    <main className="bg-[#101010] w-full h-screen ">
+      <section className="flex h-full w-full flex-col items-center justify-center">
+        <div className="max-w-3xl">
+          {(!!success || user?.isVerified) ? (
+            <EmptyScreen
+              Icon={
+                <FaCheck className="text-green-600 inline-block h-10 w-10 stroke-[1.3px] opacity-65 " />
+              }
+              title="Email verified successfully!"
+              description={`Your email ${email ?? ""} has been verified.`}
+              Button={
+                <Button as={Link} href="/getting-started">
+                  Continue
+                </Button>
+              }
+            />
+          )
+            : !!email ? (
+              <EmptyScreen
+                Icon={
+                  <IoMailOpenOutline className="text-[#d6d6d6] inline-block h-10 w-10 stroke-[1.3px]" />
+                }
+                title="Check your email"
+                description={`We've sent an email to ${email || "your email"
+                  }. It is important to verify your email addreess to gaurantee the best experience of our app.`}
+                Button={<ResendEmailBtn email={email} />}
+              />
+            ) : (
+              <EmptyScreen
+                Icon={
+                  <RxCross1 className="text-red-500 inline-block h-10 w-10 stroke-[1.3px] opacity-65" />
+                }
+                title="Something went wrong!"
+                description="The email you provided is invalid. Please try again."
+                Button={
+                  <Button as={Link} href="/auth/login">
+                    Login again
+                  </Button>
+                }
+              />
+            )}
+        </div>
+      </section>
     </main>
   );
 }

@@ -25,7 +25,7 @@ export default function NavbarUserBlock(props: { user: User }) {
           color="secondary"
           name={name ?? username ?? "Anonymous"}
           size="sm"
-          src={image ?? "https://i.pravatar.cc/150?u=a042581f4e29026704d"}
+          src={image ?? "https://i.pinimg.com/564x/a9/99/ee/a999ee87f1cc57beb5cc1c60fc96cded.jpg"}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -33,10 +33,8 @@ export default function NavbarUserBlock(props: { user: User }) {
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{email}</p>
         </DropdownItem>
-        <DropdownItem key="settings">My Settings</DropdownItem>
-        <DropdownItem key="team_settings">Team Settings</DropdownItem>
-        <DropdownItem key="analytics">Analytics</DropdownItem>
-        <DropdownItem key="system">System</DropdownItem>
+        <DropdownItem key="profile">My Profile</DropdownItem>
+        <DropdownItem key="settings">Settings</DropdownItem>
         <DropdownItem key="configurations">Configurations</DropdownItem>
         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
         <DropdownItem

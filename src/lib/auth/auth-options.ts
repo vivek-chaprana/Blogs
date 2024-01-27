@@ -1,11 +1,12 @@
+import prisma from "@/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
-import prisma from "@/prisma";
 
+import { compare } from "bcrypt";
+import { randomBytes } from "crypto";
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import GithubProvider from "next-auth/providers/github";
-import { compare } from "bcrypt";
 import { currentTime } from "../constants";
 
 
@@ -22,6 +23,7 @@ const getUserFromEmail = async ({ email }: { email: string }) =>
             role: true,
             emailVerified: true,
             isVerified: true,
+            hasCompletedOnboarding: true,
         }
     });
 
@@ -68,6 +70,7 @@ export const authOptions: AuthOptions = {
                     role: user.role,
                     isVerified: user.isVerified,
                     emailVerified: user.emailVerified,
+                    hasCompletedOnboarding: user.hasCompletedOnboarding,
                 }
 
             }
@@ -86,6 +89,7 @@ export const authOptions: AuthOptions = {
                     role: "user",
                     isVerified: true,
                     emailVerified: new Date(),
+                    hasCompletedOnboarding: false,
                 }
             },
 
@@ -95,45 +99,35 @@ export const authOptions: AuthOptions = {
 
         EmailProvider({
             type: "email",
+            sendVerificationRequest: async ({ identifier: email, url, token, provider }) => { console.log(url) },
             // sendVerificationRequest: async (props) => (await import("@/lib/email/sendVerificationEmail")).default(props),
-            // generateVerificationToken() {
-            // return "abcd1234"
-            // }
-            // generateVerificationToken() {
-            // return "abcd1234"
-            // return randomBytes(32).toString("hex");
-            // return hashToken(randomBytes(32).toString("hex"));
-            // },
+            secret: process.env.NEXTAUTH_SECRET,
+            generateVerificationToken() {
+                return randomBytes(32).toString("hex");
+            }
         }),
     ],
 
     callbacks: {
 
-        async signIn({ user, account }) {
+        async signIn({ user, account, email }) {
 
             if (account?.provider === "email") {
 
                 if (!user?.email) return false;
 
-                const foundUser = await prisma.user.findFirst({
+                const verificationRequest = email?.verificationRequest;
+                if (verificationRequest) return true;
+
+                await prisma.user.update({
                     where: {
-                        email: user?.email
+                        email: user?.email ?? account?.providerAccountId
+                    },
+                    data: {
+                        isVerified: true
                     }
+
                 })
-
-                if (!foundUser) return false;
-                if (!foundUser?.emailVerified) return true;
-
-                if (foundUser?.emailVerified) [
-                    await prisma.user.update({
-                        where: {
-                            id: foundUser.id
-                        },
-                        data: {
-                            isVerified: true
-                        }
-                    })
-                ]
             }
 
             return true;
@@ -153,6 +147,7 @@ export const authOptions: AuthOptions = {
                 token.role = foundUser.role;
                 token.emailVerified = foundUser.emailVerified;
                 token.isVerified = foundUser.isVerified;
+                token.hasCompletedOnboarding = foundUser.hasCompletedOnboarding;
                 return token;
             }
 
@@ -162,6 +157,7 @@ export const authOptions: AuthOptions = {
                 token.role = user.role;
                 token.emailVerified = user.emailVerified;
                 token.isVerified = user.isVerified;
+                token.hasCompletedOnboarding = user.hasCompletedOnboarding;
             }
             return token;
 
@@ -175,6 +171,7 @@ export const authOptions: AuthOptions = {
                 session.user.role = token.role;
                 session.user.emailVerified = token.emailVerified;
                 session.user.isVerified = token.isVerified;
+                session.user.hasCompletedOnboarding = token.hasCompletedOnboarding;
             }
             return session;
         }

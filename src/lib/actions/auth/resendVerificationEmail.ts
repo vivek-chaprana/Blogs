@@ -1,4 +1,5 @@
 "use server"
+import { sendVerificationEmail } from "@/lib/email";
 import prisma from "@/prisma";
 
 export default async function resendVerificationEmail({ email }: { email: string }) {
@@ -19,7 +20,7 @@ export default async function resendVerificationEmail({ email }: { email: string
     if (emailVerified) return { success: false, error: 'Email already verified' };
 
     if (!lastEmailSent) {
-        // Send email & update in database
+        sendVerificationEmail({ email });
         return { success: true, lastEmailSent: new Date() }
     }
 
@@ -27,7 +28,7 @@ export default async function resendVerificationEmail({ email }: { email: string
         return { success: false, error: 'Email already sent', lastEmailSent }
     }
 
-    // Send email & update in database
+    sendVerificationEmail({ email });
     return { success: true, lastEmailSent: new Date() }
 
 }

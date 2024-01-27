@@ -13,7 +13,6 @@ import Link from "next/link";
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   const { user } = session ?? {};
-  console.log(user);
 
   return (
     <NavbarComponent>
