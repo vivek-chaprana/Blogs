@@ -11,3 +11,10 @@ export const currentTime = () => new Date().toLocaleTimeString('en-US', { timeZo
 
 export const COMPANY_NAME = "BLOGS";
 
+export const fallbackImageUrl = "https://i.pinimg.com/564x/a9/99/ee/a999ee87f1cc57beb5cc1c60fc96cded.jpg"
+
+// Cloudinary
+export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME ?? "dmudoqnix";
+export const UPLOAD_PRESET = process.env.UPLOAD_PRESET ?? "blogs-app-vicky";
+export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;  

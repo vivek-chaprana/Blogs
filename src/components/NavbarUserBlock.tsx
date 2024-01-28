@@ -1,4 +1,5 @@
 "use client";
+import { fallbackImageUrl } from "@/lib/constants";
 import {
   Avatar,
   Dropdown,
@@ -25,7 +26,7 @@ export default function NavbarUserBlock(props: { user: User }) {
           color="secondary"
           name={name ?? username ?? "Anonymous"}
           size="sm"
-          src={image ?? "https://i.pinimg.com/564x/a9/99/ee/a999ee87f1cc57beb5cc1c60fc96cded.jpg"}
+          src={image ?? fallbackImageUrl}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">

@@ -22,7 +22,7 @@ export default function OtherLogins() {
     <div className="grid gap-4 px-6 py-7">
       <Button
         isLoading={isLoading}
-        className=" border bg-w"
+        className=" border border-default bg-white"
         onClick={handleLogin}
       >
         <FcGoogle />
@@ -30,7 +30,7 @@ export default function OtherLogins() {
       </Button>
       <Button
         isLoading={isLoading}
-        className=" border bg-w"
+        className=" border border-default bg-white"
         onClick={handleLogin}
       >
         <BsGithub />

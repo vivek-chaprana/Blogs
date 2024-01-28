@@ -26,7 +26,7 @@ export default async function VerifyPage({
   }
 
   return (
-    <main className="bg-[#101010] w-full h-screen ">
+    <main className="bg-dark-100 w-full h-screen ">
       <section className="flex h-full w-full flex-col items-center justify-center">
         <div className="max-w-3xl">
           {(!!success || user?.isVerified) ? (
@@ -46,7 +46,7 @@ export default async function VerifyPage({
             : !!email ? (
               <EmptyScreen
                 Icon={
-                  <IoMailOpenOutline className="text-[#d6d6d6] inline-block h-10 w-10 stroke-[1.3px]" />
+                  <IoMailOpenOutline className="text-gt inline-block h-10 w-10 stroke-[1.3px]" />
                 }
                 title="Check your email"
                 description={`We've sent an email to ${email || "your email"

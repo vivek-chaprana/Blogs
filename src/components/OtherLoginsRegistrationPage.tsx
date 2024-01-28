@@ -24,7 +24,7 @@ const OtherLoginsRegistrationPage = () => {
         onClick={handleLogin}
         isLoading={isLoading}
         startContent={<FcGoogle />}
-        className="w-2/5 bg-w border "
+        className="w-2/5 bg-white border "
       >
         Google
       </Button>
@@ -32,7 +32,7 @@ const OtherLoginsRegistrationPage = () => {
         onClick={handleLogin}
         isLoading={isLoading}
         startContent={<FaGithub fill="#6e5494" />}
-        className="w-2/5 bg-w border"
+        className="w-2/5 bg-white border"
       >
         Github
       </Button>
