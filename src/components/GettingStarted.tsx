@@ -40,16 +40,16 @@ const FormSchema = z.object({
   bio: z.string().max(150, "Bio must be less than 150 characters").optional(),
   profileImage: z
     .any()
-    .refine((files) => files?.length == 1, "Image is required.")
+    .optional()
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      (files) => (files?.[0] ? files?.[0]?.size <= MAX_FILE_SIZE : true),
       "Max file size is 5MB."
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      (files) =>
+        files?.[0] ? ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type) : true,
       ".jpg, .jpeg, .png and .webp files are accepted."
-    )
-    .optional(),
+    ),
 });
 
 type InputType = z.infer<typeof FormSchema>;

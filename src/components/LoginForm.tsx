@@ -5,6 +5,7 @@ import { Button, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
@@ -37,8 +38,11 @@ export default function LoginForm() {
         password: data.password,
         callbackUrl: "/",
       });
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
       setIsLoading(false);
-    } catch (error) {}
+    }
   };
 
   return (

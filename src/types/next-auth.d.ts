@@ -3,34 +3,45 @@ import { JWT, DefaultJWT } from "next-auth/jwt";
 
 declare module "next-auth" {
     interface Session extends DefaultSession {
-        user: {
-            username: string;
+        user: DefaultUser & {
+            id: string;
+            name: string;
+            email: string;
             role: string;
+            username: string;
+            emailVerified: Date | null;
             isVerified: boolean;
-            emailVerified: Date | null | undefined;
-            image: string | null | undefined;
+            image: string | null;
             hasCompletedOnboarding: boolean;
-        } & DefaultUser;
+            provider: string;
+        };
     }
 
     interface User extends DefaultUser {
-        username: string;
+        id: string;
+        name: string;
+        email: string;
         role: string;
+        username: string;
+        emailVerified: Date | null;
         isVerified: boolean;
-        emailVerified: Date | null | undefined;
-        image: string | null | undefined;
+        image: string | null;
         hasCompletedOnboarding: boolean;
+        provider: string;
     }
 }
 
 declare module "next-auth/jwt" {
     interface JWT extends DefaultJWT {
+        id: string;
+        name: string;
         email: string;
         role: string;
         username: string;
-        emailVerified: Date | null | undefined;
+        emailVerified: Date | null;
         isVerified: boolean;
-        image: string | null | undefined;
+        image: string | null;
         hasCompletedOnboarding: boolean;
+        provider: string;
     }
 }

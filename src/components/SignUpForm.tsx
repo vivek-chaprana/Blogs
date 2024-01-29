@@ -55,11 +55,11 @@ export default function SignUpForm() {
       const createdUser = await registerUser(data);
       toast.success("Account created successfully");
       router.push("/auth/verify?email=" + (createdUser.email ?? data.email));
-      setIsLoading(false);
       reset();
     } catch (error) {
-      alert("Something went wrong!");
-      console.log(error);
+      toast.error("Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,7 +132,9 @@ export default function SignUpForm() {
       >
         Sign up for free
       </Button>
-      <Button className="w-full" as={Link} href="/auth/login" >Login Instead</Button>
+      <Button className="w-full" as={Link} href="/auth/login">
+        Login Instead
+      </Button>
     </form>
   );
 }

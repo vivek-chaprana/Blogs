@@ -1,13 +1,15 @@
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { AuthOptions } from "next-auth";
-
 import { compare } from "bcrypt";
 import { randomBytes } from "crypto";
+import { AuthOptions, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import { currentTime, providers } from "@/lib/constants";
+
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import GithubProvider from "next-auth/providers/github";
-import { currentTime } from "../constants";
+import GoogleProvider from "next-auth/providers/google";
 
 
 const getUserFromEmail = async ({ email }: { email: string }) =>
@@ -16,6 +18,7 @@ const getUserFromEmail = async ({ email }: { email: string }) =>
             email: email,
         },
         select: {
+            id: true,
             name: true,
             email: true,
             username: true,
@@ -24,6 +27,7 @@ const getUserFromEmail = async ({ email }: { email: string }) =>
             emailVerified: true,
             isVerified: true,
             hasCompletedOnboarding: true,
+            provider: true,
         }
     });
 
@@ -71,14 +75,15 @@ export const authOptions: AuthOptions = {
                     isVerified: user.isVerified,
                     emailVerified: user.emailVerified,
                     hasCompletedOnboarding: user.hasCompletedOnboarding,
-                }
+                    provider: user.provider,
+                } as User;
 
             }
         }),
 
         GithubProvider({
 
-            profile(profile) {
+            async profile(profile) {
                 // console.log(profile);
                 return {
                     id: profile.id.toString(),
@@ -90,11 +95,33 @@ export const authOptions: AuthOptions = {
                     isVerified: true,
                     emailVerified: new Date(),
                     hasCompletedOnboarding: false,
+                    provider: providers.GITHUB,
                 }
             },
 
             clientId: process.env.GITHUB_ID as string,
             clientSecret: process.env.GITHUB_SECRET as string,
+        }),
+
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID as string,
+            clientSecret: process.env.GOOGLE_SECRET as string,
+
+            async profile(profile) {
+                // console.log(profile);
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    username: profile.email.split("@")[0],
+                    email: profile.email,
+                    image: profile.picture,
+                    role: "user",
+                    isVerified: true,
+                    emailVerified: new Date(),
+                    hasCompletedOnboarding: false,
+                    provider: providers.GOOGLE,
+                };
+            }
         }),
 
         EmailProvider({
@@ -141,23 +168,11 @@ export const authOptions: AuthOptions = {
 
                 const foundUser = await getUserFromEmail({ email: token.email ?? user?.email ?? session?.user?.email });
                 if (!foundUser) return token;
-
-                token.username = foundUser.username;
-                token.image = foundUser.image;
-                token.role = foundUser.role;
-                token.emailVerified = foundUser.emailVerified;
-                token.isVerified = foundUser.isVerified;
-                token.hasCompletedOnboarding = foundUser.hasCompletedOnboarding;
-                return token;
+                return { ...token, ...foundUser } as JWT;
             }
 
             if (user) {
-                token.username = user.username;
-                token.image = user.image;
-                token.role = user.role;
-                token.emailVerified = user.emailVerified;
-                token.isVerified = user.isVerified;
-                token.hasCompletedOnboarding = user.hasCompletedOnboarding;
+                return { ...token, ...user } as JWT;
             }
             return token;
 
@@ -166,12 +181,7 @@ export const authOptions: AuthOptions = {
         // For CLIENT pages only
         async session({ session, token }) {
             if (session?.user) {
-                session.user.username = token.username;
-                session.user.image = token.image;
-                session.user.role = token.role;
-                session.user.emailVerified = token.emailVerified;
-                session.user.isVerified = token.isVerified;
-                session.user.hasCompletedOnboarding = token.hasCompletedOnboarding;
+                session.user = { ...session.user, ...token };
             }
             return session;
         }
@@ -179,7 +189,7 @@ export const authOptions: AuthOptions = {
 
 
     pages: {
-        // signIn: '/login',
+        signIn: '/auth/login',
         // signOut: '/auth/signout',
         // error: '/auth/error', // Error code passed in query string as ?error=
         verifyRequest: '/auth/verify', // (used for check email message)

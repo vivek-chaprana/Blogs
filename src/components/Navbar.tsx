@@ -9,6 +9,7 @@ import {
 import { getServerSession } from "next-auth";
 import NavbarUserBlock from "./NavbarUserBlock";
 import Link from "next/link";
+import { BsPencilSquare } from "react-icons/bs";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -23,7 +24,16 @@ export default async function Navbar() {
       </NavbarBrand>
 
       <NavbarContent as="div" justify="end">
-        <NavbarItem>Write</NavbarItem>
+        <NavbarItem>
+          <Button
+            as={Link}
+            href="/new-story"
+            variant="light"
+            startContent={<BsPencilSquare fill="#101010" />}
+          >
+            Write
+          </Button>
+        </NavbarItem>
         {!!user ? (
           <NavbarUserBlock user={user} />
         ) : (

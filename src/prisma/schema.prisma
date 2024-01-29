@@ -35,23 +35,32 @@ model Session {
 }
 
 model User {
-  id                     String     @id @default(auto()) @map("_id") @db.ObjectId
-  name                   String?
-  email                  String     @unique
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  email    String  @unique
+  image    String?
+  username String  @unique
+  bio      String?
+
   emailVerified          DateTime?
-  image                  String?
-  username               String     @unique
   hashedPassword         String?
-  bio                    String?
-  role                   String     @default("user")
-  provider               String     @default("email")
-  isVerified             Boolean    @default(false)
-  hasCompletedOnboarding Boolean    @default(false)
+  role                   String    @default("user")
+  provider               String    @default("email")
+  isVerified             Boolean   @default(false)
+  hasCompletedOnboarding Boolean   @default(false)
   lastEmailSent          DateTime?
   accounts               Account[]
   sessions               Session[]
-  BlogPost               BlogPost[]
-  Comment                Comment[]
+  createdAt              DateTime  @default(now())
+
+  blogPost             BlogPost[]
+  comment              Comment[]
+  followedBy           User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
+  followedByIDs        String[]   @db.ObjectId
+  following            User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs         String[]   @db.ObjectId
+  followingCategoryIDs String[]   @db.ObjectId
+  followingCategories  Category[] @relation(fields: [followingCategoryIDs], references: [id])
 }
 
 model VerificationToken {
@@ -65,38 +74,34 @@ model VerificationToken {
 
 // BlogPost entity
 model BlogPost {
-  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   content     String
-  likes       Int                @default(0)
-  slug        String             @unique
-  status      PostStatus         @default(DRAFT)
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  author      User               @relation(fields: [authorId], references: [id])
-  authorId    String             @db.ObjectId
-  categories  BlogPostCategory[]
+  likes       Int        @default(0)
+  slug        String     @unique
+  status      PostStatus @default(DRAFT)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String     @db.ObjectId
   comments    Comment[]
+  categoryIDs String[]   @db.ObjectId
+  categories  Category[] @relation(fields: [categoryIDs], references: [id])
 }
 
 // Category entity
 model Category {
-  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  slug        String             @unique
+  slug        String  @unique
   description String?
-  blogPosts   BlogPostCategory[]
-}
 
-// Join table for many-to-many relationship between BlogPost and Category
-model BlogPostCategory {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  blogPostId String @db.ObjectId
-  categoryId String @db.ObjectId
+  postIDs String[]   @db.ObjectId
+  posts   BlogPost[] @relation(fields: [postIDs], references: [id])
 
-  blogPost BlogPost @relation(fields: [blogPostId], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id])
 }
 
 // Comment entity

@@ -21,15 +21,14 @@ export default async function VerifyPage({
   const user = session?.user;
 
   if (user && user?.emailVerified) {
-    const url = user.hasCompletedOnboarding ? "/" : "/getting-started";
-    redirect(url);
+    redirect("/");
   }
 
   return (
     <main className="bg-dark-100 w-full h-screen ">
       <section className="flex h-full w-full flex-col items-center justify-center">
         <div className="max-w-3xl">
-          {(!!success || user?.isVerified) ? (
+          {!!success || user?.isVerified ? (
             <EmptyScreen
               Icon={
                 <FaCheck className="text-green-600 inline-block h-10 w-10 stroke-[1.3px] opacity-65 " />
@@ -42,31 +41,31 @@ export default async function VerifyPage({
                 </Button>
               }
             />
-          )
-            : !!email ? (
-              <EmptyScreen
-                Icon={
-                  <IoMailOpenOutline className="text-gt inline-block h-10 w-10 stroke-[1.3px]" />
-                }
-                title="Check your email"
-                description={`We've sent an email to ${email || "your email"
-                  }. It is important to verify your email addreess to gaurantee the best experience of our app.`}
-                Button={<ResendEmailBtn email={email} />}
-              />
-            ) : (
-              <EmptyScreen
-                Icon={
-                  <RxCross1 className="text-red-500 inline-block h-10 w-10 stroke-[1.3px] opacity-65" />
-                }
-                title="Something went wrong!"
-                description="The email you provided is invalid. Please try again."
-                Button={
-                  <Button as={Link} href="/auth/login">
-                    Login again
-                  </Button>
-                }
-              />
-            )}
+          ) : !!email ? (
+            <EmptyScreen
+              Icon={
+                <IoMailOpenOutline className="text-gt inline-block h-10 w-10 stroke-[1.3px]" />
+              }
+              title="Check your email"
+              description={`We've sent an email to ${
+                email || "your email"
+              }. It is important to verify your email addreess to gaurantee the best experience of our app.`}
+              Button={<ResendEmailBtn email={email} />}
+            />
+          ) : (
+            <EmptyScreen
+              Icon={
+                <RxCross1 className="text-red-500 inline-block h-10 w-10 stroke-[1.3px] opacity-65" />
+              }
+              title="Something went wrong!"
+              description="The email you provided is invalid. Please try again."
+              Button={
+                <Button as={Link} href="/auth/login">
+                  Login again
+                </Button>
+              }
+            />
+          )}
         </div>
       </section>
     </main>
