@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* .notWorking > div > ul {
+  flex-direction: unset !important;
+} */

@@ -1,5 +1,6 @@
 import { nextui } from "@nextui-org/react";
 import typography from "@tailwindcss/typography";
+import { before } from "node:test";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -36,6 +37,26 @@ const config: Config = {
             li: {
               p: {
                 margin: "0",
+              },
+            },
+            pre: {
+              backgroundColor: "rgba(0,0,0,0.1)",
+              fontFamily: "JetBrains Mono, Fira Code, monospace",
+              color: "#1f2937",
+            },
+            p: {
+              code: {
+                fontFamily: "JetBrains Mono, Fira Code, monospace",
+                backgroundColor: "rgba(0,0,0,0.1)",
+                color: "#1f2937",
+                borderRadius: "0.25rem",
+                padding: "0.25rem",
+                "&::before": {
+                  content: "none",
+                },
+                "&::after": {
+                  content: "none",
+                },
               },
             },
           },

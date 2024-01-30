@@ -2,6 +2,7 @@ import { BubbleMenu, Editor } from "@tiptap/react";
 import {
   RiBold,
   RiCodeSSlashLine,
+  RiFontColor,
   RiH1,
   RiH2,
   RiH3,
@@ -20,26 +21,47 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
+import { colors } from "../utils";
 
 function Bubble({ editor }: { editor: Editor }) {
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
+  const [selectedKeys, setSelectedKeys] = useState("text");
 
-  const selectedValue = useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
-  );
+  const [selectedColor, setSelectedColor] = useState("default");
+
+  function currentlyActive() {
+    return editor.isActive("heading", { level: 1 })
+      ? "h1"
+      : editor.isActive("heading", { level: 2 })
+      ? "h2"
+      : editor.isActive("heading", { level: 3 })
+      ? "h3"
+      : editor.isActive("bulletList")
+      ? "ul"
+      : editor.isActive("orderedList")
+      ? "li"
+      : editor.isActive("codeBlock")
+      ? "code"
+      : editor.isActive("blockquote")
+      ? "quote"
+      : "text";
+  }
+
+  useEffect(() => {
+    setSelectedKeys(currentlyActive());
+  }, [currentlyActive()]);
 
   return (
     <BubbleMenu
+      tippyOptions={{ duration: 100 }}
       className="bg-[#333333] text-white rounded-lg p-2 m-3 flex gap-3 min-w-max "
       editor={editor}
     >
-      <Dropdown className="border min-w-10">
+      <Dropdown className="border">
         <DropdownTrigger>
           <Button endContent={<BsChevronDown />} className="capitalize ">
-            {selectedValue}
+            {selectedKeys}
           </Button>
         </DropdownTrigger>
         <DropdownMenu
@@ -104,7 +126,7 @@ function Bubble({ editor }: { editor: Editor }) {
             key="code"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           >
-            Code
+            Code block
           </DropdownItem>
           <DropdownItem
             startContent={<RiQuoteText />}
@@ -119,37 +141,69 @@ function Bubble({ editor }: { editor: Editor }) {
       <Button
         isIconOnly
         onClick={() => editor.chain().focus().toggleBold().run()}
+        className={editor.isActive("bold") ? "bg-black text-white" : ""}
       >
         <RiBold />
       </Button>
       <Button
         isIconOnly
         onClick={() => editor.chain().focus().toggleItalic().run()}
+        className={editor.isActive("italic") ? "bg-black text-white" : ""}
       >
         <RiItalic />
       </Button>
       <Button
         isIconOnly
         onClick={() => editor.chain().focus().toggleStrike().run()}
+        className={editor.isActive("strike") ? "bg-black text-white" : ""}
       >
         <RiStrikethrough />
       </Button>
-      {/* <div
-        className="rounded-md text-xl flex justify-center items-center text-white hover:bg-[#555555] cursor-pointer disabled:pointer-events-none disabled:opacity-50 ms-1 first:ms-0"
-        onClick={() =>
-          isSelectionOverLink
-            ? editor.chain().focus().unsetLink().run()
-            : setLink(editor)
-        }
-      >
-        {isSelectionOverLink ? <RiLinkUnlink /> : <RiLink />}
-      </div> */}
       <Button
         isIconOnly
         onClick={() => editor.chain().focus().toggleCode().run()}
+        className={editor.isActive("code") ? "bg-black text-white" : ""}
       >
         <RiCodeSSlashLine />
       </Button>
+
+      {/* Color Selection */}
+      <Dropdown className="border">
+        <DropdownTrigger>
+          <Button
+            isIconOnly
+            endContent={<BsChevronDown />}
+            className="capitalize"
+          >
+            {<RiFontColor />}
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          aria-label="color-type"
+          variant="flat"
+          selectionMode="single"
+          selectedKeys={selectedColor}
+          // TODO: fix this type
+          onSelectionChange={setSelectedColor as any}
+        >
+          {!!colors &&
+            colors.map((col) => (
+              <DropdownItem
+                onClick={() => {
+                  col !== "default"
+                    ? editor.commands.setColor(col)
+                    : editor.commands.unsetColor();
+                  setSelectedColor(col);
+                }}
+                startContent={<RiFontColor fill={col} />}
+                className="capitalize "
+                key={col}
+              >
+                {col}
+              </DropdownItem>
+            ))}
+        </DropdownMenu>
+      </Dropdown>
     </BubbleMenu>
   );
 }
