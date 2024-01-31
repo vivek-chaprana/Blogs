@@ -1,10 +1,16 @@
-"use client";
-import Editor from "@/components/editor";
+import NewStoryForm from "@/components/NewStoryForm";
+import { getServerSession } from "next-auth";
 
-export default function NewStory() {
+export default async function NewStory() {
+  const { user } = (await getServerSession()) ?? {};
+
+  if (!user) {
+    return null;
+  }
+
   return (
-    <main className="min-h-screen py-8 bg-white ">
-      <Editor />
+    <main className="min-h-screen bg-white ">
+      <NewStoryForm user={user} />
     </main>
   );
 }

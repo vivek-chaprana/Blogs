@@ -77,7 +77,7 @@ model BlogPost {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
-  content     String
+  content     Json
   likes       Int        @default(0)
   slug        String     @unique
   status      PostStatus @default(DRAFT)

@@ -20,15 +20,15 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  cn,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { colors } from "../utils";
+import LinkUnlinkBtn from "./LinkUnlinkBtn";
 
 function Bubble({ editor }: { editor: Editor }) {
   const [selectedKeys, setSelectedKeys] = useState("text");
-
-  const [selectedColor, setSelectedColor] = useState("default");
 
   function currentlyActive() {
     return editor.isActive("heading", { level: 1 })
@@ -52,10 +52,12 @@ function Bubble({ editor }: { editor: Editor }) {
     setSelectedKeys(currentlyActive());
   }, [currentlyActive()]);
 
+  if (!editor) return null;
+
   return (
     <BubbleMenu
       tippyOptions={{ duration: 100 }}
-      className="bg-[#333333] text-white rounded-lg p-2 m-3 flex gap-3 min-w-max "
+      className="rounded-lg p-2 m-3 flex gap-3 min-w-max bg-gr "
       editor={editor}
     >
       <Dropdown className="border">
@@ -66,17 +68,14 @@ function Bubble({ editor }: { editor: Editor }) {
         </DropdownTrigger>
         <DropdownMenu
           aria-label="text-type"
-          variant="flat"
           disallowEmptySelection
-          selectionMode="single"
           selectedKeys={selectedKeys}
-          // TODO: fix this type
-          onSelectionChange={setSelectedKeys as any}
         >
           <DropdownItem
             startContent={<RiParagraph />}
             key="text"
             onClick={() => editor.chain().focus().setParagraph().run()}
+            className={editor.isActive("paragraph") ? "bg-gray-200" : ""}
           >
             Text
           </DropdownItem>
@@ -84,6 +83,9 @@ function Bubble({ editor }: { editor: Editor }) {
             startContent={<RiH1 />}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 1 }) ? "bg-gray-200" : ""
             }
             key="h1"
           >
@@ -95,6 +97,9 @@ function Bubble({ editor }: { editor: Editor }) {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
+            className={
+              editor.isActive("heading", { level: 2 }) ? "bg-gray-200" : ""
+            }
           >
             Heading 2
           </DropdownItem>
@@ -104,6 +109,9 @@ function Bubble({ editor }: { editor: Editor }) {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
+            className={
+              editor.isActive("heading", { level: 3 }) ? "bg-gray-200" : ""
+            }
           >
             Heading 3
           </DropdownItem>
@@ -111,6 +119,7 @@ function Bubble({ editor }: { editor: Editor }) {
             startContent={<RiListUnordered />}
             key="ul"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={editor.isActive("bulletList") ? "bg-gray-200" : ""}
           >
             Bullet List
           </DropdownItem>
@@ -125,6 +134,7 @@ function Bubble({ editor }: { editor: Editor }) {
             startContent={<RiCodeSSlashLine />}
             key="code"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            className={editor.isActive("codeBlock") ? "bg-gray-200" : ""}
           >
             Code block
           </DropdownItem>
@@ -132,6 +142,7 @@ function Bubble({ editor }: { editor: Editor }) {
             startContent={<RiQuoteText />}
             key="quote"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            className={editor.isActive("blockquote") ? "bg-gray-200" : ""}
           >
             Quote
           </DropdownItem>
@@ -167,6 +178,8 @@ function Bubble({ editor }: { editor: Editor }) {
         <RiCodeSSlashLine />
       </Button>
 
+      <LinkUnlinkBtn editor={editor} />
+
       {/* Color Selection */}
       <Dropdown className="border">
         <DropdownTrigger>
@@ -178,14 +191,7 @@ function Bubble({ editor }: { editor: Editor }) {
             {<RiFontColor />}
           </Button>
         </DropdownTrigger>
-        <DropdownMenu
-          aria-label="color-type"
-          variant="flat"
-          selectionMode="single"
-          selectedKeys={selectedColor}
-          // TODO: fix this type
-          onSelectionChange={setSelectedColor as any}
-        >
+        <DropdownMenu aria-label="color-type" variant="flat">
           {!!colors &&
             colors.map((col) => (
               <DropdownItem
@@ -193,11 +199,15 @@ function Bubble({ editor }: { editor: Editor }) {
                   col !== "default"
                     ? editor.commands.setColor(col)
                     : editor.commands.unsetColor();
-                  setSelectedColor(col);
                 }}
                 startContent={<RiFontColor fill={col} />}
-                className="capitalize "
                 key={col}
+                className={cn(
+                  "capitalize",
+                  editor.isActive("textStyle", { color: col })
+                    ? "bg-gray-200"
+                    : ""
+                )}
               >
                 {col}
               </DropdownItem>

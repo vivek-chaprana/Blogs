@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .notWorking > div > ul {
-  flex-direction: unset !important;
-} */
+.ProseMirror p:first-child[data-placeholder]::before,
+.ProseMirror h1:first-child[data-placeholder]::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror h1:first-child + p[data-placeholder]::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
+}

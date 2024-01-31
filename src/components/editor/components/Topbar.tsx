@@ -1,6 +1,5 @@
 import {
   Button,
-  ButtonProps,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -9,7 +8,6 @@ import {
   cn,
 } from "@nextui-org/react";
 import { EditorContentProps } from "@tiptap/react";
-import { IconType } from "react-icons/lib";
 import { MdRedo, MdUndo } from "react-icons/md";
 import {
   RiAlignJustify,
@@ -22,7 +20,6 @@ import {
   RiFormatClear,
   RiHeading,
   RiItalic,
-  RiLink,
   RiListOrdered,
   RiListUnordered,
   RiParagraph,
@@ -31,7 +28,9 @@ import {
   RiTextWrap,
   RiUnderline,
 } from "react-icons/ri";
+import { TooltipButton } from ".";
 import { colors, fontFamilies, headings, textAlignments } from "../utils";
+import LinkUnlinkBtn from "./LinkUnlinkBtn";
 
 const Topbar = ({ editor }: EditorContentProps) => {
   if (!editor) {
@@ -49,8 +48,16 @@ const Topbar = ({ editor }: EditorContentProps) => {
         </DropdownTrigger>
         <DropdownMenu>
           {!!headings &&
-            headings.map((elem) => (
-              <DropdownItem className="w-min">
+            headings.map((elem, index) => (
+              <DropdownItem
+                key={index}
+                className={cn(
+                  "w-min",
+                  editor.isActive("heading", { level: elem.value })
+                    ? "bg-gray-200"
+                    : ""
+                )}
+              >
                 <TooltipButton
                   content={elem.content}
                   icon={<elem.icon />}
@@ -68,42 +75,47 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
-
       <TooltipButton
         content="paragraph"
         icon={<RiParagraph />}
         onClick={() => {
           editor.chain().focus().setParagraph().run();
         }}
+        btnClassName={editor.isActive("paragraph") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Bold"
         icon={<RiBold />}
         onClick={() => editor.chain().focus().toggleBold().run()}
+        btnClassName={editor.isActive("bold") ? "bg-gray-200" : ""}
       />
-
       <TooltipButton
         content="Italic"
         icon={<RiItalic />}
         onClick={() => editor.chain().focus().toggleItalic().run()}
+        btnClassName={editor.isActive("italic") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Underline"
         icon={<RiUnderline />}
         onClick={() => editor.commands.toggleUnderline()}
+        btnClassName={editor.isActive("underline") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Strikethrough"
         icon={<RiStrikethrough />}
         onClick={() => editor.chain().focus().toggleStrike().run()}
+        btnClassName={editor.isActive("strike") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Code"
         icon={<RiCodeLine />}
         onClick={() => editor.chain().focus().toggleCode().run()}
+        btnClassName={editor.isActive("code") ? "bg-gray-200" : ""}
       />
-      {/* TODO: Link  */}
-      <TooltipButton content="Link" icon={<RiLink />} />
+
+      <LinkUnlinkBtn editor={editor} variant="light" />
+
       <TooltipButton
         content="Clear format"
         icon={<RiFormatClear />}
@@ -111,29 +123,30 @@ const Topbar = ({ editor }: EditorContentProps) => {
           editor.chain().focus().unsetAllMarks().clearNodes().run()
         }
       />
-
       <TooltipButton
         content="Code block"
         icon={<RiCodeBoxLine />}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        btnClassName={editor.isActive("codeBlock") ? "bg-gray-200" : ""}
       />
-
       <TooltipButton
         content="Unordered list"
         icon={<RiListUnordered />}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
+        btnClassName={editor.isActive("bulletList") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Ordered list"
         icon={<RiListOrdered />}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        btnClassName={editor.isActive("orderedList") ? "bg-gray-200" : ""}
       />
       <TooltipButton
         content="Quote"
         icon={<RiDoubleQuotesR />}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        btnClassName={editor.isActive("quote") ? "bg-gray-200" : ""}
       />
-
       <TooltipButton
         content="Line break"
         icon={<RiTextWrap />}
@@ -144,21 +157,27 @@ const Topbar = ({ editor }: EditorContentProps) => {
         icon={<RiSeparator />}
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       />
-
       {/* Text Alignments  */}
       {/* FIXME: Will find a way... to minimize the code like that with funcitons  */}
       {/* <CustomDropdown triggerIcon={<RiAlignJustify />} items={textAlignments} /> */}
-
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
         <DropdownTrigger>
-          <Button isIconOnly variant="light" className="text-xl z-50">
+          <Button isIconOnly variant="light" className="text-xl">
             <RiAlignJustify />
           </Button>
         </DropdownTrigger>
         <DropdownMenu>
           {!!textAlignments &&
-            textAlignments.map((elem) => (
-              <DropdownItem className="w-min">
+            textAlignments.map((elem, index) => (
+              <DropdownItem
+                key={index}
+                className={cn(
+                  "w-min",
+                  editor.isActive({ textAlign: elem.value })
+                    ? "bg-gray-200"
+                    : ""
+                )}
+              >
                 <TooltipButton
                   content={elem.content}
                   icon={<elem.icon />}
@@ -170,18 +189,25 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
-
       {/* Font Family */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
         <DropdownTrigger>
-          <Button isIconOnly variant="light" className="text-xl z-50">
+          <Button isIconOnly variant="light" className="text-xl">
             <RiFontFamily />
           </Button>
         </DropdownTrigger>
         <DropdownMenu>
           {!!fontFamilies &&
-            fontFamilies.map((elem) => (
-              <DropdownItem className="w-min">
+            fontFamilies.map((elem, index) => (
+              <DropdownItem
+                key={index}
+                className={cn(
+                  "w-min",
+                  editor.isActive("textStyle", { fontFamily: elem.value })
+                    ? "bg-gray-200"
+                    : " "
+                )}
+              >
                 <TooltipButton
                   content={elem.content}
                   icon={<elem.icon />}
@@ -193,7 +219,6 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
-
       {/* Colors */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
         <DropdownTrigger>
@@ -203,8 +228,16 @@ const Topbar = ({ editor }: EditorContentProps) => {
         </DropdownTrigger>
         <DropdownMenu>
           {colors &&
-            colors.map((col) => (
-              <DropdownItem className="w-min">
+            colors.map((col, index) => (
+              <DropdownItem
+                key={index}
+                className={cn(
+                  "w-min",
+                  editor.isActive("textStyle", { color: col })
+                    ? "bg-gray-200"
+                    : " "
+                )}
+              >
                 <Tooltip content={col} className="capitalize">
                   <Button
                     isIconOnly
@@ -223,7 +256,6 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
-
       <TooltipButton
         content="Undo"
         icon={<MdUndo />}
@@ -239,63 +271,6 @@ const Topbar = ({ editor }: EditorContentProps) => {
         disabled={!editor.can().redo()}
       />
     </div>
-  );
-};
-
-interface TooltipButtonProps extends ButtonProps {
-  content: string;
-  icon: JSX.Element;
-  className?: string;
-  btnClassName?: string;
-}
-
-type CustomDropdownProps = {
-  triggerIcon: JSX.Element;
-  items: { content: string; icon: IconType }[];
-};
-
-const TooltipButton = ({
-  content,
-  icon,
-  className,
-  btnClassName,
-  ...props
-}: TooltipButtonProps) => {
-  return (
-    <Tooltip
-      closeDelay={0}
-      content={content}
-      className={cn("capitalize", className)}
-    >
-      <Button
-        isIconOnly
-        variant="light"
-        className={cn("text-xl", btnClassName)}
-        {...props}
-      >
-        {icon}
-      </Button>
-    </Tooltip>
-  );
-};
-
-const CustomDropdown = ({ triggerIcon, items }: CustomDropdownProps) => {
-  return (
-    <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-      <DropdownTrigger>
-        <Button isIconOnly variant="light" className="text-xl z-50">
-          {triggerIcon}
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu>
-        {!!items &&
-          items.map((elem) => (
-            <DropdownItem className="w-min">
-              <TooltipButton content={elem.content} icon={<elem.icon />} />
-            </DropdownItem>
-          ))}
-      </DropdownMenu>
-    </Dropdown>
   );
 };
 

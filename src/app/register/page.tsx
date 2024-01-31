@@ -27,7 +27,7 @@ const RegistrationPage = () => {
 };
 
 const TermsAndConditions = () => (
-  <div className="text-xs bg-gray -m-2 mt-0  p-3">
+  <div className="text-xs bg-gr -m-2 mt-0  p-3">
     By signing up, you agree to our{" "}
     <Link className="hover:font-semibold hover:text-b transition-all" href="#">
       Terms of Service
