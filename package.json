@@ -30,6 +30,7 @@
     "@tiptap/extension-text-style": "^2.1.16",
     "@tiptap/extension-typography": "^2.1.16",
     "@tiptap/extension-underline": "^2.1.16",
+    "@tiptap/html": "^2.2.1",
     "@tiptap/pm": "^2.1.16",
     "@tiptap/react": "^2.1.16",
     "@tiptap/starter-kit": "^2.1.16",

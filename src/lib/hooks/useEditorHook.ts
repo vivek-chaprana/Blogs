@@ -7,11 +7,13 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
-import { useEditor } from "@tiptap/react";
+import { JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-export const useEditorHook = () => {
+export const useEditorHook = (editable: boolean, content: JSONContent) => {
   const editor = useEditor({
+    editable: editable ?? true,
+    content: content ?? null,
     extensions: [
       StarterKit,
       TextStyle,
@@ -43,7 +45,7 @@ export const useEditorHook = () => {
     editorProps: {
       attributes: {
         class:
-          "rounded-lg p-5 py-10 bg-none overflow-y-auto outline-none focus:ring-0 focus:shadow-none focus:border-transparent focus:outline-none max-w-none prose h-full  min-h-[60vh] ",
+          "rounded-lg p-5 py-10 bg-none overflow-y-auto outline-none focus:ring-0 focus:shadow-none focus:border-transparent focus:outline-none max-w-none prose h-full min-h-[60vh]",
       },
     },
   });

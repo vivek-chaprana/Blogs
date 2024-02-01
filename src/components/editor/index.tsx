@@ -1,12 +1,25 @@
 "use client";
 
+import { CHARACTER_LIMIT } from "@/lib/constants";
 import { EditorContent, Editor as EditorType } from "@tiptap/react";
+import dynamic from "next/dynamic";
 
-import Bubble from "./components/Bubble";
-import CharacterContainer from "./components/CharacterContainer";
-import Topbar from "./components/Topbar";
+const Bubble = dynamic(() => import("@/components/editor/components/Bubble"));
+const CharacterContainer = dynamic(
+  () => import("@/components/editor/components/CharacterContainer")
+);
+const Floating = dynamic(
+  () => import("@/components/editor/components/Floating")
+);
+const Topbar = dynamic(() => import("@/components/editor/components/Topbar"));
 
-const CHARACTER_LIMIT = 2000;
+interface EditorProps {
+  editor: EditorType;
+  showTopbar?: boolean;
+  showBubble?: boolean;
+  showFloating?: boolean;
+  showWordCounter?: boolean;
+}
 
 /*
   TODO: In future might add.. 
@@ -19,16 +32,32 @@ const CHARACTER_LIMIT = 2000;
   This looks like an overkill to me though! Still we'll see. 
 */
 
-const Editor = ({ editor }: { editor: EditorType }) => {
+const Editor = ({
+  editor,
+  showTopbar,
+  showBubble,
+  showFloating,
+  showWordCounter,
+}: EditorProps) => {
   if (!editor) return <div className="text-center">Loading Editor...</div>;
 
   return (
     <section className="max-w-5xl mx-auto rounded-lg border ">
-      <Topbar editor={editor} />
-      <Bubble editor={editor} />
-      {/* {editor && <Floating editor={editor} />} */}
+      {showTopbar && <Topbar editor={editor} />}
+      {showBubble && (
+        <div>
+          <Bubble editor={editor} />
+        </div>
+      )}
+      {showFloating && (
+        <div>
+          <Floating editor={editor} />
+        </div>
+      )}
       <EditorContent editor={editor} />
-      <CharacterContainer editor={editor} limit={CHARACTER_LIMIT} />
+      {showWordCounter && (
+        <CharacterContainer editor={editor} limit={CHARACTER_LIMIT} />
+      )}
     </section>
   );
 };

@@ -38,7 +38,7 @@ const Topbar = ({ editor }: EditorContentProps) => {
   }
 
   return (
-    <div className="flex justify-evenly gap-2 p-2 border-b-2 border-black ">
+    <div className="flex justify-evenly gap-2 p-2 border-b-2 border-black flex-wrap ">
       {/* Headings */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
         <DropdownTrigger>

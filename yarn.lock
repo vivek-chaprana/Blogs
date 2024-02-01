@@ -3146,6 +3146,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/html@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@tiptap/html@npm:2.2.1"
+  dependencies:
+    zeed-dom: "npm:^0.10.9"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+    "@tiptap/pm": ^2.0.0
+  checksum: fa16412566d240df08c38c494fb9a8dc07a1f54b86dd902c50af4cc12883e00375379baf129001fa22f02838c455934f2f815c6ea98f74aff401665848b40ccb
+  languageName: node
+  linkType: hard
+
 "@tiptap/pm@npm:^2.1.16":
   version: 2.1.16
   resolution: "@tiptap/pm@npm:2.1.16"
@@ -3769,6 +3781,7 @@ __metadata:
     "@tiptap/extension-text-style": "npm:^2.1.16"
     "@tiptap/extension-typography": "npm:^2.1.16"
     "@tiptap/extension-underline": "npm:^2.1.16"
+    "@tiptap/html": "npm:^2.2.1"
     "@tiptap/pm": "npm:^2.1.16"
     "@tiptap/react": "npm:^2.1.16"
     "@tiptap/starter-kit": "npm:^2.1.16"
@@ -4145,6 +4158,13 @@ __metadata:
   dependencies:
     boom: "npm:0.4.x"
   checksum: 67a4f907565dee26f9149e7edf65c80c6ada72118c9eea2e8d18afd0302d4cc3c85c38d611f5f48ef3086c6dad8dd80af19b76dfebd02e46502f53724ba9fa55
+  languageName: node
+  linkType: hard
+
+"css-what@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "css-what@npm:6.1.0"
+  checksum: a09f5a6b14ba8dcf57ae9a59474722e80f20406c53a61e9aedb0eedc693b135113ffe2983f4efc4b5065ae639442e9ae88df24941ef159c218b231011d733746
   languageName: node
   linkType: hard
 
@@ -8467,6 +8487,15 @@ __metadata:
     install: "npm:^0.10.0"
     js-function-reflector: "git+https://github.com/leonardiwagner/js-function-reflector.git"
   checksum: 7fca5761e29555ec0671cd4618d0d7ef949f6ec1aabac5782bd4e3c6f5179483843ea1af6d9d019df1b25d56a7976ab394a8ad762ccc090fe169ad6e106009e6
+  languageName: node
+  linkType: hard
+
+"zeed-dom@npm:^0.10.9":
+  version: 0.10.11
+  resolution: "zeed-dom@npm:0.10.11"
+  dependencies:
+    css-what: "npm:^6.1.0"
+  checksum: 68c22a1324af9ce45ec49ba7aaf86492c7b87c2fa307664a0a4d8dcd0a279ff97221787f5f1354f52fe9ac9a27559214d1b4c283374a1993c38c6242c4b0ac8b
   languageName: node
   linkType: hard
 

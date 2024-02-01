@@ -27,7 +27,7 @@ export default function CharacterContainer({
         >
           {characterCount}
         </span>
-        /{limit} characters
+        {limit && <span>/{limit}</span>} characters
       </p>
       <p>{wordCount} words</p>
       <p>{minutes} minute read</p>

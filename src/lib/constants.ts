@@ -29,3 +29,4 @@ export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 // Editor
 export const WORDS_PER_MINUTE = 200;
 export const TIME_PER_IMAGE = 0.083;
+export const CHARACTER_LIMIT = 2000;

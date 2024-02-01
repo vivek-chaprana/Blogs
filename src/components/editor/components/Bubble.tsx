@@ -57,7 +57,7 @@ function Bubble({ editor }: { editor: Editor }) {
   return (
     <BubbleMenu
       tippyOptions={{ duration: 100 }}
-      className="rounded-lg p-2 m-3 flex gap-3 min-w-max bg-gr "
+      className="rounded-lg p-2 m-3 flex gap-3 bg-gr flex-wrap sm:flex-nowrap sm:min-w-max"
       editor={editor}
     >
       <Dropdown className="border">
@@ -193,7 +193,7 @@ function Bubble({ editor }: { editor: Editor }) {
         </DropdownTrigger>
         <DropdownMenu aria-label="color-type" variant="flat">
           {!!colors &&
-            colors.map((col) => (
+            colors.map((col, index) => (
               <DropdownItem
                 onClick={() => {
                   col !== "default"
@@ -201,7 +201,7 @@ function Bubble({ editor }: { editor: Editor }) {
                     : editor.commands.unsetColor();
                 }}
                 startContent={<RiFontColor fill={col} />}
-                key={col}
+                key={index}
                 className={cn(
                   "capitalize",
                   editor.isActive("textStyle", { color: col })

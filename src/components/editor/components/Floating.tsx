@@ -9,11 +9,12 @@ import {
 import { TooltipButton } from ".";
 
 export default function Floating({ editor }: { editor: Editor }) {
+  if (!editor) return null;
   return (
     <FloatingMenu
       editor={editor}
       tippyOptions={{ duration: 100 }}
-      className="border bg-gr rounded-lg translate-x-20"
+      className="border bg-gr rounded-lg translate-x-2 sm:translate-x-20"
     >
       <TooltipButton
         content="Heading 1"

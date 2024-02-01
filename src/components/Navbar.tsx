@@ -24,18 +24,20 @@ export default async function Navbar() {
       </NavbarBrand>
 
       <NavbarContent as="div" justify="end">
-        <NavbarItem>
-          <Button
-            as={Link}
-            href="/new-story"
-            variant="light"
-            startContent={<BsPencilSquare fill="#101010" />}
-          >
-            Write
-          </Button>
-        </NavbarItem>
         {!!user ? (
-          <NavbarUserBlock user={user} />
+          <>
+            <NavbarItem>
+              <Button
+                as={Link}
+                href="/new-story"
+                variant="light"
+                startContent={<BsPencilSquare fill="#101010" />}
+              >
+                Write
+              </Button>
+            </NavbarItem>
+            <NavbarUserBlock user={user} />
+          </>
         ) : (
           <NavbarItem className="flex gap-2">
             <Button as={Link} color="primary" href="/register" variant="flat">
