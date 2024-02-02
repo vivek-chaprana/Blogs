@@ -1,4 +1,5 @@
 import BlogsHomepage from "@/components/BlogsHomepage";
+import SidebarHomepage from "@/components/SidebarHomepage";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
@@ -12,8 +13,13 @@ export default async function Home() {
   if (!user) return <main>Unauthorized</main>;
 
   return (
-    <main className="max-w-4xl mx-auto min-h-screen border border-black">
-      <BlogsHomepage />
+    <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative">
+      <section className="min-w-3xl max-w-3xl min-h-screen flex-shrink-0">
+        <BlogsHomepage />
+      </section>
+
+      <SidebarHomepage />
+
       {user && !user.hasCompletedOnboarding && (
         <GettingStarted
           shouldOpen={true}

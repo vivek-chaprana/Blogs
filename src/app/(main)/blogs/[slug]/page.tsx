@@ -1,5 +1,6 @@
 import BlogRenderer from "@/components/BlogRenderer";
 import prisma from "@/prisma";
+import { JSONContent } from "@tiptap/core";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { slug: string } }) {
@@ -16,7 +17,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <h1 className="text-gray-700 text-lg">{blog?.title}</h1>
       {/* Author details here */}
       {/* Blog details here, like, share, etc */}
-      <BlogRenderer content={blog?.content} />
+      <BlogRenderer content={blog?.content as JSONContent} />
     </section>
   );
 }
