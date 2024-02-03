@@ -9,6 +9,7 @@ import {
 } from "@nextui-org/react";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function NavbarUserBlock(props: { user: User }) {
@@ -34,9 +35,11 @@ export default function NavbarUserBlock(props: { user: User }) {
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{email}</p>
         </DropdownItem>
-        <DropdownItem key="profile">My Profile</DropdownItem>
+        <DropdownItem as={Link} href={`/${username}`} key="profile">
+          My Profile
+        </DropdownItem>
+        <DropdownItem key="lists">Lists</DropdownItem>
         <DropdownItem key="settings">Settings</DropdownItem>
-        <DropdownItem key="configurations">Configurations</DropdownItem>
         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
         <DropdownItem
           key="logout"

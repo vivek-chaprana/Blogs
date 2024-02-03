@@ -1,0 +1,18 @@
+import Loading from "@/components/Loading";
+import UserCard from "@/components/UserCard";
+
+export default function Followers() {
+  return (
+    <div className="p-4">
+      <h1 className="text-4xl font-bold">8,502 Followers</h1>
+
+      <div className="flex flex-col gap-5 py-10">
+        {new Array(25).fill(0).map((_, index) => (
+          <UserCard key={index} />
+        ))}
+      </div>
+
+      <Loading />
+    </div>
+  );
+}

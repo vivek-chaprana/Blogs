@@ -14,6 +14,9 @@ export const COMPANY_NAME = "BLOGS";
 export const fallbackImageUrl =
   "https://i.pinimg.com/564x/a9/99/ee/a999ee87f1cc57beb5cc1c60fc96cded.jpg";
 
+export const fallbackCoverImageUrl =
+  "https://images.unsplash.com/photo-1624396963238-df0e48367ff7?q=80&w=2036&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
 export const providers = {
   GOOGLE: "google",
   GITHUB: "github",
