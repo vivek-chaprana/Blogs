@@ -1,6 +1,6 @@
+import ProfileTabs from "@/components/sub-components/ProfileTabs";
 import { fallbackCoverImageUrl } from "@/lib/constants";
 import { Button, Image, Tooltip } from "@nextui-org/react";
-import Link from "next/link";
 import { FaEdit, FaShare } from "react-icons/fa";
 
 export default function UserProfileLayout({
@@ -38,24 +38,15 @@ export default function UserProfileLayout({
       </section>
 
       <div>
-        <div className="flex gap-5  text-sm border-b px-5 py-2">
-          <Button
-            className="capitalize"
-            as={Link}
-            href={`/${params.username}`}
-            variant="light"
-          >
-            Home
-          </Button>
-          <Button
-            className="capitalize"
-            as={Link}
-            href={`/${params.username}/about`}
-            variant="light"
-          >
-            About
-          </Button>
-        </div>
+        {
+          <ProfileTabs
+            username={params.username}
+            links={[
+              { name: "Home", url: "/" },
+              { name: "About", url: "about" },
+            ]}
+          />
+        }
         <section className="p-5">{children}</section>
       </div>
     </div>

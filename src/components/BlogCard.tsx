@@ -1,14 +1,27 @@
 import { fallbackImageUrl } from "@/lib/constants";
-import { Avatar, Button, Chip, Image } from "@nextui-org/react";
+import { BlogWithAuthor } from "@/types/prisma";
+import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
 import Link from "next/link";
 import { BsBookmark, BsDot, BsFlag, BsHeart } from "react-icons/bs";
 
-const BlogCard = ({ blog }: { blog: any }) => {
+const BlogCard = ({
+  blog,
+  linksDisabled = false,
+}: {
+  blog: BlogWithAuthor;
+  linksDisabled?: boolean;
+}) => {
   return (
     <article className="flex flex-col border-b py-5 last:border-b-0">
       {/* User Details */}
       <div className="flex items-center gap-2">
-        <Link href="#" className="flex gap-2 items-center font-normal">
+        <Link
+          href="#"
+          className={cn(
+            "flex gap-2 items-center font-normal",
+            linksDisabled && "pointer-events-none"
+          )}
+        >
           <Avatar
             size="sm"
             src={blog.author.image ?? fallbackImageUrl}
@@ -25,7 +38,13 @@ const BlogCard = ({ blog }: { blog: any }) => {
       </div>
 
       {/* Article */}
-      <Link href="#" className="flex min-h-20 w-full">
+      <Link
+        href="#"
+        className={cn(
+          "flex min-h-20 w-full",
+          linksDisabled && "pointer-events-none"
+        )}
+      >
         <div className="flex flex-col justify-center gap-1">
           <h1 className="text-lg font-bold">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure saepe
@@ -37,7 +56,7 @@ const BlogCard = ({ blog }: { blog: any }) => {
             quasi laborum iste similique? ....
           </p>
         </div>
-        <div className="w-[30%]">
+        <div className="w-[30%] ms-10">
           <Image alt="Cover image for the blog" src={fallbackImageUrl} />
         </div>
       </Link>
@@ -55,32 +74,34 @@ const BlogCard = ({ blog }: { blog: any }) => {
           <span className="text-xs">4 min read</span>
         </div>
         {/* Utility */}
-        <div className="flex items-center">
-          <Button
-            isIconOnly
-            variant="light"
-            size="sm"
-            className="text-lg text-gray-500"
-          >
-            <BsHeart />
-          </Button>
-          <Button
-            isIconOnly
-            variant="light"
-            size="sm"
-            className="text-lg text-gray-500"
-          >
-            <BsBookmark />
-          </Button>
-          <Button
-            isIconOnly
-            variant="light"
-            size="sm"
-            className="text-lg text-gray-500"
-          >
-            <BsFlag />
-          </Button>
-        </div>
+        {!linksDisabled && (
+          <div className="flex items-center">
+            <Button
+              isIconOnly
+              variant="light"
+              size="sm"
+              className="text-lg text-gray-500"
+            >
+              <BsHeart />
+            </Button>
+            <Button
+              isIconOnly
+              variant="light"
+              size="sm"
+              className="text-lg text-gray-500"
+            >
+              <BsBookmark />
+            </Button>
+            <Button
+              isIconOnly
+              variant="light"
+              size="sm"
+              className="text-lg text-gray-500"
+            >
+              <BsFlag />
+            </Button>
+          </div>
+        )}
       </div>
     </article>
   );

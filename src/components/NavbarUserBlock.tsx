@@ -38,9 +38,15 @@ export default function NavbarUserBlock(props: { user: User }) {
         <DropdownItem as={Link} href={`/${username}`} key="profile">
           My Profile
         </DropdownItem>
-        <DropdownItem key="lists">Lists</DropdownItem>
-        <DropdownItem key="settings">Settings</DropdownItem>
-        <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+        <DropdownItem as={Link} href="/saved" key="saved">
+          Saved
+        </DropdownItem>
+        <DropdownItem as={Link} href="/settings" key="settings">
+          Settings
+        </DropdownItem>
+        <DropdownItem as={Link} href="#" key="help_and_feedback">
+          Help & Feedback
+        </DropdownItem>
         <DropdownItem
           key="logout"
           color="danger"

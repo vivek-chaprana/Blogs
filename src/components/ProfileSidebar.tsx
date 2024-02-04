@@ -2,6 +2,8 @@ import { fallbackImageUrl } from "@/lib/constants";
 import { Button, Image } from "@nextui-org/react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { getServerSession } from "next-auth";
+import MyLink from "./sub-components/MyLink";
 
 export default function ProfileSidebar() {
   return (
@@ -13,7 +15,7 @@ export default function ProfileSidebar() {
   );
 }
 
-const ProfileSection = () => {
+const ProfileSection = async () => {
   return (
     <section className="flex flex-col gap-4">
       <Image
@@ -25,12 +27,13 @@ const ProfileSection = () => {
       />
       <div>
         <h3 className="font-semibold">Vivek Chaprana</h3>
-        <Link
+        <MyLink
+          append
           href="followers"
           className="text-sm text-green-400 hover:text-green-700 "
         >
           8.5k followers
-        </Link>
+        </MyLink>
       </div>
       <p className="text-sm">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo
@@ -70,12 +73,13 @@ const FollowingSection = () => {
         ))}
       </div>
 
-      <Link
+      <MyLink
+        append
         href="following"
         className="text-green-600 text-sm hover:text-green-800 transition-colors duration-150"
       >
         See all (6)
-      </Link>
+      </MyLink>
     </section>
   );
 };

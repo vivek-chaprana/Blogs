@@ -1,4 +1,3 @@
-import BlogsHomepage from "@/components/BlogsHomepage";
 import SidebarHomepage from "@/components/SidebarHomepage";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
@@ -6,7 +5,11 @@ import dynamic from "next/dynamic";
 
 const GettingStarted = dynamic(() => import("@/components/GettingStarted"));
 
-export default async function Home() {
+export default async function WithSidearLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const session = await getServerSession(authOptions);
   const { user } = session ?? {};
 
@@ -15,7 +18,7 @@ export default async function Home() {
   return (
     <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative">
       <section className="min-w-3xl max-w-3xl min-h-screen flex-shrink-0">
-        <BlogsHomepage />
+        {children}
       </section>
 
       <SidebarHomepage />
