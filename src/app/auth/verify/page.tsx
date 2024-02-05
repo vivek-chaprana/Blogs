@@ -14,11 +14,11 @@ export default async function VerifyPage({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
-  const email = searchParams.email;
   const success = searchParams.success;
 
   const session = await getServerSession(authOptions);
   const user = session?.user;
+  const email = user?.email ?? searchParams.email;
 
   if (user && user?.emailVerified) {
     redirect("/");

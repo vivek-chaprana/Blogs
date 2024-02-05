@@ -18,8 +18,9 @@ import PasswordStrength from "./PasswordStrength";
 const FormSchema = z.object({
   username: z
     .string()
-    .regex(new RegExp("^[a-zA-Z0-9_]+$"), "No special character allowed!")
-    .min(1, "Username is required."),
+    .regex(new RegExp("^[a-zA-Z0-9_-]+$"), "No special character allowed!")
+    .min(1, "Username is required.")
+    .max(45, "Username should be less than 45 characters."),
   email: z.string().email("Please enter a valid email address"),
   password: z
     .string()

@@ -33,3 +33,13 @@ export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 export const WORDS_PER_MINUTE = 200;
 export const TIME_PER_IMAGE = 0.083;
 export const CHARACTER_LIMIT = 2000;
+
+// Images Options
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+export const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];

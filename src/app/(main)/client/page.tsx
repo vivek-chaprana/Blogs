@@ -11,7 +11,9 @@ export default function Page() {
     <div>
       <h1>Client</h1>
       <br />
-      <p>Session: {JSON.stringify(data)}</p>
+      <pre className="prose text-wrap whitespace-nowrap">
+        <code>Session: {JSON.stringify(data)}</code>
+      </pre>
       <br />
       <button onClick={() => update()}>Update session</button>
     </div>

@@ -70,7 +70,7 @@ const PasswordStrength = ({ password }: Props) => {
               </span>
             ) : (
               <span className="w-[14px] flex items-center justify-center ">
-                <div className="w-1 h-1 bg-b rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
               </span>
             )}
             <span>{label}</span>

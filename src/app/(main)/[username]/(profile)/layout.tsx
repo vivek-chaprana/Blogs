@@ -1,15 +1,20 @@
 import ProfileTabs from "@/components/sub-components/ProfileTabs";
+import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackCoverImageUrl } from "@/lib/constants";
 import { Button, Image, Tooltip } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { FaEdit, FaShare } from "react-icons/fa";
 
-export default function UserProfileLayout({
+export default async function UserProfileLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
   params: { username: string };
 }>) {
+  const session = await getServerSession(authOptions);
+  const username = session?.user?.username;
   return (
     <div className=" ">
       {/* Cover Image */}
@@ -23,11 +28,13 @@ export default function UserProfileLayout({
             <h3>@vivekchaprana</h3>
           </div>
           <div className="flex gap-5">
-            <Tooltip content="Edit Profile" closeDelay={0}>
-              <Button variant="light" isIconOnly>
-                <FaEdit className="text-dark-200 text-lg" />
-              </Button>
-            </Tooltip>
+            {username === params.username && (
+              <Tooltip content="Edit Profile" closeDelay={0}>
+                <Button as={Link} href="/settings" variant="light" isIconOnly>
+                  <FaEdit className="text-dark-200 text-lg" />
+                </Button>
+              </Tooltip>
+            )}
             <Tooltip content="Share Profile" closeDelay={0}>
               <Button variant="light" color="success" isIconOnly>
                 <FaShare className="text-teal-700 text-lg" />

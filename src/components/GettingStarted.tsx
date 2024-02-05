@@ -1,12 +1,11 @@
 "use client";
 
 import completeOnboarding from "@/lib/actions/completeOnboarding";
-import { fallbackImageUrl } from "@/lib/constants";
-import uploadImage from "@/lib/utils/uploadImage";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/lib/constants";
+import getImageUrl from "@/lib/utils/getImageUrl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -17,19 +16,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
-
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+import ImagePreview from "./ImagePreview";
 
 const FormSchema = z.object({
   name: z
@@ -81,14 +73,7 @@ export default function GettingStarted({
     setIsLoading(true);
     try {
       const image = data.profileImage?.[0];
-      const imageUrl =
-        imagePreview &&
-        (imagePreview.startsWith("https://") ||
-          imagePreview.startsWith("http://"))
-          ? imagePreview
-          : image
-          ? await uploadImage(image)
-          : null;
+      const imageUrl = await getImageUrl(imagePreview, image);
 
       await completeOnboarding({
         name: data.name,
@@ -187,7 +172,9 @@ export default function GettingStarted({
                   <div className="flex">
                     {!!imagePreview ? (
                       <ImagePreview
-                        url={imagePreview}
+                        width={200}
+                        height={200}
+                        src={imagePreview}
                         resetImage={resetImage}
                       />
                     ) : (
@@ -243,31 +230,3 @@ export default function GettingStarted({
     </main>
   );
 }
-
-const ImagePreview = ({
-  url,
-  resetImage,
-}: {
-  url: string;
-  resetImage: MouseEventHandler;
-}) => (
-  <div className="p-5 relative group">
-    <Image
-      width={200}
-      height={200}
-      alt="NextUI hero Image with delay"
-      src={url || fallbackImageUrl}
-      className="border border-gray"
-    />
-    <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 mb-5 rounded-b-lg  z-10 rounded-t-full h-1/3 w-4/5 opacity-0 group-hover:opacity-85 transition duration-1000 ease-out
-shadow-[inset_0px_-70px_29px_20px_rgba(0,0,0,0.25)] "
-    ></div>
-    <div
-      onClick={resetImage}
-      className="bg-red-300 text-lg text-red-600 rounded-full p-2 absolute bottom-0 left-1/2 -translate-x-1/2 z-10 translate-y-5 opacity-0 group-hover:-translate-y-10 group-hover:opacity-90 hover:scale-105 cursor-pointer transition-all"
-    >
-      <FaTrash />
-    </div>
-  </div>
-);

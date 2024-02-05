@@ -68,7 +68,7 @@
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   },
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.1.0",
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
   }
