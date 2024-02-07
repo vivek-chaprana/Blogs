@@ -1,6 +1,6 @@
 export const SALT_ROUNDS = 10;
 
-export const WEBAPP_URL = "http://localhost:3000";
+export const WEBAPP_URL = process.env.WEBAPP_URL || "http://localhost:3000";
 
 export const SECRET = process.env.NEXTAUTH_SECRET;
 

@@ -90,8 +90,9 @@ export default function PasswordModal() {
         </span>
       </div>
       <Modal
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
         isDismissable={!isLoading}
-        closeButton={!isLoading}
         scrollBehavior="inside"
         size="xl"
         isOpen={isOpen}
@@ -104,6 +105,7 @@ export default function PasswordModal() {
               <ModalBody>
                 <form className="flex flex-col gap-4">
                   <Input
+                    disabled={isLoading}
                     {...register("oldPassword")}
                     isInvalid={!!errors.oldPassword}
                     errorMessage={errors.oldPassword?.message}
@@ -127,6 +129,7 @@ export default function PasswordModal() {
                   />
 
                   <Input
+                    disabled={isLoading}
                     {...register("newPassword")}
                     isInvalid={!!errors.newPassword}
                     errorMessage={errors.newPassword?.message}
@@ -152,6 +155,7 @@ export default function PasswordModal() {
                   <PasswordStrength password={watch().newPassword} />
 
                   <Input
+                    disabled={isLoading}
                     {...register("confirmPassword")}
                     isInvalid={!!errors.confirmPassword}
                     errorMessage={errors.confirmPassword?.message}

@@ -64,7 +64,14 @@ export default function EmailModal({ email }: { email: string }) {
         <h4 className="font-semibold">Email address</h4>
         <p>{email}</p>
       </div>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
+        isDismissable={!isLoading}
+        size="2xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -79,6 +86,7 @@ export default function EmailModal({ email }: { email: string }) {
                     variant="underlined"
                     label="Email"
                     defaultValue={email}
+                    disabled={isLoading}
                   />
                   <p className="text-gray-400 text-sm my-2">
                     You can sign into {COMPANY_NAME} with this email address.
@@ -89,7 +97,7 @@ export default function EmailModal({ email }: { email: string }) {
                 <Button
                   color="danger"
                   variant="light"
-                  onPress={onClose}
+                  onPress={() => !isLoading && onClose()}
                   isDisabled={isLoading}
                 >
                   Cancel

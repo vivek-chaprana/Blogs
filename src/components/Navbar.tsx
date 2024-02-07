@@ -10,10 +10,10 @@ import {
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsPencilSquare } from "react-icons/bs";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { MdNotificationsNone } from "react-icons/md";
 import { RiSearch2Line } from "react-icons/ri";
 import NavbarUserBlock from "./NavbarUserBlock";
-import { MdNotificationsNone, MdOutlineNotifications } from "react-icons/md";
+import { COMPANY_NAME } from "@/lib/constants";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -23,7 +23,7 @@ export default async function Navbar() {
     <NavbarComponent className="border-b" maxWidth="xl">
       <NavbarBrand className="flex items-center gap-3">
         <Link href="/" className="font-bold text-inherit">
-          BLOGS
+          {COMPANY_NAME}
         </Link>
         <Input
           radius="full"

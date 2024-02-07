@@ -10,7 +10,7 @@ import Underline from "@tiptap/extension-underline";
 import { JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-export const useEditorHook = (editable: boolean, content: JSONContent) => {
+export const useEditorHook = (editable?: boolean, content?: JSONContent) => {
   const editor = useEditor({
     editable: editable ?? true,
     content: content ?? null,

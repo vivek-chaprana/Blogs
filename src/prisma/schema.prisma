@@ -54,14 +54,14 @@ model User {
   sessions               Session[]
   createdAt              DateTime  @default(now())
 
-  blogPost             BlogPost[]
-  comment              Comment[]
-  followedBy           User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
-  followedByIDs        String[]   @db.ObjectId
-  following            User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
-  followingIDs         String[]   @db.ObjectId
-  followingCategoryIDs String[]   @db.ObjectId
-  followingCategories  Category[] @relation(fields: [followingCategoryIDs], references: [id])
+  blogPost            BlogPost[]
+  comment             Comment[]
+  followedBy          User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
+  followedByIDs       String[]   @db.ObjectId
+  following           User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs        String[]   @db.ObjectId
+  followingTopicIDs   String[]   @db.ObjectId
+  followingCategories Topic[]    @relation(fields: [followingTopicIDs], references: [id])
 }
 
 model VerificationToken {
@@ -78,7 +78,9 @@ model BlogPost {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
+  coverImage  String?
   content     Json
+  tags        String[]
   likes       Int        @default(0)
   slug        String     @unique
   status      PostStatus @default(DRAFT)
@@ -87,22 +89,19 @@ model BlogPost {
   author      User       @relation(fields: [authorId], references: [id])
   authorId    String     @db.ObjectId
   comments    Comment[]
-  categoryIDs String[]   @db.ObjectId
-  categories  Category[] @relation(fields: [categoryIDs], references: [id])
+  topicID     String     @db.ObjectId
+  topic       Topic      @relation(fields: [topicID], references: [id])
 }
 
-// Category entity
-model Category {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+// Topic entity
+model Topic {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  slug        String  @unique
+  slug        String     @unique
   description String?
-
-  postIDs String[]   @db.ObjectId
-  posts   BlogPost[] @relation(fields: [postIDs], references: [id])
-
-  userIDs String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIDs], references: [id])
+  userIDs     String[]   @db.ObjectId
+  users       User[]     @relation(fields: [userIDs], references: [id])
+  BlogPost    BlogPost[]
 }
 
 // Comment entity

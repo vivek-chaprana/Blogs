@@ -1,18 +1,26 @@
+import { EditorPublishModalInputType } from "@/components/EditorPublishModal";
 import { authOptions } from "@/lib/auth/auth-options";
 import generateUniqueSlug from "@/lib/utils/generateUniqueSlug";
+import getErrorMessage from "@/lib/utils/getErrorMessage";
 import prisma from "@/prisma";
 import { PostStatus } from "@prisma/client";
+import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(req: NextRequest) {
-  const { title, body, status } = (await req.json()) ?? {};
+  const data =
+    <EditorPublishModalInputType & { content: JSONContent; title: string }>(
+      await req.json()
+    ) ?? {};
 
-  if (!title || !body)
+  if (!data.title) {
     return NextResponse.json(
-      { success: false, message: "Missing title or body" },
+      { success: false, message: "Missing title." },
       { status: 400 }
     );
+  }
 
   const session = await getServerSession(authOptions);
   if (!session)
@@ -27,13 +35,21 @@ export async function POST(req: NextRequest) {
   try {
     await prisma.blogPost.create({
       data: {
-        title,
+        title: data.title,
+        content: data.content,
         slug,
-        content: body,
-        status: status ?? PostStatus.DRAFT,
+        status: data.status ?? PostStatus.DRAFT,
+        tags: data.tags
+          ? data.tags.split(",").map((tag: string) => tag.trim())
+          : [],
         author: {
           connect: {
             id: userId,
+          },
+        },
+        topic: {
+          connect: {
+            slug: slugify(data.topic, { lower: true, strict: true }),
           },
         },
       },
@@ -44,12 +60,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         status: false,
-        message:
-          typeof e === "string"
-            ? e
-            : e instanceof Error
-            ? e.message
-            : "Something went wrong!",
+        message: getErrorMessage(e),
       },
       { status: 500 }
     );

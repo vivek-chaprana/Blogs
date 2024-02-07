@@ -58,6 +58,7 @@ export default function UsernameModal({ username }: { username: string }) {
       await update();
       setIsLoading(false);
       onOpenChange();
+      reset();
       router.refresh();
     }
   };
@@ -71,7 +72,14 @@ export default function UsernameModal({ username }: { username: string }) {
         <h4 className="font-semibold">Username</h4>
         <p>{username}</p>
       </div>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
+        isDismissable={!isLoading}
+        size="2xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -79,6 +87,7 @@ export default function UsernameModal({ username }: { username: string }) {
               <ModalBody>
                 <form>
                   <Input
+                    disabled={isLoading}
                     {...register("username")}
                     isInvalid={!!errors.username}
                     errorMessage={errors.username?.message}
@@ -102,7 +111,7 @@ export default function UsernameModal({ username }: { username: string }) {
                 <Button
                   color="danger"
                   variant="light"
-                  onPress={onClose}
+                  onPress={() => !isLoading && onClose()}
                   disabled={isLoading}
                 >
                   Cancel

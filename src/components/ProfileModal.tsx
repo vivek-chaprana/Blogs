@@ -21,13 +21,13 @@ import {
 } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
-import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   name: z
@@ -175,8 +175,9 @@ export default function ProfileModal({ profile }: { profile: User }) {
         </span>
       </div>
       <Modal
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
         isDismissable={!isLoading}
-        closeButton={!isLoading}
         scrollBehavior="inside"
         size="2xl"
         isOpen={isOpen}
@@ -224,6 +225,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
                     </p>
                   )}
                   <Input
+                    disabled={isLoading}
                     defaultValue={profile.name ?? ""}
                     {...register("name")}
                     isInvalid={!!errors.name}
@@ -233,6 +235,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
                     variant="underlined"
                   />
                   <Textarea
+                    disabled={isLoading}
                     {...register("bio")}
                     isInvalid={!!errors.bio}
                     errorMessage={errors.bio?.message}
@@ -282,7 +285,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
                 <Button
                   color="danger"
                   variant="light"
-                  onPress={onClose}
+                  onPress={() => !isLoading && onClose()}
                   disabled={isLoading}
                 >
                   Cancel

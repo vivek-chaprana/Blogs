@@ -36,7 +36,7 @@ export default async function VerifyPage({
               title="Email verified successfully!"
               description={`Your email ${email ?? ""} has been verified.`}
               Button={
-                <Button as={Link} href="/getting-started">
+                <Button as={Link} href="/">
                   Continue
                 </Button>
               }

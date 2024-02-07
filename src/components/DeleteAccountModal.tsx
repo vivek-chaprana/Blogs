@@ -36,7 +36,7 @@ export default function DeleteAccountModal() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<InputType>({
     resolver: zodResolver(InputSchema),
   });
@@ -68,7 +68,14 @@ export default function DeleteAccountModal() {
           </p>
         </span>
       </div>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
+        isDismissable={!isLoading}
+        size="2xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
