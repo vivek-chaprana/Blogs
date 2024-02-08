@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
-const blogWithAuthor = Prisma.validator<Prisma.BlogPostDefaultArgs>()({
-  include: { author: true },
+const fullBlog = Prisma.validator<Prisma.BlogPostDefaultArgs>()({
+  include: { author: true, topic: true },
 });
 
-export type BlogWithAuthor = Prisma.BlogPostGetPayload<typeof blogWithAuthor>;
+export type FullBlog = Prisma.BlogPostGetPayload<typeof fullBlog>;

@@ -11,6 +11,7 @@ import { RiSettings3Fill } from "react-icons/ri";
 import { z } from "zod";
 import EditorPublishModal from "./EditorPublishModal";
 import EditorSettingsModal from "./EditorSettingsModal";
+import toast from "react-hot-toast";
 
 const FormSchema = z.object({
   title: z
@@ -53,19 +54,17 @@ export default function NewStoryForm({ user }: { user: User }) {
             <RiSettings3Fill />
           </Button>
           <Button
-            size="sm"
-            variant="light"
-            onClick={handleSubmit(publishModal.onOpen)}
-          >
-            Save as draft
-          </Button>
-          <Button
-            onClick={handleSubmit(publishModal.onOpen)}
+            onClick={handleSubmit(() => {
+              if (!editor || editor?.isEmpty) {
+                return toast.error("Blog content is required!");
+              }
+              publishModal.onOpen();
+            })}
             size="sm"
             color="success"
             className="text-white rounded-full"
           >
-            Publish
+            Next
           </Button>
         </div>
       </div>

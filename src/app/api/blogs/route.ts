@@ -39,6 +39,8 @@ export async function POST(req: NextRequest) {
         content: data.content,
         slug,
         status: data.status ?? PostStatus.DRAFT,
+        description: data.previewDesc,
+        coverImage: data.coverImage,
         tags: data.tags
           ? data.tags.split(",").map((tag: string) => tag.trim())
           : [],

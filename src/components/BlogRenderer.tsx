@@ -61,7 +61,7 @@ export default function BlogRenderer({ content }: { content: JSONContent }) {
 
   return (
     <main
-      className="prose"
+      className="prose my-5"
       dangerouslySetInnerHTML={{ __html: purifiedHtml }}
     ></main>
   );

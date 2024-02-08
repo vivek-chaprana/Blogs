@@ -1,5 +1,6 @@
 import { fallbackImageUrl } from "@/lib/constants";
-import { BlogWithAuthor } from "@/types/prisma";
+import getFormattedDate from "@/lib/utils/getFormattedDate";
+import { FullBlog } from "@/types/prisma";
 import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
 import Link from "next/link";
 import { BsBookmark, BsDot, BsFlag, BsHeart } from "react-icons/bs";
@@ -8,7 +9,7 @@ const BlogCard = ({
   blog,
   linksDisabled = false,
 }: {
-  blog: BlogWithAuthor;
+  blog: FullBlog;
   linksDisabled?: boolean;
 }) => {
   return (
@@ -16,7 +17,7 @@ const BlogCard = ({
       {/* User Details */}
       <div className="flex items-center gap-2">
         <Link
-          href="#"
+          href={`/${blog.author.username}`}
           className={cn(
             "flex gap-2 items-center font-normal",
             linksDisabled && "pointer-events-none"
@@ -33,31 +34,30 @@ const BlogCard = ({
         </Link>
         <span className="flex items-center text-sm font-light ">
           <BsDot />
-          <p>5 hours ago</p>
+          <p>{getFormattedDate(blog.createdAt)}</p>
         </span>
       </div>
 
       {/* Article */}
       <Link
-        href="#"
+        href={`/blogs/${blog.slug}`}
         className={cn(
           "flex min-h-20 w-full",
           linksDisabled && "pointer-events-none"
         )}
       >
         <div className="flex flex-col justify-center gap-1">
-          <h1 className="text-lg font-bold">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure saepe
-            temporibus, consequatur eius ea iste.
-          </h1>
-          <p className="text-sm">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque
-            recusandae veritatis provident magnam laudantium autem. Repellendus
-            quasi laborum iste similique? ....
-          </p>
+          <h1 className="text-lg font-bold">{blog.title}</h1>
+          {blog.description && (
+            <p className="text-sm">{blog.description} ....</p>
+          )}
         </div>
+
         <div className="w-[30%] ms-10">
-          <Image alt="Cover image for the blog" src={fallbackImageUrl} />
+          <Image
+            alt="Cover image for the blog"
+            src={blog.coverImage || fallbackImageUrl}
+          />
         </div>
       </Link>
 
@@ -69,7 +69,7 @@ const BlogCard = ({
             className="capitalize"
             classNames={{ base: "bg-gray-200" }}
           >
-            nextjs
+            {blog.topic.name}
           </Chip>
           <span className="text-xs">4 min read</span>
         </div>

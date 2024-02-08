@@ -90,8 +90,6 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
     setCoverImageUrl("");
   };
 
-  console.log(errors);
-
   useEffect(() => {
     function handleImagePreview() {
       const image = watch()?.coverImage?.[0];
@@ -249,16 +247,15 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                 </div>
                 {/* Title & Desc */}
                 <div className="col-span-2 flex flex-col gap-3 ">
-                  {/* <Input
-                    {...register("title")}
-                    errorMessage={errors.title?.message}
-                    isInvalid={!!errors.title}
+                  <Input
+                    defaultValue={title}
+                    isReadOnly
                     type="text"
                     className="w-4/5"
                     label="Preview title"
                     labelPlacement="outside"
                     variant="underlined"
-                  /> */}
+                  />
                   <Input
                     {...register("previewDesc")}
                     errorMessage={errors.previewDesc?.message}
