@@ -10,6 +10,7 @@ export default async function ProfilePage({
   const blogs = await prisma.blogPost.findMany({
     include: {
       author: true,
+      topic: true,
     },
   });
 
