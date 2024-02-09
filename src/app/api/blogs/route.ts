@@ -11,9 +11,13 @@ import slugify from "slugify";
 
 export async function POST(req: NextRequest) {
   const data =
-    <EditorPublishModalInputType & { content: JSONContent; title: string }>(
-      await req.json()
-    ) ?? {};
+    <
+      EditorPublishModalInputType & {
+        content: JSONContent;
+        title: string;
+        readingTime: number;
+      }
+    >await req.json() ?? {};
 
   if (!data.title) {
     return NextResponse.json(
@@ -44,6 +48,7 @@ export async function POST(req: NextRequest) {
         tags: data.tags
           ? data.tags.split(",").map((tag: string) => tag.trim())
           : [],
+        readingTime: data.readingTime,
         author: {
           connect: {
             id: userId,
