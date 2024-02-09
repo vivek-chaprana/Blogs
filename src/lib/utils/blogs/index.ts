@@ -2,7 +2,11 @@ import { EditorPublishModalInputType } from "@/components/EditorPublishModal";
 import { JSONContent } from "@tiptap/core";
 
 export const saveBlog = async (
-  data?: EditorPublishModalInputType & { content: JSONContent; title: string }
+  data?: EditorPublishModalInputType & {
+    content: JSONContent;
+    title: string;
+    readingTime: number;
+  }
 ) => {
   const fetchOptions = {
     method: "POST",

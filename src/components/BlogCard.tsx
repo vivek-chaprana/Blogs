@@ -34,13 +34,15 @@ const BlogCard = ({
         </Link>
         <span className="flex items-center text-sm font-light ">
           <BsDot />
-          <p>{getFormattedDate(blog.createdAt)}</p>
+          <p className="capitalize text-xs">
+            {getFormattedDate(blog.createdAt)}
+          </p>
         </span>
       </div>
 
       {/* Article */}
       <Link
-        href={`/blogs/${blog.slug}`}
+        href={`/${blog.author.username}/${blog.slug}`}
         className={cn(
           "flex min-h-20 w-full",
           linksDisabled && "pointer-events-none"
@@ -71,7 +73,9 @@ const BlogCard = ({
           >
             {blog.topic.name}
           </Chip>
-          <span className="text-xs">4 min read</span>
+          {blog?.readingTime && (
+            <span className="text-xs">{blog?.readingTime} min read</span>
+          )}
         </div>
         {/* Utility */}
         {!linksDisabled && (

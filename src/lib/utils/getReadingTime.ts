@@ -7,11 +7,10 @@ export default function getReadingTime(wordCount: number, imageCount = 0) {
     wordCount / WORDS_PER_MINUTE + imageCount * TIME_PER_IMAGE
   );
 
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  // const hours = Math.floor(minutes / 60);
+  // const remainingMinutes = minutes % 60;
 
-  return {
-    hours,
-    minutes: remainingMinutes,
-  };
+  return minutes;
+  // hours,
+  // minutes: remainingMinutes,
 }

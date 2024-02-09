@@ -81,6 +81,7 @@ model BlogPost {
   coverImage  String?
   content     Json
   tags        String[]
+  readingTime Int?
   likes       Int        @default(0)
   slug        String     @unique
   status      PostStatus @default(DRAFT)

@@ -23,6 +23,7 @@ import toast from "react-hot-toast";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
+import getReadingTime from "@/lib/utils/getReadingTime";
 
 const FormSchema = z.object({
   previewDesc: z
@@ -124,6 +125,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
         title,
         coverImage,
         content,
+        readingTime: getReadingTime(editor.storage.characterCount.words()),
       });
 
       toast.success(

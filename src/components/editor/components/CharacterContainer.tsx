@@ -16,7 +16,7 @@ export default function CharacterContainer({
   const characterCount = editor.storage.characterCount.characters();
   const wordCount = editor.storage.characterCount.words();
 
-  const { minutes } = getReadingTime(wordCount);
+  const minutes = getReadingTime(wordCount);
   return (
     <div className="p-3 text-sm">
       <p>
