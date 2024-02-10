@@ -1,6 +1,8 @@
 import ManageSaved from "@/components/ManageSaved";
+import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
 import { Button } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export default async function List({
@@ -8,19 +10,30 @@ export default async function List({
 }: {
   searchParams: { manage: string };
 }) {
-  const blogs = await prisma.blogPost.findMany({
-    include: {
-      author: true,
-    },
-  });
+  const session = await getServerSession(authOptions);
 
-  const newArray = new Array(5).fill(blogs[0]);
+  if (!session) return <div>Unauthorized</div>;
+
+  const { savedBlogPosts } =
+    (await prisma.user.findFirst({
+      where: {
+        id: session.user.id,
+      },
+      include: {
+        savedBlogPosts: {
+          include: {
+            author: true,
+            topic: true,
+          },
+        },
+      },
+    })) ?? {};
 
   return (
     <div className="py-10">
       <div className="flex justify-between items-center ">
         <h1 className="text-4xl font-bold">Your library</h1>
-        {!searchParams?.manage && (
+        {!searchParams?.manage && !!savedBlogPosts?.length && (
           <Link href={{ pathname: "/saved", query: { manage: "true" } }}>
             <Button radius="full" variant="light" color="warning">
               Manage
@@ -29,7 +42,11 @@ export default async function List({
         )}
       </div>
 
-      <ManageSaved blogs={newArray} />
+      {!!savedBlogPosts?.length ? (
+        <ManageSaved blogs={savedBlogPosts} />
+      ) : (
+        <div className="py-10 px-2">No saved blogs yet :{"("}</div>
+      )}
     </div>
   );
 }

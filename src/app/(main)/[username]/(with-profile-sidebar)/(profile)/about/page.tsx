@@ -1,36 +1,60 @@
+import prisma from "@/prisma";
+import { useRadio } from "@nextui-org/react";
 import Link from "next/link";
 import { BsDot } from "react-icons/bs";
 
-export default function ProfileAbout() {
+export default async function ProfileAbout({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const user = await prisma.user.findFirst({
+    where: {
+      username: params.username,
+    },
+  });
+
+  if (!user) return null;
+
   return (
     <div className="my-5">
       {/* About */}
-      <div className="text-sm">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia
+      {user.bio && (
+        <div className="text-sm">
+          {user.bio ||
+            `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia
         deleniti culpa unde perferendis tempora totam. Tempora iusto,
         repudiandae voluptatum reiciendis temporibus recusandae similique
-        veniam! Dignissimos numquam veritatis quisquam est laudantium!
-      </div>
+        veniam! Dignissimos numquam veritatis quisquam est laudantium!`}
+        </div>
+      )}
 
       {/* Footer */}
       <div className="flex flex-col py-5 gap-5">
-        <p className="text-sm">Member since January 2024.</p>
+        <p className="text-sm">Member since {formatDate(user.createdAt)}.</p>
         <span className="flex gap-2 items-center text-sm text-green-700 ">
           <Link
             className="hover:text-green-900 transition-colors duration-150"
             href="followers"
           >
-            2.5K Followers
+            {user.followingIDs.length} Followers
           </Link>
           <BsDot />
           <Link
             className="hover:text-green-900 transition-colors duration-150"
             href="following"
           >
-            8.5K Following
+            {user.followedByIDs.length} Following
           </Link>
         </span>
       </div>
     </div>
   );
+}
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
 }

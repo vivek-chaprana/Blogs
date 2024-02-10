@@ -5,3 +5,15 @@ const fullBlog = Prisma.validator<Prisma.BlogPostDefaultArgs>()({
 });
 
 export type FullBlog = Prisma.BlogPostGetPayload<typeof fullBlog>;
+
+const userWithSavedIds = Prisma.validator<Prisma.UserDefaultArgs>()({
+  include: {
+    savedBlogPosts: {
+      select: {
+        id: true,
+      },
+    },
+  },
+});
+
+export type UserWithSavedIds = Prisma.UserGetPayload<typeof userWithSavedIds>;

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 export default function SidebarHomepage() {
   return (
-    <aside className="border-l p-3 px-5 flex flex-col gap-5 flex-auto h-min -top-[calc(100%-100px)] sticky ">
+    <aside className="border-l p-3 px-5 flex flex-col gap-5 h-min -top-[calc(100%-100px)] sticky w-1/3 ">
       <TopPicks />
       <StartWriting />
       <RecommendedTopics />

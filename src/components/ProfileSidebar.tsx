@@ -1,85 +1,120 @@
-import { fallbackImageUrl } from "@/lib/constants";
-import { Button, Image } from "@nextui-org/react";
-import Link from "next/link";
 import Footer from "@/components/Footer";
+import { authOptions } from "@/lib/auth/auth-options";
+import { fallbackImageUrl } from "@/lib/constants";
+import prisma from "@/prisma";
+import { Image, user } from "@nextui-org/react";
+import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
+import FollowButton from "./sub-components/FollowButton";
 import MyLink from "./sub-components/MyLink";
+import UnfollowButton from "./sub-components/UnfollowButton";
 
-export default function ProfileSidebar() {
+export default function ProfileSidebar({ user }: { user: User }) {
   return (
-    <aside className="border-l p-3 px-5 flex flex-col gap-5 flex-auto h-min top-[75px] sticky  ">
-      <ProfileSection />
-      <FollowingSection />
+    <aside className="border-l p-3 px-5 flex flex-col gap-5  h-min top-[75px] stick  w-[30%]">
+      <ProfileSection user={user} />
+      <FollowingSection followings={user.followingIDs} />
       <Footer />
     </aside>
   );
 }
 
-const ProfileSection = async () => {
+const ProfileSection = async ({ user }: { user: User }) => {
+  const session = await getServerSession(authOptions);
+  const currentUser = session?.user;
+  if (!currentUser) return null;
+
   return (
     <section className="flex flex-col gap-4">
       <Image
-        src={fallbackImageUrl}
+        src={user.image || fallbackImageUrl}
         alt="profile"
         width={75}
         height={75}
         className="rounded-full"
       />
       <div>
-        <h3 className="font-semibold">Vivek Chaprana</h3>
+        <h3 className="font-semibold">{user.name || "@" + user.username}</h3>
         <MyLink
           append
           href="followers"
           className="text-sm text-green-400 hover:text-green-700 "
         >
-          8.5k followers
+          {user.followedByIDs.length} Followers
         </MyLink>
       </div>
-      <p className="text-sm">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo
-        architecto nulla explicabo cum aut mollitia.
-      </p>
 
-      <Button color="success" className="text-offWhite w-min" radius="full">
-        Follow
-      </Button>
+      {user.bio && <p className="text-sm">{user.bio}</p>}
+      {user.id !== currentUser.id &&
+        (user.followedByIDs.includes(currentUser.id) ? (
+          <UnfollowButton
+            followerId={currentUser.id}
+            followingId={user.id}
+            color="danger"
+            variant="light"
+            radius="full"
+            className="w-min"
+          />
+        ) : (
+          <FollowButton
+            followerId={currentUser.id}
+            followingId={user.id}
+            color="success"
+            className="text-offWhite w-min"
+            radius="full"
+          />
+        ))}
     </section>
   );
 };
 
-const FollowingSection = () => {
+const FollowingSection = async ({ followings }: { followings: string[] }) => {
+  const followingUsers = await prisma.user.findMany({
+    where: {
+      id: {
+        in: followings,
+      },
+    },
+  });
+
   return (
     <section className="flex flex-col gap-4">
       <h3 className="font-semibold">Following</h3>
 
-      <div className="flex flex-col gap-2">
-        {new Array(5).fill(0).map((_, i) => (
-          <Link
-            href="#"
-            key={i}
-            className="flex gap-3 items-center text-sm group "
+      {!!followings?.length ? (
+        <>
+          <div className="flex flex-col gap-2">
+            {followingUsers.slice(0, 5).map((user, i) => (
+              <Link
+                href={`/${user.username}`}
+                key={i}
+                className="flex gap-3 items-center text-sm group "
+              >
+                <Image
+                  src={user.image || fallbackImageUrl}
+                  alt="profile"
+                  width={25}
+                  height={25}
+                  className="rounded-full"
+                />
+                <p className="group-hover:underline underline-offset-2">
+                  {user.name || "@" + user.username}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <MyLink
+            append
+            href="following"
+            className="text-green-600 text-sm hover:text-green-800 transition-colors duration-150"
           >
-            <Image
-              src={fallbackImageUrl}
-              alt="profile"
-              width={25}
-              height={25}
-              className="rounded-full"
-            />
-            <p className="group-hover:underline underline-offset-2">
-              Vivek Chaprana
-            </p>
-          </Link>
-        ))}
-      </div>
-
-      <MyLink
-        append
-        href="following"
-        className="text-green-600 text-sm hover:text-green-800 transition-colors duration-150"
-      >
-        See all (6)
-      </MyLink>
+            See all ({followingUsers.length})
+          </MyLink>
+        </>
+      ) : (
+        <p className="text-sm">No followings yet</p>
+      )}
     </section>
   );
 };

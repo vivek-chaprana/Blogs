@@ -12,7 +12,7 @@ import { z } from "zod";
 const FormSchema = z.object({
   username: z
     .string()
-    .regex(new RegExp("^[a-zA-Z0-9_]+$"), "No special character allowed!")
+    .regex(new RegExp("^[a-zA-Z0-9_-]+$"), "No special character allowed!")
     .min(1, "Username is required."),
   password: z.string().min(1, "Password is required."),
 });

@@ -10,8 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 
 export async function POST(req: NextRequest) {
-  const data =
-    <
+  const data = <
       EditorPublishModalInputType & {
         content: JSONContent;
         title: string;
@@ -34,7 +33,7 @@ export async function POST(req: NextRequest) {
     );
   const userId = session.user.id;
 
-  const slug = await generateUniqueSlug();
+  const slug = await generateUniqueSlug(data.title, userId);
 
   try {
     await prisma.blogPost.create({

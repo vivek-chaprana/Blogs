@@ -54,14 +54,17 @@ model User {
   sessions               Session[]
   createdAt              DateTime  @default(now())
 
-  blogPost            BlogPost[]
+  blogPost            BlogPost[] @relation("BlogPostAuthor")
   comment             Comment[]
+  savedBlogPosts      BlogPost[]
   followedBy          User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
   followedByIDs       String[]   @db.ObjectId
   following           User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
   followingIDs        String[]   @db.ObjectId
   followingTopicIDs   String[]   @db.ObjectId
   followingCategories Topic[]    @relation(fields: [followingTopicIDs], references: [id])
+  likedBlogPosts      BlogPost[] @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
+  likedBlogPostsIds   String[]   @db.ObjectId
 }
 
 model VerificationToken {
@@ -75,23 +78,27 @@ model VerificationToken {
 
 // BlogPost entity
 model BlogPost {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  coverImage  String?
-  content     Json
-  tags        String[]
-  readingTime Int?
-  likes       Int        @default(0)
-  slug        String     @unique
-  status      PostStatus @default(DRAFT)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  author      User       @relation(fields: [authorId], references: [id])
-  authorId    String     @db.ObjectId
-  comments    Comment[]
-  topicID     String     @db.ObjectId
-  topic       Topic      @relation(fields: [topicID], references: [id])
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  coverImage      String?
+  content         Json
+  tags            String[]
+  readingTime     Int?
+  likes           Int        @default(0)
+  slug            String     @unique
+  status          PostStatus @default(DRAFT)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  author          User       @relation("BlogPostAuthor", fields: [authorId], references: [id])
+  authorId        String     @db.ObjectId
+  comments        Comment[]
+  topicID         String     @db.ObjectId
+  topic           Topic      @relation(fields: [topicID], references: [id])
+  User            User?      @relation(fields: [userId], references: [id])
+  userId          String?    @db.ObjectId
+  likedByUsers    User[]     @relation("LikedBlogPosts", references: [id], fields: [likedByUsersIds])
+  likedByUsersIds String[]   @db.ObjectId
 }
 
 // Topic entity

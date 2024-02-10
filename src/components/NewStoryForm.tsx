@@ -17,7 +17,7 @@ const FormSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
-    .max(50, "Title should be less than 50 characters"),
+    .max(100, "Title should be less than 100 characters"),
 });
 
 export type NewStoryFormInputType = z.infer<typeof FormSchema>;
@@ -108,6 +108,7 @@ export default function NewStoryForm({ user }: { user: User }) {
         onClose={publishModal.onClose}
         editor={editor}
         title={getValues("title")}
+        user={user}
       />
     </section>
   );

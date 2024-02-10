@@ -1,15 +1,45 @@
-import { FullBlog } from "@/types/prisma";
+import { FullBlog, UserWithSavedIds } from "@/types/prisma";
 
 import BlogContentRenderer from "@/components/BlogContentRenderer";
+import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
+import prisma from "@/prisma";
 import { Button, Chip, Divider, Image } from "@nextui-org/react";
 import { BlogPost } from "@prisma/client";
 import { JSONContent } from "@tiptap/core";
-import { BsBookmark, BsDot, BsFlag, BsHeart, BsShare } from "react-icons/bs";
+import { getServerSession } from "next-auth";
+import { BsDot, BsShare } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
+import ReportBlogModal from "./ReportBlogModal";
+import BookmarkButton from "./sub-components/BookmarkButton";
+import FollowButton from "./sub-components/FollowButton";
+import LikeButton from "./sub-components/LikeButton";
+import UnBookmarkButton from "./sub-components/UnBookmarkButton";
+import UnLikeButton from "./sub-components/UnLikeButton";
+import UnfollowButton from "./sub-components/UnfollowButton";
 
-export default function BlogRenderer({ blog }: { blog: FullBlog }) {
+export default async function BlogRenderer({ blog }: { blog: FullBlog }) {
+  const session = await getServerSession(authOptions);
+  const currentUser = session?.user;
+
+  if (!currentUser) return null;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentUser.id,
+    },
+    include: {
+      savedBlogPosts: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  if (!user) return null;
+
   return (
     <section className="max-w-4xl mx-auto p-2">
       <h1 className="text-gray-700 text-4xl font-bold my-5">{blog?.title}</h1>
@@ -36,13 +66,31 @@ export default function BlogRenderer({ blog }: { blog: FullBlog }) {
             className="border"
           />
         </div>
-        <div className="text-sm flex flex-col gap-2 ">
+        <div className="text-sm flex flex-col  ">
           <div className="flex items-center gap-2 ">
-            <h4 className="font-semibold">
+            <h4 className="font-semibold text-base">
               {blog.author.name ?? blog.author.username}
             </h4>
             <BsDot />
-            <button className="text-green-700">Follow</button>
+            {!!currentUser &&
+              blog.authorId !== currentUser?.id &&
+              (blog.author.followedByIDs.includes(currentUser?.id) ? (
+                <UnfollowButton
+                  followerId={currentUser.id}
+                  followingId={blog.authorId}
+                  className="p-0"
+                  variant="light"
+                  color="danger"
+                />
+              ) : (
+                <FollowButton
+                  followerId={currentUser.id}
+                  followingId={blog.authorId}
+                  variant="light"
+                  color="success"
+                  className="p-0"
+                />
+              ))}
           </div>
 
           <div className="flex items-center gap-2 ">
@@ -56,28 +104,36 @@ export default function BlogRenderer({ blog }: { blog: FullBlog }) {
       <Divider className="mt-5 mb-1" />
 
       {/* Blog Actions here, like, share, etc */}
-      <BlogActions blog={blog} />
+      <BlogActions blog={blog} user={user} />
 
       <Divider className="mb-5 mt-1" />
 
       <BlogContentRenderer content={blog?.content as JSONContent} />
 
-      <BlogTags />
+      <BlogTags tags={blog.tags} />
 
-      <BlogActions blog={blog} />
+      <BlogActions blog={blog} user={user} />
     </section>
   );
 }
 
-const BlogActions = ({ blog }: { blog: BlogPost }) => {
+const BlogActions = ({
+  blog,
+  user,
+}: {
+  blog: BlogPost;
+  user: UserWithSavedIds;
+}) => {
   return (
     <div className="flex justify-between items-center text-sm">
       <div className="flex items-center gap-5">
         <span className="flex items-center gap-1">
-          <Button variant="light" size="sm" isIconOnly>
-            <BsHeart className="text-lg" />
-          </Button>
-          {blog.likes || "3.8k"}
+          {blog.likedByUsersIds.includes(user.id) ? (
+            <UnLikeButton variant="light" blogId={blog.id} userId={user.id} />
+          ) : (
+            <LikeButton variant="light" blogId={blog.id} userId={user.id} />
+          )}
+          {blog.likedByUsersIds.length}
         </span>
 
         <span className="flex items-center gap-1">
@@ -90,27 +146,28 @@ const BlogActions = ({ blog }: { blog: BlogPost }) => {
 
       <div className="flex items-center gap-5">
         <span className="flex items-center gap-1">
-          <Button variant="light" size="sm" isIconOnly>
-            <BsBookmark className="text-lg" />
-          </Button>
+          {user.savedBlogPosts.some((post) => post.id === blog.id) ? (
+            <UnBookmarkButton
+              blogId={blog.id}
+              userId={user.id}
+              variant="light"
+            />
+          ) : (
+            <BookmarkButton blogId={blog.id} userId={user.id} variant="light" />
+          )}
         </span>
         <span className="flex items-center gap-1">
           <Button variant="light" size="sm" isIconOnly>
             <BsShare className="text-lg" />
           </Button>
         </span>
-        <span className="flex items-center gap-1">
-          <Button variant="light" size="sm" isIconOnly>
-            <BsFlag className="text-lg" />
-          </Button>
-        </span>
+        <ReportBlogModal />
       </div>
     </div>
   );
 };
 
-const BlogTags = () => {
-  const tags = ["javascript", "reactjs", "nextjs", "webdev", "programming"];
+const BlogTags = ({ tags }: { tags: string[] }) => {
   return (
     <div className="flex flex-wrap gap-2 my-10">
       {!!tags?.length &&

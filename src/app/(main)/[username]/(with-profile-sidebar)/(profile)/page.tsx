@@ -7,22 +7,36 @@ export default async function ProfilePage({
 }: {
   params: { username: string };
 }) {
-  const blogs = await prisma.blogPost.findMany({
-    include: {
-      author: true,
-      topic: true,
-    },
-  });
-
-  const newBlogs = new Array(10).fill(blogs[0]);
+  const { blogPost: userBlogs } =
+    (await prisma.user.findUnique({
+      where: {
+        username: params.username,
+      },
+      include: {
+        blogPost: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            author: true,
+            topic: true,
+          },
+        },
+      },
+    })) ?? {};
 
   return (
     <>
-      {newBlogs.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} />
-      ))}
-
-      <Loading />
+      {!!userBlogs?.length ? (
+        <>
+          {userBlogs.map((blog) => (
+            <BlogCard key={blog.id} blog={blog} />
+          ))}
+          <Loading />
+        </>
+      ) : (
+        <p>No blogs yet!</p>
+      )}
     </>
   );
 }

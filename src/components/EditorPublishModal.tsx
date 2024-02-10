@@ -24,6 +24,8 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
 import getReadingTime from "@/lib/utils/getReadingTime";
+import { useRouter } from "next/navigation";
+import { User } from "next-auth";
 
 const FormSchema = z.object({
   previewDesc: z
@@ -55,10 +57,11 @@ type EditorPublishModalProps = {
   onClose: () => void;
   editor: Editor | null;
   title: string;
+  user: User;
 };
 
 const EditorPublishModal = (props: EditorPublishModalProps) => {
-  const { isOpen, onClose, editor, title } = props;
+  const { isOpen, onClose, editor, title, user } = props;
   const [categories, setCategories] = useState<Topic[]>([]);
   const [categoryValue, setCategoryValue] = useState<string>();
   const [coverImageUrl, setCoverImageUrl] = useState<string>("");
@@ -79,6 +82,8 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
   } = useForm<EditorPublishModalInputType>({
     resolver: zodResolver(FormSchema),
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     getTopics().then((categories) => setCategories(categories));
@@ -141,7 +146,9 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
         value: false,
       });
       reset();
+      editor?.commands.clearContent();
       onClose();
+      router.push("/");
     }
   };
 
@@ -203,7 +210,8 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                 <div className="col-span-2 flex flex-col gap-3">
                   <div>
                     <h4>
-                      Publishing to: <strong> Vivek Chaprana</strong>
+                      Publishing to:{" "}
+                      <strong> {user?.name || "@" + user?.username}</strong>
                     </h4>
                     <p className="text-sm">
                       Add or change topic so readers know what your story is

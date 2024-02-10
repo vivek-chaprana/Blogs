@@ -1,6 +1,7 @@
 import ProfileTabs from "@/components/sub-components/ProfileTabs";
 import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackCoverImageUrl } from "@/lib/constants";
+import prisma from "@/prisma";
 import { Button, Image, Tooltip } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -15,18 +16,37 @@ export default async function UserProfileLayout({
 }>) {
   const session = await getServerSession(authOptions);
   const username = session?.user?.username;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      username: params.username,
+    },
+  });
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+
   return (
     <div className=" ">
       {/* Cover Image */}
-      <Image src={fallbackCoverImageUrl} alt="Cover Image" radius="none" />
+      <div className="flex items-center justify-center">
+        <Image
+          src={user.coverImage || fallbackCoverImageUrl}
+          alt="Cover Image"
+          radius="none"
+        />
+      </div>
 
       <section className="p-5 my-5">
         {/* Main profile */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900">Vivek Chaprana</h1>
-            <h3>@vivekchaprana</h3>
-          </div>
+          <Link href={`/${user.username}`}>
+            <h1 className="text-4xl font-bold text-gray-900">
+              {user.name || "@" + user.username}
+            </h1>
+            {!!user.name && <h3>@{user.username}</h3>}
+          </Link>
           <div className="flex gap-5">
             {username === params.username && (
               <Tooltip content="Edit Profile" closeDelay={0}>
@@ -54,7 +74,7 @@ export default async function UserProfileLayout({
             ]}
           />
         }
-        <section className="p-5">{children}</section>
+        <section className="p-5 ">{children}</section>
       </div>
     </div>
   );

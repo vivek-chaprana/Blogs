@@ -15,6 +15,7 @@ export default async function Blog(params: {
     include: {
       author: true,
       topic: true,
+      likedByUsers: true,
     },
   });
 
