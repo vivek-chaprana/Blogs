@@ -1,8 +1,13 @@
+import Footer from "@/components/Footer";
+import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME, fallbackImageUrl } from "@/lib/constants";
-import { Avatar, Button, Chip, cn } from "@nextui-org/react";
+import prisma from "@/prisma";
+import { Avatar, Button, Chip, cn, user } from "@nextui-org/react";
+import { PostStatus } from "@prisma/client";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsBookmark } from "react-icons/bs";
-import Footer from "@/components/Footer";
+import FollowButton from "./sub-components/FollowButton";
 
 export default function SidebarHomepage() {
   return (
@@ -17,32 +22,55 @@ export default function SidebarHomepage() {
   );
 }
 
-const TopPicks = () => {
+const TopPicks = async () => {
+  const blogs = await prisma.blogPost.findMany({
+    orderBy: {
+      likedByUsers: {
+        _count: "desc",
+      },
+    },
+    include: {
+      author: true,
+      topic: true,
+    },
+    where: {
+      status: PostStatus.PUBLISHED,
+    },
+    take: 3,
+  });
   return (
     <div className="flex flex-col gap-2">
       <h3 className="font-semibold">Top picks</h3>
-      {new Array(3).fill(0).map((_, i) => (
+      {blogs.map((blog, i) => (
         <div className={cn("py-3 border-b", i === 2 && " border-b-0")}>
           <div className="flex items-center gap-2 ">
             <Avatar
               size="sm"
-              src={fallbackImageUrl}
-              alt="Author"
+              src={blog.author.image || fallbackImageUrl}
+              alt={blog.author.name || "Author"}
               classNames={{
                 base: "flex-shrink-0 w-6 h-6",
               }}
             />
-            <Link href="#" className="flex gap-2 items-center font-normal">
-              <p className="text-xs ">Author Name</p>
+            <Link
+              href={`/${blog.author.username}`}
+              className="flex gap-2 items-center font-normal"
+            >
+              <p className="text-xs ">
+                {blog.author.name || "@" + blog.author.username}
+              </p>
             </Link>
           </div>
-          <h3 className="text-sm font-bold">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit?
-          </h3>
+          <Link
+            href={`/${blog.author.username}/${blog.slug}`}
+            className="text-sm font-bold"
+          >
+            {blog.title}
+          </Link>
         </div>
       ))}
 
-      <Link href="#" className="text-sm font-normal text-green-600">
+      <Link href="/" className="text-sm font-normal text-green-600">
         See all
       </Link>
     </div>
@@ -72,67 +100,103 @@ const StartWriting = () => {
   );
 };
 
-const RecommendedTopics = () => {
+const RecommendedTopics = async () => {
+  const topics = await prisma.topic.findMany({
+    take: 8,
+    orderBy: {
+      BlogPost: {
+        _count: "desc",
+      },
+    },
+  });
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-semibold">Recommended topics</h3>
       <div className="flex flex-wrap gap-2">
-        {[
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-          "Python",
-          "Productivity",
-          "Politics",
-        ].map((elem, index) => (
-          <Chip
-            as={Link}
-            href="#"
-            key={index}
-            classNames={{ base: "px-3 py-5 bg-gray-200" }}
-          >
-            {elem}
-          </Chip>
-        ))}
+        {topics &&
+          topics.map((topic) => (
+            <Chip
+              as={Link}
+              href={`/topic/${topic.slug}`}
+              key={topic.id}
+              classNames={{ base: "px-3 py-5 bg-gray-200" }}
+            >
+              {topic.name}
+            </Chip>
+          ))}
       </div>
-      <Link href="#" className="text-sm font-normal text-green-600">
+      <Link
+        href="/topics/explore"
+        className="text-sm font-normal text-green-600"
+      >
         See more topics
       </Link>
     </div>
   );
 };
 
-const WhoToFollow = () => {
+const WhoToFollow = async () => {
+  const session = await getServerSession(authOptions);
+
+  const currentUser = session?.user;
+
+  if (!currentUser) return null;
+
+  const users = await prisma.user.findMany({
+    where: {
+      followedBy: {
+        none: {
+          id: currentUser.id,
+        },
+      },
+      id: {
+        not: currentUser.id,
+      },
+    },
+    take: 3,
+    orderBy: {
+      followedBy: {
+        _count: "desc",
+      },
+    },
+  });
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-semibold">Who to follow</h3>
       <div className="flex flex-wrap gap-2">
-        {new Array(3).fill(0).map((_, i) => (
-          <div key={i} className="flex gap-2 ">
-            <Avatar
-              size="sm"
-              src={fallbackImageUrl}
-              alt="Author"
-              className="flex-shrink-0"
-            />
-            <div>
-              <Link href="#">
-                <h4 className="text-sm font-semibold">Lorem, ipsum.</h4>
-              </Link>
-              <p className="text-xs ">
-                Lorem ipsum dolor sit amet consectetur....
-              </p>
+        {users &&
+          users.map((user) => (
+            <div key={user.id} className="flex gap-2 w-full ">
+              <Avatar
+                size="sm"
+                src={user.image || fallbackImageUrl}
+                alt={user.name || user.username}
+                className="flex-shrink-0"
+              />
+              <div>
+                <Link href={`/${user.username}`}>
+                  <h4 className="text-sm font-semibold">
+                    {user.name || "@" + user.username}
+                  </h4>
+                </Link>
+                {user.bio && (
+                  <p className="text-xs ">
+                    {user.bio.substring(0, 50) +
+                      (user.bio.length > 50 ? " ..." : "")}
+                  </p>
+                )}
+              </div>
+
+              <FollowButton
+                followerId={currentUser.id}
+                followingId={user.id}
+                variant="bordered"
+                size="sm"
+                radius="full"
+                className="flex-shrink-0 border-dark-200 text-dark-200 ms-auto"
+              />
             </div>
-            <Button
-              variant="bordered"
-              size="sm"
-              radius="full"
-              className="flex-shrink-0 border-dark-200 text-dark-200"
-            >
-              Follow
-            </Button>
-          </div>
-        ))}
+          ))}
       </div>
       <Link href="#" className="text-sm font-normal text-green-600">
         See more suggestions

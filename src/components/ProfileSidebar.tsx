@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackImageUrl } from "@/lib/constants";
 import prisma from "@/prisma";
-import { Image, user } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";

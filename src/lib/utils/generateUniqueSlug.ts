@@ -1,6 +1,6 @@
 import prisma from "@/prisma";
 import { customAlphabet } from "nanoid";
-import slugify from "slugify";
+import mySlugify from "./mySlugify";
 
 const generateRandomSlug = customAlphabet(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -22,7 +22,7 @@ export default async function generateUniqueSlug(
   title: string,
   userId: string
 ) {
-  let slug = slugify(title, { lower: true, strict: true });
+  let slug = mySlugify(title);
 
   while (!(await isSlugUnique(slug, userId))) {
     slug = `${slug}-${generateRandomSlug()}`;

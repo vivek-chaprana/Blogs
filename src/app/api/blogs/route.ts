@@ -2,12 +2,12 @@ import { EditorPublishModalInputType } from "@/components/EditorPublishModal";
 import { authOptions } from "@/lib/auth/auth-options";
 import generateUniqueSlug from "@/lib/utils/generateUniqueSlug";
 import getErrorMessage from "@/lib/utils/getErrorMessage";
+import mySlugify from "@/lib/utils/mySlugify";
 import prisma from "@/prisma";
 import { PostStatus } from "@prisma/client";
 import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import slugify from "slugify";
 
 export async function POST(req: NextRequest) {
   const data = <
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         },
         topic: {
           connect: {
-            slug: slugify(data.topic, { lower: true, strict: true }),
+            slug: mySlugify(data.topic),
           },
         },
       },

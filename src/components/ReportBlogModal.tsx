@@ -1,6 +1,7 @@
 "use client";
 import {
   Button,
+  ButtonProps,
   Input,
   Modal,
   ModalBody,
@@ -15,13 +16,13 @@ import {
 import { useState } from "react";
 import { BsFlag } from "react-icons/bs";
 
-export default function ReportBlogModal() {
+export default function ReportBlogModal(props: ButtonProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [selected, setSelected] = useState<string>();
 
   return (
     <span className="flex items-center gap-1">
-      <Button onPress={onOpen} variant="light" size="sm" isIconOnly>
+      <Button onPress={onOpen} variant="light" size="sm" isIconOnly {...props}>
         <BsFlag className="text-lg" />
       </Button>
       <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>

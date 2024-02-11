@@ -1,17 +1,25 @@
+import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { BsBookmark, BsDot, BsFlag, BsHeart } from "react-icons/bs";
+import { BsDot, BsShare } from "react-icons/bs";
+import ReportBlogModal from "./ReportBlogModal";
+import LikeButton from "./sub-components/LikeButton";
+import UnLikeButton from "./sub-components/UnLikeButton";
 
-const BlogCard = ({
+const BlogCard = async ({
   blog,
   linksDisabled = false,
 }: {
   blog: FullBlog;
   linksDisabled?: boolean;
 }) => {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
   return (
     <article className="flex flex-col border-b py-5 last:border-b-0">
       {/* User Details */}
@@ -78,31 +86,44 @@ const BlogCard = ({
           )}
         </div>
         {/* Utility */}
-        {!linksDisabled && (
+
+        {!linksDisabled && userId && (
           <div className="flex items-center">
+            {/* Like button */}
+            {blog.likedByUsersIds.includes(userId) ? (
+              <UnLikeButton
+                isIconOnly
+                variant="light"
+                size="sm"
+                className="text-lg text-gray-500"
+                userId={userId}
+                blogId={blog.id}
+              />
+            ) : (
+              <LikeButton
+                isIconOnly
+                variant="light"
+                size="sm"
+                className="text-lg text-gray-500"
+                userId={userId}
+                blogId={blog.id}
+              />
+            )}
+
+            <ReportBlogModal
+              isIconOnly
+              variant="light"
+              size="sm"
+              className="text-lg text-gray-500"
+            />
+
             <Button
               isIconOnly
               variant="light"
               size="sm"
               className="text-lg text-gray-500"
             >
-              <BsHeart />
-            </Button>
-            <Button
-              isIconOnly
-              variant="light"
-              size="sm"
-              className="text-lg text-gray-500"
-            >
-              <BsBookmark />
-            </Button>
-            <Button
-              isIconOnly
-              variant="light"
-              size="sm"
-              className="text-lg text-gray-500"
-            >
-              <BsFlag />
+              <BsShare />
             </Button>
           </div>
         )}
