@@ -49,7 +49,6 @@ export default async function updatePassword(
       },
     });
   } catch (error) {
-    console.log(error);
     throw new Error("Something went wrong, please try again later.");
   }
 }

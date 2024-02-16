@@ -11,6 +11,8 @@ import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { BsDot, BsShare } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
+import BlogComment from "./BlogComment";
+import CommentSection from "./CommentSection";
 import ReportBlogModal from "./ReportBlogModal";
 import BookmarkButton from "./sub-components/BookmarkButton";
 import FollowButton from "./sub-components/FollowButton";
@@ -113,6 +115,8 @@ export default async function BlogRenderer({ blog }: { blog: FullBlog }) {
       <BlogTags tags={blog.tags} />
 
       <BlogActions blog={blog} user={user} />
+
+      <CommentSection blogId={blog.id} />
     </section>
   );
 }

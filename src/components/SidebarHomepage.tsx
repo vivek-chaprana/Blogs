@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME, fallbackImageUrl } from "@/lib/constants";
 import prisma from "@/prisma";
-import { Avatar, Button, Chip, cn, user } from "@nextui-org/react";
+import { Avatar, Button, Chip, cn } from "@nextui-org/react";
 import { PostStatus } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -82,17 +82,21 @@ const StartWriting = () => {
     <div className="rounded-md bg-blue-300 text-black p-5 flex flex-col gap-4">
       <h3 className="font-semibold">Writing on {COMPANY_NAME}</h3>
 
-      <div>
-        <p className="font-light">Lorem, ipsum dolor.</p>
-        <p className="font-light">Lorem, ipsum dolor.</p>
-        <p className="font-light">Lorem, ipsum dolor.</p>
+      <div className="flex flex-col">
+        <p className="font-normal text-lg self-start font-serif ">
+          Share insights.
+        </p>
+        <p className="font-normal text-lg self-center font-sans">
+          Craft stories.
+        </p>
+        <p className="font-normal text-lg self-end font-mono">Ignite ideas.</p>
       </div>
 
       <Button
         as={Link}
         href="/new-story"
         size="sm"
-        className="rounded-full bg-gray-900 text-offWhite w-min"
+        className="rounded-full bg-gray-900 text-offWhite w-min mx-auto"
       >
         Start writing
       </Button>

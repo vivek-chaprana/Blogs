@@ -23,6 +23,7 @@ export default async function Home({
     },
     select: {
       followingIDs: true,
+      followingTopics: true,
     },
   });
 
@@ -83,7 +84,7 @@ export default async function Home({
 
   return (
     <section className="py-10">
-      <HomePageTabs />
+      <HomePageTabs topics={foundUser.followingTopics} />
       {!!blogs.length ? (
         blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
       ) : (

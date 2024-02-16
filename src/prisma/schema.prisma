@@ -54,17 +54,17 @@ model User {
   sessions               Session[]
   createdAt              DateTime  @default(now())
 
-  blogPost            BlogPost[] @relation("BlogPostAuthor")
-  comment             Comment[]
-  savedBlogPosts      BlogPost[]
-  followedBy          User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
-  followedByIDs       String[]   @db.ObjectId
-  following           User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
-  followingIDs        String[]   @db.ObjectId
-  followingTopicIDs   String[]   @db.ObjectId
-  followingCategories Topic[]    @relation(fields: [followingTopicIDs], references: [id])
-  likedBlogPosts      BlogPost[] @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
-  likedBlogPostsIds   String[]   @db.ObjectId
+  blogPost          BlogPost[] @relation("BlogPostAuthor")
+  comment           Comment[]
+  savedBlogPosts    BlogPost[]
+  followedBy        User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
+  followedByIDs     String[]   @db.ObjectId
+  following         User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs      String[]   @db.ObjectId
+  followingTopicIDs String[]   @db.ObjectId
+  followingTopics   Topic[]    @relation(fields: [followingTopicIDs], references: [id])
+  likedBlogPosts    BlogPost[] @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
+  likedBlogPostsIds String[]   @db.ObjectId
 }
 
 model VerificationToken {

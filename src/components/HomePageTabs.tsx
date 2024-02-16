@@ -1,15 +1,15 @@
 "use client";
 
 import useActiveTab from "@/lib/hooks/useActiveTab";
-import mySlugify from "@/lib/utils/mySlugify";
 import { Button, cn } from "@nextui-org/react";
+import { Topic } from "@prisma/client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BsChevronLeft, BsChevronRight, BsPlus } from "react-icons/bs";
 
 const activeClasses = "text-dark-100 border-b-dark-100 border-b-2";
 
-function HomePageTabs() {
+function HomePageTabs({ topics }: { topics: Topic[] }) {
   const checkActiveTab = useActiveTab();
   const ref = useRef<HTMLDivElement>(null);
   const [currentPostiion, setCurrentPosition] = useState(0);
@@ -51,21 +51,20 @@ function HomePageTabs() {
           </Button>
         )}
 
-        {(!ref ||
-          !ref.current ||
+        {ref.current &&
           ref.current.scrollWidth - ref.current.clientWidth >
-            Math.ceil(currentPostiion)) && (
-          <Button
-            size="sm"
-            radius="none"
-            variant="light"
-            isIconOnly
-            className={cn("absolute top-0 right-0 z-10 h-full  bg-white ")}
-            onClick={() => handleScrollLeft(scrollPosition.RIGHT)}
-          >
-            <BsChevronRight />
-          </Button>
-        )}
+            Math.ceil(currentPostiion) && (
+            <Button
+              size="sm"
+              radius="none"
+              variant="light"
+              isIconOnly
+              className={cn("absolute top-0 right-0 z-10 h-full  bg-white ")}
+              onClick={() => handleScrollLeft(scrollPosition.RIGHT)}
+            >
+              <BsChevronRight />
+            </Button>
+          )}
 
         <Link
           className={cn(
@@ -100,46 +99,22 @@ function HomePageTabs() {
         >
           Following
         </Link>
-        {[
-          "UX",
-          "Web Development",
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-          "UX",
-          "Web Development",
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-          "UX",
-          "Web Development",
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-          "UX",
-          "Web Development",
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-          "UX",
-          "Web Development",
-          "Data Science",
-          "Machine Learning",
-          "Artificial Intelligence",
-        ].map((topic) => (
-          <Link
-            className={cn(
-              "min-w-max font-semibold text-gray-500 hover:text-dark-200 transition-colors py-4",
-              checkActiveTab(mySlugify(topic)) && activeClasses
-            )}
-            href={{
-              pathname: "/",
-              query: { topic: mySlugify(topic) },
-            }}
-          >
-            {topic}
-          </Link>
-        ))}
+        {!!topics.length &&
+          topics.map((topic) => (
+            <Link
+              key={topic.id}
+              className={cn(
+                "min-w-max font-semibold text-gray-500 hover:text-dark-200 transition-colors py-4",
+                checkActiveTab(topic.slug) && activeClasses
+              )}
+              href={{
+                pathname: "/",
+                query: { topic: topic.slug },
+              }}
+            >
+              {topic.name}
+            </Link>
+          ))}
       </div>
     </div>
   );

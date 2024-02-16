@@ -7,6 +7,7 @@ export default async function completeOnboarding(params: {
   name?: string;
   bio?: string;
   profileImage?: any;
+  topics: string[];
 }) {
   const session = await getServerSession();
   const email = session?.user?.email;
@@ -23,10 +24,12 @@ export default async function completeOnboarding(params: {
         bio,
         image: profileImage,
         hasCompletedOnboarding: true,
+        followingTopics: {
+          connect: [...params.topics.map((topic) => ({ id: topic }))],
+        },
       },
     });
   } catch (error) {
-    console.log(error);
     throw new Error("Something went wrong!");
   }
 }

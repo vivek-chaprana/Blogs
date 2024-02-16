@@ -31,6 +31,7 @@ export default async function WithSidearLayout({
           shouldOpen={true}
           image={user?.image}
           name={user?.name}
+          userId={user?.id}
         />
       )}
     </main>
