@@ -57,9 +57,10 @@ const PasswordStrength = ({ password }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {conditions.map(({ label, isValid }) => {
+      {conditions.map(({ label, isValid }, index) => {
         return (
           <div
+            key={index}
             className={`flex items-center gap-2 text-sm transition-colors duration-75  ${
               isValid ? "text-green-500" : "text-b"
             }`}

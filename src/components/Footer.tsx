@@ -15,7 +15,7 @@ const Footer = () => {
       ].map((elem, index) => (
         <Link
           href="#"
-          key={index}
+          key={elem}
           className="text-xs font-normal text-gray-600 capitalize hover:text-black underline-offset-2 hover:underline"
         >
           {elem}

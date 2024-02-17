@@ -23,3 +23,27 @@ export const saveBlog = async (
   if (!result.success)
     throw new Error(result?.message || "Something went wrong!");
 };
+
+export const updateBlog = async (
+  id: string,
+  data?: EditorPublishModalInputType & {
+    content: JSONContent;
+    title: string;
+    readingTime: number;
+  }
+) => {
+  const fetchOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ blogId: id, ...data }),
+  };
+
+  const res = await fetch("/api/blogs", fetchOptions);
+
+  const result = await res.json();
+
+  if (!result.success)
+    throw new Error(result?.message || "Something went wrong!");
+};

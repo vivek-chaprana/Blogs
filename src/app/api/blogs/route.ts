@@ -72,3 +72,66 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function PUT(req: NextRequest) {
+  const data = <
+      EditorPublishModalInputType & {
+        content: JSONContent;
+        title: string;
+        readingTime: number;
+        blogId: string;
+      }
+    >await req.json() ?? {};
+
+  if (!data.title) {
+    return NextResponse.json(
+      { success: false, message: "Missing title." },
+      { status: 400 }
+    );
+  }
+
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json(
+      { status: false, message: "Unauthorized" },
+      { status: 401 }
+    );
+  const userId = session.user.id;
+
+  const slug = await generateUniqueSlug(data.title, userId);
+
+  try {
+    await prisma.blogPost.update({
+      where: {
+        id: data.blogId,
+      },
+      data: {
+        title: data.title,
+        content: data.content,
+        slug,
+        status: data.status ?? PostStatus.DRAFT,
+        description: data.previewDesc,
+        coverImage: data.coverImage,
+        tags: data.tags
+          ? data.tags.split(",").map((tag: string) => tag.trim())
+          : [],
+        readingTime: data.readingTime,
+        topic: {
+          connect: {
+            slug: mySlugify(data.topic),
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        status: false,
+        message: getErrorMessage(e),
+      },
+      { status: 500 }
+    );
+  }
+}

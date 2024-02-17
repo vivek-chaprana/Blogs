@@ -1,8 +1,9 @@
 import getTopics from "@/lib/actions/getCategories";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/lib/constants";
-import { saveBlog } from "@/lib/utils/blogs";
+import { saveBlog, updateBlog } from "@/lib/utils/blogs";
 import getErrorMessage from "@/lib/utils/getErrorMessage";
 import getImageUrl from "@/lib/utils/getImageUrl";
+import getReadingTime from "@/lib/utils/getReadingTime";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Autocomplete,
@@ -15,17 +16,17 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
-import { PostStatus, Topic } from "@prisma/client";
+import { BlogPost, PostStatus, Topic } from "@prisma/client";
 import { Editor } from "@tiptap/react";
+import { User } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
-import getReadingTime from "@/lib/utils/getReadingTime";
-import { useRouter } from "next/navigation";
-import { User } from "next-auth";
+import { totalmem } from "os";
 
 const FormSchema = z.object({
   previewDesc: z
@@ -58,13 +59,21 @@ type EditorPublishModalProps = {
   editor: Editor | null;
   title: string;
   user: User;
+  blog?: BlogPost;
 };
 
 const EditorPublishModal = (props: EditorPublishModalProps) => {
-  const { isOpen, onClose, editor, title, user } = props;
+  const { isOpen, onClose, editor, title, user, blog } = props;
+
   const [categories, setCategories] = useState<Topic[]>([]);
-  const [categoryValue, setCategoryValue] = useState<string>();
-  const [coverImageUrl, setCoverImageUrl] = useState<string>("");
+  const [categoryValue, setCategoryValue] = useState<string>(
+    blog?.topicID || ""
+  );
+
+  console.log(categoryValue);
+  const [coverImageUrl, setCoverImageUrl] = useState<string>(
+    blog?.coverImage || ""
+  );
   const [isLoading, setIsLoading] = useState<{
     for: PostStatus;
     value: boolean;
@@ -125,13 +134,16 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
 
       const content = editor.getJSON();
 
-      await saveBlog({
+      const props = {
         ...data,
         title,
         coverImage,
         content,
         readingTime: getReadingTime(editor.storage.characterCount.words()),
-      });
+      };
+
+      if (blog) await updateBlog(blog.id, props);
+      else await saveBlog(props);
 
       toast.success(
         data.status === PostStatus.PUBLISHED
@@ -225,6 +237,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                       isInvalid={!!errors.topic}
                       errorMessage={errors.topic?.message}
                       defaultItems={categories}
+                      defaultSelectedKey={blog?.topicID}
                       label="Topic of blog"
                       labelPlacement="outside"
                       variant="underlined"
@@ -235,7 +248,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                       }}
                     >
                       {(cat) => (
-                        <AutocompleteItem key={cat.slug}>
+                        <AutocompleteItem key={cat.id}>
                           {cat.name}
                         </AutocompleteItem>
                       )}
@@ -252,6 +265,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                       variant="underlined"
                       placeholder="Add tags to your story, separated by commas"
                       className="max-w-xs"
+                      defaultValue={blog?.tags.join(", ") || ""}
                     />
                   </div>
                 </div>
@@ -267,6 +281,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                     variant="underlined"
                   />
                   <Input
+                    defaultValue={blog?.description || ""}
                     {...register("previewDesc")}
                     errorMessage={errors.previewDesc?.message}
                     isInvalid={!!errors.previewDesc}

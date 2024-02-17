@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth/auth-options";
-import { fallbackImageUrl } from "@/lib/constants";
+import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
@@ -9,6 +9,7 @@ import { BsDot, BsShare } from "react-icons/bs";
 import ReportBlogModal from "./ReportBlogModal";
 import LikeButton from "./sub-components/LikeButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
+import BlogOptionsPopover from "./sub-components/BlogOptionsPopover";
 
 const BlogCard = async ({
   blog,
@@ -66,7 +67,7 @@ const BlogCard = async ({
         <div className="w-[30%] ms-10">
           <Image
             alt="Cover image for the blog"
-            src={blog.coverImage || fallbackImageUrl}
+            src={blog.coverImage || fallbackCoverImageUrl}
           />
         </div>
       </Link>
@@ -125,6 +126,7 @@ const BlogCard = async ({
             >
               <BsShare />
             </Button>
+            <BlogOptionsPopover blog={blog} />
           </div>
         )}
       </div>

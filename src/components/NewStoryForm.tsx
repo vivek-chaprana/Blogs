@@ -4,14 +4,16 @@ import Editor from "@/components/editor";
 import { useEditorHook } from "@/lib/hooks/useEditorHook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, useDisclosure } from "@nextui-org/react";
+import { BlogPost } from "@prisma/client";
+import { JSONContent } from "@tiptap/core";
 import { User } from "next-auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { RiSettings3Fill } from "react-icons/ri";
 import { z } from "zod";
 import EditorPublishModal from "./EditorPublishModal";
 import EditorSettingsModal from "./EditorSettingsModal";
-import toast from "react-hot-toast";
 
 const FormSchema = z.object({
   title: z
@@ -22,8 +24,13 @@ const FormSchema = z.object({
 
 export type NewStoryFormInputType = z.infer<typeof FormSchema>;
 
-export default function NewStoryForm({ user }: { user: User }) {
-  const editor = useEditorHook();
+type NewStoryFormProps = {
+  user: User;
+  blog?: BlogPost;
+};
+
+export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
+  const editor = useEditorHook(true, (blog?.content as JSONContent) || null);
   const {
     register,
     handleSubmit,
@@ -42,7 +49,9 @@ export default function NewStoryForm({ user }: { user: User }) {
   return (
     <section className="max-w-5xl mx-auto">
       <div className="flex w-full justify-between items-center px-1 my-5">
-        <span className="opacity-85 text-sm">Draft in {user.name}</span>
+        <span className="opacity-85 text-sm">
+          <strong>{blog?.status || "Draft"} </strong> in {user.name}
+        </span>
         <div className="flex items-center  gap-4">
           {/* Editor Settings */}
           <Button
@@ -79,6 +88,7 @@ export default function NewStoryForm({ user }: { user: User }) {
         classNames={{
           input: "text-4xl leading-loose	",
         }}
+        defaultValue={blog?.title || ""}
       />
       {editor && (
         <Editor
@@ -109,6 +119,7 @@ export default function NewStoryForm({ user }: { user: User }) {
         editor={editor}
         title={getValues("title")}
         user={user}
+        blog={blog}
       />
     </section>
   );

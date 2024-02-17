@@ -85,10 +85,10 @@ const FollowingSection = async ({ followings }: { followings: string[] }) => {
       {!!followings?.length ? (
         <>
           <div className="flex flex-col gap-2">
-            {followingUsers.slice(0, 5).map((user, i) => (
+            {followingUsers.slice(0, 5).map((user) => (
               <Link
                 href={`/${user.username}`}
-                key={i}
+                key={user.id}
                 className="flex gap-3 items-center text-sm group "
               >
                 <Image

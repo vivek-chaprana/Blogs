@@ -42,7 +42,10 @@ const TopPicks = async () => {
     <div className="flex flex-col gap-2">
       <h3 className="font-semibold">Top picks</h3>
       {blogs.map((blog, i) => (
-        <div className={cn("py-3 border-b", i === 2 && " border-b-0")}>
+        <div
+          key={blog.id}
+          className={cn("py-3 border-b", i === 2 && " border-b-0")}
+        >
           <div className="flex items-center gap-2 ">
             <Avatar
               size="sm"
