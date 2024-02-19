@@ -6,6 +6,8 @@ export const SECRET = process.env.NEXTAUTH_SECRET;
 
 export const IS_SERVER = typeof window === "undefined";
 
+export const ADMIN_EMAIL = "vivek2003ji@outlook.com";
+
 export const currentTime = () =>
   new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });
 

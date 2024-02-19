@@ -165,7 +165,7 @@ const BlogActions = ({
             <BsShare className="text-lg" />
           </Button>
         </span>
-        <ReportBlogModal />
+        <ReportBlogModal blogId={blog.id} />
       </div>
     </div>
   );

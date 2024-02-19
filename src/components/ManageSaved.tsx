@@ -3,14 +3,19 @@
 import removeMultipleFromSaved from "@/lib/actions/removeMultipleFromSaved";
 import { FullBlog } from "@/types/prisma";
 import { Button, Checkbox, CheckboxGroup } from "@nextui-org/react";
-import { BlogPost } from "@prisma/client";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import BlogCard from "./BlogCard";
 
-export default function ManageSaved({ blogs }: { blogs: BlogPost[] }) {
+export default function ManageSaved({
+  blogs,
+  userId,
+}: {
+  blogs: FullBlog[];
+  userId: string;
+}) {
   const [selected, setSelected] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -90,7 +95,7 @@ export default function ManageSaved({ blogs }: { blogs: BlogPost[] }) {
                 label: "px-5 ",
               }}
             >
-              <BlogCard blog={blog as FullBlog} linksDisabled={!!manage} />
+              <BlogCard blog={blog} userId={userId} linksDisabled={!!manage} />
             </Checkbox>
           ))}
       </CheckboxGroup>

@@ -1,26 +1,24 @@
-import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsDot, BsShare } from "react-icons/bs";
 import ReportBlogModal from "./ReportBlogModal";
+import BlogOptionsPopover from "./sub-components/BlogOptionsPopover";
+import BlogStatusOptions from "./sub-components/BlogStatusOptions";
 import LikeButton from "./sub-components/LikeButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
-import BlogOptionsPopover from "./sub-components/BlogOptionsPopover";
 
 const BlogCard = async ({
   blog,
+  userId,
   linksDisabled = false,
 }: {
   blog: FullBlog;
+  userId?: string;
   linksDisabled?: boolean;
 }) => {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-
   return (
     <article className="flex flex-col border-b py-5 last:border-b-0">
       {/* User Details */}
@@ -47,6 +45,14 @@ const BlogCard = async ({
             {getFormattedDate(blog.createdAt)}
           </p>
         </span>
+        {blog.authorId === userId && (
+          <span className="flex items-center text-sm font-light ">
+            <BsDot />
+            <p className="capitalize text-xs">
+              {blog.status.toLocaleLowerCase()}
+            </p>
+          </span>
+        )}
       </div>
 
       {/* Article */}
@@ -60,7 +66,10 @@ const BlogCard = async ({
         <div className="flex flex-col justify-center gap-1">
           <h1 className="text-lg font-bold">{blog.title}</h1>
           {blog.description && (
-            <p className="text-sm">{blog.description} ....</p>
+            <p className="text-sm">
+              {blog.description.substring(0, 100) +
+                (blog.description.length > 100 ? " ..." : "")}{" "}
+            </p>
           )}
         </div>
 
@@ -110,23 +119,31 @@ const BlogCard = async ({
                 blogId={blog.id}
               />
             )}
+            {blog.authorId === userId ? (
+              <>
+                <BlogStatusOptions blogStatus={blog.status} blogId={blog.id} />
+                <BlogOptionsPopover blog={blog} />
+              </>
+            ) : (
+              <>
+                <ReportBlogModal
+                  blogId={blog.id}
+                  isIconOnly
+                  variant="light"
+                  size="sm"
+                  className="text-lg text-gray-500"
+                />
 
-            <ReportBlogModal
-              isIconOnly
-              variant="light"
-              size="sm"
-              className="text-lg text-gray-500"
-            />
-
-            <Button
-              isIconOnly
-              variant="light"
-              size="sm"
-              className="text-lg text-gray-500"
-            >
-              <BsShare />
-            </Button>
-            <BlogOptionsPopover blog={blog} />
+                <Button
+                  isIconOnly
+                  variant="light"
+                  size="sm"
+                  className="text-lg text-gray-500"
+                >
+                  <BsShare />
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>

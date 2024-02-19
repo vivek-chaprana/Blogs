@@ -1,8 +1,10 @@
 "use client";
+import sendReport from "@/lib/actions/sendReport";
+import getErrorMessage from "@/lib/utils/getErrorMessage";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   ButtonProps,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -14,18 +16,76 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { BsFlag } from "react-icons/bs";
+import { z } from "zod";
 
-export default function ReportBlogModal(props: ButtonProps) {
+const reasons = [
+  "Inappropriate Content",
+  "Misinformation or Inaccuracy",
+  "Copyright Violation",
+  "Spam or Unwanted Content",
+  "Privacy Violation",
+  "Hate Speech or Harassment",
+  "Other",
+];
+
+export default function ReportBlogModal(
+  props: ButtonProps & { blogId: string }
+) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [selected, setSelected] = useState<string>();
+  const [selected, setSelected] = useState<string>(reasons[0]);
+
+  const FormSchema = z.object({
+    other: z
+      .string()
+      .optional()
+      .refine(
+        (val) => (selected === reasons[reasons.length - 1] ? !!val : true),
+        { message: "Please specify the reason" }
+      ),
+  });
+
+  type FormValues = z.infer<typeof FormSchema>;
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    reset,
+    register,
+    watch,
+  } = useForm<FormValues>({ resolver: zodResolver(FormSchema) });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleReport = async (data: FormValues) => {
+    setIsLoading(true);
+    try {
+      await sendReport(props.blogId, { reason: selected, other: data.other });
+      toast.success("Blog reported successfully!");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+      reset();
+      onClose();
+    }
+  };
 
   return (
     <span className="flex items-center gap-1">
       <Button onPress={onOpen} variant="light" size="sm" isIconOnly {...props}>
         <BsFlag className="text-lg" />
       </Button>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        size="2xl"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onClose={onClose}
+        hideCloseButton={isLoading}
+        isKeyboardDismissDisabled={isLoading}
+        isDismissable={!isLoading}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -37,20 +97,36 @@ export default function ReportBlogModal(props: ButtonProps) {
                     value={selected}
                     onValueChange={setSelected}
                   >
-                    <Radio value="buenos-1">Lorem, ipsum dolor.</Radio>
-                    <Radio value="buenos-2">Lorem, ipsum dolor.</Radio>
-                    <Radio value="buenos-4">Lorem, ipsum dolor.</Radio>
-                    <Radio value="buenos-5">Lorem, ipsum dolor.</Radio>
-                    <Radio value="buenos-6">Other</Radio>
+                    {reasons.map((reason, index) => (
+                      <Radio key={index} value={reason}>
+                        {reason}
+                      </Radio>
+                    ))}
                   </RadioGroup>
-                  <Textarea label="Report" variant="underlined" />
+                  {selected === "Other" && (
+                    <Textarea
+                      {...register("other")}
+                      isInvalid={!!errors.other}
+                      errorMessage={errors.other?.message}
+                      label="Other reason"
+                      placeholder="Please specify the reason"
+                    />
+                  )}
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light">
+                <Button
+                  color="danger"
+                  variant="light"
+                  onClick={() => !isLoading && onClose()}
+                >
                   Cancel
                 </Button>
-                <Button color="warning" className="text-white">
+                <Button
+                  className="bg-dark-200 text-white"
+                  isLoading={isLoading}
+                  onClick={handleSubmit(handleReport)}
+                >
                   Report
                 </Button>
               </ModalFooter>

@@ -2,6 +2,7 @@
 import { deleteBlog } from "@/lib/actions/blogs";
 import getErrorMessage from "@/lib/utils/getErrorMessage";
 import { FullBlog } from "@/types/prisma";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Input,
@@ -9,19 +10,28 @@ import {
   ListboxItem,
   Modal,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
   UseDisclosureProps,
+  useDisclosure,
 } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BsCopy, BsPencil, BsThreeDots, BsTrash } from "react-icons/bs";
+import { z } from "zod";
+
+const CONFIRM_TEXT = "delete my story";
 
 export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
-  const router = useRouter();
+  const deleteBlogModal = useDisclosure();
+  const [popOverIsOpen, setPopOverIsOpen] = useState(false);
 
   function copyLinkToClipboard() {
     const link = `${window.location.origin}/${blog.author.username}/${blog.slug}`;
@@ -29,25 +39,12 @@ export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
     toast.success("Link copied to clipboard");
   }
 
-  // TODO:
-  function changePostStatus() {}
-
-  async function handleDeleteBlog() {
-    // FIXME: Change the confirm dialog to a modal, and add a text input to confirm the deletion
-    if (!confirm("Are you sure you want to delete this story?")) return;
-
-    try {
-      await deleteBlog(blog.id);
-      toast.success("Story deleted successfully");
-      router.refresh();
-    } catch (e) {
-      toast.error(getErrorMessage(e));
-    }
-  }
-
   return (
     <>
-      <Popover>
+      <Popover
+        isOpen={popOverIsOpen}
+        onOpenChange={(open) => setPopOverIsOpen(open)}
+      >
         <PopoverTrigger>
           <Button
             isIconOnly
@@ -65,7 +62,6 @@ export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
               href={`/${blog.author.username}/${blog.slug}/edit`}
               startContent={<BsPencil />}
               key="edit"
-              description="edit the story"
             >
               Edit blog
             </ListboxItem>
@@ -73,7 +69,6 @@ export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
               key="copy"
               startContent={<BsCopy />}
               onClick={copyLinkToClipboard}
-              description="copy link to clipboard"
             >
               Copy link
             </ListboxItem>
@@ -81,8 +76,10 @@ export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
             <ListboxItem
               key="copy"
               color="danger"
-              onClick={handleDeleteBlog}
-              description="permanently delete story"
+              onClick={() => {
+                setPopOverIsOpen(false);
+                deleteBlogModal.onOpen();
+              }}
               startContent={<BsTrash />}
             >
               Delete story
@@ -90,31 +87,104 @@ export default function BlogOptionsPopover({ blog }: { blog: FullBlog }) {
           </Listbox>
         </PopoverContent>
       </Popover>
+
+      <DeleteBlogModal modal={deleteBlogModal} blogId={blog.id} />
     </>
   );
 }
 
-export function DeleteBlogModal({ modal }: { modal: UseDisclosureProps }) {
-  const { isOpen, onOpen, onClose } = modal;
-  return (
-    <Modal isOpen={isOpen}>
-      <ModalBody>
-        <p>Are you sure you want to delete this story?</p>
-        <p>
-          This will delete the story and it will be no longer available to any
-          user.
-        </p>
-        <p>To confirm please write the following text : </p>
-        <p>
-          <strong>delete my story</strong>
-        </p>
+export function DeleteBlogModal({
+  modal,
+  blogId,
+}: {
+  modal: UseDisclosureProps;
+  blogId: string;
+}) {
+  const FormSchema = z.object({
+    confirm: z.string().refine((v) => v === CONFIRM_TEXT, {
+      message: "Please write " + CONFIRM_TEXT + " to confirm.",
+    }),
+  });
 
-        <Input label="Confirm" variant="bordered" type="text" />
-      </ModalBody>
-      <ModalFooter>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button color="danger">Delete</Button>
-      </ModalFooter>
+  type InputType = z.infer<typeof FormSchema>;
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    reset,
+  } = useForm<InputType>({ resolver: zodResolver(FormSchema) });
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleDeleteBlog() {
+    setIsLoading(true);
+    try {
+      await deleteBlog(blogId);
+      toast.success("Story deleted successfully");
+      router.refresh();
+    } catch (e) {
+      toast.error(getErrorMessage(e));
+    } finally {
+      reset();
+      modal?.onClose && modal.onClose();
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <Modal
+      size="lg"
+      isOpen={modal.isOpen}
+      hideCloseButton={isLoading}
+      onClose={modal.onClose}
+      isKeyboardDismissDisabled={isLoading}
+      isDismissable={!isLoading}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              Delete Story
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-3 text-base">
+              <p>Are you sure you want to delete this story?</p>
+              <p>
+                This will delete the story and it will be no longer available to
+                any user.
+              </p>
+              <p>
+                To confirm please write the following text:
+                <strong> delete my story</strong>
+              </p>
+
+              <Input
+                {...register("confirm")}
+                errorMessage={errors.confirm?.message}
+                isInvalid={!!errors.confirm}
+                variant="bordered"
+                type="text"
+                placeholder={CONFIRM_TEXT}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="light"
+                onClick={() => !isLoading && modal?.onClose && modal.onClose()}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="danger"
+                isLoading={isLoading}
+                onClick={handleSubmit(handleDeleteBlog)}
+              >
+                Delete
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
     </Modal>
   );
 }

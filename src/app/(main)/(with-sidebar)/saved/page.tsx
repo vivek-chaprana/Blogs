@@ -43,7 +43,7 @@ export default async function List({
       </div>
 
       {!!savedBlogPosts?.length ? (
-        <ManageSaved blogs={savedBlogPosts} />
+        <ManageSaved blogs={savedBlogPosts} userId={session.user.id} />
       ) : (
         <div className="py-10 px-2">No saved blogs yet :{"("}</div>
       )}

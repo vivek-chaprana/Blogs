@@ -1,6 +1,6 @@
 import BlogCard from "@/components/BlogCard";
 import prisma from "@/prisma";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, user } from "@nextui-org/react";
 
 export default async function BlogsHomepage() {
   const blogs = await prisma.blogPost.findMany({
@@ -14,7 +14,9 @@ export default async function BlogsHomepage() {
   return (
     <section className="py-10">
       {!!blogs.length &&
-        newBlogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)}
+        newBlogs.map((blog) => (
+          <BlogCard userId={} key={blog.id} blog={blog} />
+        ))}
 
       {/* Spinner */}
       <div className="flex gap-4 items-center justify-center my-5">

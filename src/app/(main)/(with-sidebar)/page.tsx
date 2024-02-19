@@ -86,7 +86,9 @@ export default async function Home({
     <section className="py-10">
       <HomePageTabs topics={foundUser.followingTopics} />
       {!!blogs.length ? (
-        blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
+        blogs.map((blog) => (
+          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
+        ))
       ) : (
         <div className="text-center text-lg font-light py-10">
           No blogs found
