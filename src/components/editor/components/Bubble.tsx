@@ -22,7 +22,7 @@ import {
   DropdownTrigger,
   cn,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { colors } from "../utils";
 import LinkUnlinkBtn from "./LinkUnlinkBtn";
@@ -30,27 +30,30 @@ import LinkUnlinkBtn from "./LinkUnlinkBtn";
 function Bubble({ editor }: { editor: Editor }) {
   const [selectedKeys, setSelectedKeys] = useState("text");
 
-  function currentlyActive() {
-    return editor.isActive("heading", { level: 1 })
-      ? "h1"
-      : editor.isActive("heading", { level: 2 })
-      ? "h2"
-      : editor.isActive("heading", { level: 3 })
-      ? "h3"
-      : editor.isActive("bulletList")
-      ? "ul"
-      : editor.isActive("orderedList")
-      ? "li"
-      : editor.isActive("codeBlock")
-      ? "code"
-      : editor.isActive("blockquote")
-      ? "quote"
-      : "text";
-  }
+  const currentlyActive = useCallback(
+    function () {
+      return editor.isActive("heading", { level: 1 })
+        ? "h1"
+        : editor.isActive("heading", { level: 2 })
+        ? "h2"
+        : editor.isActive("heading", { level: 3 })
+        ? "h3"
+        : editor.isActive("bulletList")
+        ? "ul"
+        : editor.isActive("orderedList")
+        ? "li"
+        : editor.isActive("codeBlock")
+        ? "code"
+        : editor.isActive("blockquote")
+        ? "quote"
+        : "text";
+    },
+    [editor]
+  );
 
   useEffect(() => {
     setSelectedKeys(currentlyActive());
-  }, [currentlyActive()]);
+  }, [currentlyActive]);
 
   if (!editor) return null;
 

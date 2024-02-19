@@ -82,6 +82,37 @@ export default function ProfileModal({ profile }: { profile: User }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
+  const profileImageWatcher = watch()?.profileImage;
+  const coverImageWatcher = watch()?.coverImage;
+
+  useEffect(() => {
+    function handleImagePreview() {
+      const image = profileImageWatcher?.[0];
+      if (image) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e?.target?.result as string);
+        };
+        reader.readAsDataURL(image);
+      }
+    }
+    handleImagePreview();
+  }, [profileImageWatcher]);
+
+  useEffect(() => {
+    function handleImagePreview() {
+      const image = coverImageWatcher?.[0];
+      if (image) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setCoverImagePreview(e?.target?.result as string);
+        };
+        reader.readAsDataURL(image);
+      }
+    }
+    handleImagePreview();
+  }, [coverImageWatcher]);
+
   if (!profile) return null;
 
   const resetImage = () => {
@@ -97,34 +128,6 @@ export default function ProfileModal({ profile }: { profile: User }) {
     });
     setCoverImagePreview(null);
   };
-
-  useEffect(() => {
-    function handleImagePreview() {
-      const image = watch()?.profileImage?.[0];
-      if (image) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setImagePreview(e?.target?.result as string);
-        };
-        reader.readAsDataURL(image);
-      }
-    }
-    handleImagePreview();
-  }, [watch().profileImage]);
-
-  useEffect(() => {
-    function handleImagePreview() {
-      const image = watch()?.coverImage?.[0];
-      if (image) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setCoverImagePreview(e?.target?.result as string);
-        };
-        reader.readAsDataURL(image);
-      }
-    }
-    handleImagePreview();
-  }, [watch().coverImage]);
 
   const handleProfileInfoUpdate = async (data: InputType) => {
     setIsLoading(true);
@@ -169,6 +172,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
           <p className="min-w-fit ">{profile.name}</p>
           <Image
             src={profile.image ?? fallbackImageUrl}
+            alt={profile.name || "@" + profile.username}
             width={40}
             height={40}
           />

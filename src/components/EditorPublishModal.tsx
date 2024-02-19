@@ -26,7 +26,6 @@ import toast from "react-hot-toast";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
-import { totalmem } from "os";
 
 const FormSchema = z.object({
   previewDesc: z
@@ -92,6 +91,8 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
     resolver: zodResolver(FormSchema),
   });
 
+  const coverImageWatcher = watch()?.coverImage;
+
   const router = useRouter();
 
   useEffect(() => {
@@ -107,7 +108,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
 
   useEffect(() => {
     function handleImagePreview() {
-      const image = watch()?.coverImage?.[0];
+      const image = coverImageWatcher?.[0];
       if (image) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -117,7 +118,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
       }
     }
     handleImagePreview();
-  }, [watch().coverImage]);
+  }, [coverImageWatcher]);
 
   const handleBlog = async (data: EditorPublishModalInputType) => {
     setIsLoading({

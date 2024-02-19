@@ -105,10 +105,9 @@ export default function GettingStarted({
     image || null
   );
   const { isOpen, onOpenChange } = useDisclosure();
-
   const [currentStep, setCurrentStep] = useState(0);
-
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const profileImageWatcher = watch()?.profileImage;
 
   const prevStep = () => {
     currentStep > 0 && setCurrentStep(currentStep - 1);
@@ -158,7 +157,7 @@ export default function GettingStarted({
 
   useEffect(() => {
     function handleImagePreview() {
-      const image = watch()?.profileImage?.[0];
+      const image = profileImageWatcher?.[0];
       if (image) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -170,7 +169,7 @@ export default function GettingStarted({
       }
     }
     handleImagePreview();
-  }, [watch().profileImage]);
+  }, [profileImageWatcher]);
 
   useEffect(() => {
     setImagePreview(image ?? null);
@@ -436,7 +435,7 @@ const Step3 = ({
     }
 
     fetchSomePeopleToFollow();
-  }, []);
+  }, [selectedTopics]);
 
   return (
     <>

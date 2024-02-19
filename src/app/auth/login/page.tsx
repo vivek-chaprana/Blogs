@@ -21,7 +21,7 @@ export default function LoginPage() {
         <OtherLogins />
       </div>
       <div className="text-center">
-        <Link href="/register">Don't have an account ?</Link>
+        <Link href="/register">Don&apos;t have an account ?</Link>
       </div>
     </main>
   );

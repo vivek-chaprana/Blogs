@@ -7,7 +7,12 @@ interface ImagePreviewProps extends ImageProps {
   rounded?: string;
 }
 
-const ImagePreview = ({ resetImage, rounded, ...rest }: ImagePreviewProps) => (
+const ImagePreview = ({
+  resetImage,
+  rounded,
+  alt,
+  ...rest
+}: ImagePreviewProps) => (
   <div className="p-5 ">
     <div
       className={cn(
@@ -15,7 +20,7 @@ const ImagePreview = ({ resetImage, rounded, ...rest }: ImagePreviewProps) => (
         rounded ? `rounded-${rounded}` : "rounded-xl"
       )}
     >
-      <Image className="border border-gray" {...rest} />
+      <Image className="border border-gray" {...rest} alt={alt} />
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-b-lg  z-10 rounded-t-full h-1/3 w-full opacity-0 group-hover:opacity-85 transition duration-1000 ease-out
       shadow-[inset_0px_-70px_30px_30px_rgba(0,0,0,0.25)] "
