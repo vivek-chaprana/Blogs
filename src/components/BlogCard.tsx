@@ -22,7 +22,7 @@ const BlogCard = async ({
   return (
     <article className="flex flex-col border-b py-5 last:border-b-0">
       {/* User Details */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2">
         <Link
           href={`/${blog.author.username}`}
           className={cn(
@@ -59,30 +59,30 @@ const BlogCard = async ({
       <Link
         href={`/${blog.author.username}/${blog.slug}`}
         className={cn(
-          "flex min-h-20 w-full",
+          "flex min-h-20 w-full justify-between",
           linksDisabled && "pointer-events-none"
         )}
       >
         <div className="flex flex-col justify-center gap-1">
-          <h1 className="text-lg font-bold">{blog.title}</h1>
+          <h2 className="text-lg font-bold ">{blog.title}</h2>
           {blog.description && (
-            <p className="text-sm">
+            <p className="text-sm hidden md:flex">
               {blog.description.substring(0, 100) +
                 (blog.description.length > 100 ? " ..." : "")}{" "}
             </p>
           )}
         </div>
 
-        <div className="w-[30%] ms-10">
+        <div className="w-[30%] sm:ms-10">
           <Image
-            alt="Cover image for the blog"
+            alt={blog.title}
             src={blog.coverImage || fallbackCoverImageUrl}
           />
         </div>
       </Link>
 
       {/* Bottom details */}
-      <div className="text-sm flex items-center justify-between max-w-[70%]">
+      <div className="text-sm flex items-center justify-between pt-3 md:pt-0 md:max-w-[70%]">
         <div className="flex items-center gap-2">
           <Chip
             size="sm"

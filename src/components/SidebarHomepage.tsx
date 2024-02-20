@@ -11,7 +11,7 @@ import FollowButton from "./sub-components/FollowButton";
 
 export default function SidebarHomepage() {
   return (
-    <aside className="border-l p-3 px-5 flex flex-col gap-5 h-min -top-[calc(100%-100px)] sticky w-1/3 ">
+    <aside className="border-l p-3 xl:px-5 flex-col gap-5 h-min -top-[calc(100%-100px)] sticky w-1/3 hidden lg:flex">
       <TopPicks />
       <StartWriting />
       <RecommendedTopics />

@@ -83,7 +83,7 @@ export default async function Home({
     });
 
   return (
-    <section className="py-10">
+    <section className="">
       <HomePageTabs topics={foundUser.followingTopics} />
       {!!blogs.length ? (
         blogs.map((blog) => (

@@ -36,7 +36,7 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
     <div className="relative overflow-x-hidden">
       <div
         ref={ref}
-        className="flex gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-10"
+        className="flex gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-10 justify-evenly"
       >
         {currentPostiion > 0 && (
           <Button
