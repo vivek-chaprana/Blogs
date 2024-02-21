@@ -41,18 +41,16 @@ export default async function sendEmail({
   //   }
   // );
 
-  // To fix on vercel deployment, trying this!
+  //  Wrap the sendMail function in a promise to fix error on vercel deployment, can use it without Promise in local.
   await new Promise((resolve, reject) => {
     transporter.sendMail(
       options,
       function (err: Error | null, info: SentMessageInfo) {
         if (err) {
           reject(err);
-          throw err;
         }
         console.info("Email sent: " + info.response);
         resolve(info);
-        return true;
       }
     );
   });
