@@ -4,7 +4,7 @@ import useActiveTab from "@/lib/hooks/useActiveTab";
 import { Button, cn } from "@nextui-org/react";
 import { Topic } from "@prisma/client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BsChevronLeft, BsChevronRight, BsPlus } from "react-icons/bs";
 
 const activeClasses = "text-dark-100 border-b-dark-100 border-b-2";
@@ -17,15 +17,9 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
   const handleScrollLeft = (position: number) => {
     if (ref.current) {
       ref.current.scrollLeft = ref.current.scrollLeft + position;
-      setCurrentPosition(ref.current.scrollLeft);
+      setCurrentPosition((prevPosition) => prevPosition + position);
     }
   };
-
-  useEffect(() => {
-    if (ref.current) {
-      setCurrentPosition(ref.current.scrollLeft);
-    }
-  }, []);
 
   const scrollPosition = {
     LEFT: -100,
@@ -36,7 +30,7 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
     <div className="relative overflow-x-hidden">
       <div
         ref={ref}
-        className="flex gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-10 justify-evenly"
+        className="flex gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-10"
       >
         {currentPostiion > 0 && (
           <Button
@@ -44,27 +38,27 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
             radius="none"
             variant="light"
             isIconOnly
-            className="absolute top-0 left-0 z-10 h-full bg-white"
+            className="absolute h-full top-0 left-0 w-min bg-white border border-white"
             onClick={() => handleScrollLeft(scrollPosition.LEFT)}
           >
             <BsChevronLeft className=" font-semibold" />
           </Button>
         )}
 
-        {ref.current &&
-          ref.current.scrollWidth - ref.current.clientWidth >
-            Math.ceil(currentPostiion) && (
-            <Button
-              size="sm"
-              radius="none"
-              variant="light"
-              isIconOnly
-              className={cn("absolute top-0 right-0 z-10 h-full  bg-white ")}
-              onClick={() => handleScrollLeft(scrollPosition.RIGHT)}
-            >
-              <BsChevronRight />
-            </Button>
-          )}
+        {(!ref.current ||
+          currentPostiion <
+            ref.current.scrollWidth - ref.current.clientWidth) && (
+          <Button
+            size="sm"
+            radius="none"
+            variant="light"
+            isIconOnly
+            className="absolute h-full top-0 right-0 w-min bg-white border border-white"
+            onClick={() => handleScrollLeft(scrollPosition.RIGHT)}
+          >
+            <BsChevronRight />
+          </Button>
+        )}
 
         <Link
           className={cn(

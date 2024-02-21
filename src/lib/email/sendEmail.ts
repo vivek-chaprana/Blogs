@@ -1,7 +1,7 @@
 import nodemailer, {
-  Transporter,
   SendMailOptions,
   SentMessageInfo,
+  Transporter,
 } from "nodemailer";
 
 export default async function sendEmail({
@@ -30,15 +30,30 @@ export default async function sendEmail({
     html,
   };
 
-  // Added await here, as a fix on vercel deployment
-  await transporter.sendMail(
-    options,
-    function (err: Error | null, info: SentMessageInfo) {
-      if (err) {
-        throw err;
+  // transporter.sendMail(
+  //   options,
+  //   function (err: Error | null, info: SentMessageInfo) {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //     console.log("Email sent: " + info.response);
+  //     return true;
+  //   }
+  // );
+
+  // To fix on vercel deployment, trying this!
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(
+      options,
+      function (err: Error | null, info: SentMessageInfo) {
+        if (err) {
+          reject(err);
+          throw err;
+        }
+        console.info("Email sent: " + info.response);
+        resolve(info);
+        return true;
       }
-      console.log("Email sent: " + info.response);
-      return true;
-    }
-  );
+    );
+  });
 }

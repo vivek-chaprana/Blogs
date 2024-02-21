@@ -1,8 +1,9 @@
+import { cn } from "@nextui-org/react";
 import Link from "next/link";
 
-const Footer = () => {
+const Footer = ({ classes }: { classes?: string }) => {
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className={cn("flex gap-2 flex-wrap ", classes)}>
       {[
         "help",
         "status",
@@ -12,7 +13,7 @@ const Footer = () => {
         "terms",
         "copyright",
         "contact",
-      ].map((elem, index) => (
+      ].map((elem) => (
         <Link
           href="#"
           key={elem}

@@ -38,6 +38,9 @@ const TopPicks = async () => {
     },
     take: 3,
   });
+
+  if (!blogs.length) return null;
+
   return (
     <div className="flex flex-col gap-2">
       <h3 className="font-semibold">Top picks</h3>
@@ -116,6 +119,9 @@ const RecommendedTopics = async () => {
       },
     },
   });
+
+  if (!topics.length) return null;
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-semibold">Recommended topics</h3>
@@ -124,7 +130,7 @@ const RecommendedTopics = async () => {
           topics.map((topic) => (
             <Chip
               as={Link}
-              href={`/topic/${topic.slug}`}
+              href={`/topics/${topic.slug}`}
               key={topic.id}
               classNames={{ base: "px-3 py-5 bg-gray-200" }}
             >
@@ -132,10 +138,7 @@ const RecommendedTopics = async () => {
             </Chip>
           ))}
       </div>
-      <Link
-        href="/topics/explore"
-        className="text-sm font-normal text-green-600"
-      >
+      <Link href="/topics" className="text-sm font-normal text-green-600">
         See more topics
       </Link>
     </div>
@@ -167,6 +170,9 @@ const WhoToFollow = async () => {
       },
     },
   });
+
+  if (!users.length) return null;
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-semibold">Who to follow</h3>
