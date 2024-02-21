@@ -77,8 +77,13 @@ export default function SignUpForm() {
         variant="bordered"
         autoComplete="off"
         startContent={
-          <div className="pointer-events-none flex items-center ">
-            <span className="text-default-400 text-sm ">{WEBAPP_URL}/</span>
+          <div className="pointer-events-none flex items-center  ">
+            <span className="text-default-400 text-sm whitespace-nowrap">
+              {/* {url.length < 10 ? url : url.slice(0, 10) + "..."}/ */}
+              {WEBAPP_URL.split("/")
+                .filter((part) => part !== "")
+                .slice(-1)[0] + "/"}
+            </span>
           </div>
         }
       />

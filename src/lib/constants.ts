@@ -1,13 +1,15 @@
 export const SALT_ROUNDS = 10;
 
 export const WEBAPP_URL =
-  process.env.NEXT_PUBLIC_WEBAPP_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_WEBAPP_URL ||
+  process.env.NEXT_PUBLIC_VERCEL_URL ||
+  "http://localhost:3000";
 
 export const SECRET = process.env.NEXTAUTH_SECRET;
 
 export const IS_SERVER = typeof window === "undefined";
 
-export const ADMIN_EMAIL = "vivek2003ji@outlook.com";
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "vivek2003ji@outlook.com";
 
 export const currentTime = () =>
   new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });
@@ -27,11 +29,10 @@ export const providers = {
 };
 
 // Cloudinary
-export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME ?? "dmudoqnix";
-export const UPLOAD_PRESET = process.env.UPLOAD_PRESET ?? "blogs-app-vicky";
-export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
-
+export const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+export const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+// export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+// export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 // Editor
 export const WORDS_PER_MINUTE = 200;
 export const TIME_PER_IMAGE = 0.083;

@@ -28,12 +28,14 @@ import {
 } from "@nextui-org/react";
 import { Topic, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { SetStateAction, useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
+import Loading from "./Loading";
 import FollowButton from "./sub-components/FollowButton";
 
 export const ONBOARDING_STEPS = [
@@ -90,7 +92,7 @@ export default function GettingStarted({
   name?: string | null;
   userId: string;
 }) {
-  const { data, update } = useSession();
+  const { update } = useSession();
   const {
     register,
     handleSubmit,
@@ -108,6 +110,7 @@ export default function GettingStarted({
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const profileImageWatcher = watch()?.profileImage;
+  const router = useRouter();
 
   const prevStep = () => {
     currentStep > 0 && setCurrentStep(currentStep - 1);
@@ -152,6 +155,7 @@ export default function GettingStarted({
       toast.error("Something went wrong!");
     } finally {
       setIsLoading(false);
+      router.refresh();
     }
   };
 
@@ -360,6 +364,8 @@ const Step2 = ({
     setSelectedTopics((prev) => prev.filter((topic) => topic !== topicId));
   }
 
+  if (!allTopics.length) return <Loading />;
+
   return (
     <>
       <h2 className="text-base font-semibold">
@@ -436,6 +442,8 @@ const Step3 = ({
 
     fetchSomePeopleToFollow();
   }, [selectedTopics]);
+
+  if (!somePeopleToFollow.length) return <Loading />;
 
   return (
     <>
