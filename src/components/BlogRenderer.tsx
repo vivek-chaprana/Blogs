@@ -2,7 +2,7 @@ import { FullBlog, UserWithSavedIds } from "@/types/prisma";
 
 import BlogContentRenderer from "@/components/BlogContentRenderer";
 import { authOptions } from "@/lib/auth/auth-options";
-import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
+import { fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import prisma from "@/prisma";
 import { Button, Chip, Divider, Image } from "@nextui-org/react";
@@ -11,7 +11,6 @@ import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { BsDot, BsShare } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
-import BlogComment from "./BlogComment";
 import CommentSection from "./CommentSection";
 import ReportBlogModal from "./ReportBlogModal";
 import BookmarkButton from "./sub-components/BookmarkButton";
@@ -47,14 +46,16 @@ export default async function BlogRenderer({ blog }: { blog: FullBlog }) {
       <h1 className="text-gray-700 text-4xl font-bold my-5">{blog?.title}</h1>
 
       {/* Cover Image */}
-      <div className="flex items-center justify-center my-5">
-        <Image
-          src={blog?.coverImage ?? fallbackCoverImageUrl}
-          alt={blog?.title}
-          className="max-h-[400px] "
-          radius="none"
-        />
-      </div>
+      {blog.coverImage && (
+        <div className="flex items-center justify-center my-5">
+          <Image
+            src={blog?.coverImage}
+            alt={blog?.title}
+            className="max-h-[400px] "
+            radius="none"
+          />
+        </div>
+      )}
 
       {/* Author details here */}
       <div className="flex gap-2 items-center">

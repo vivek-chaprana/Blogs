@@ -1,6 +1,7 @@
 "use client";
 
 import completeOnboarding from "@/lib/actions/completeOnboarding";
+import followUser from "@/lib/actions/followUser";
 import getTopics from "@/lib/actions/getCategories";
 import getSomePeopleToFollow from "@/lib/actions/getSomePeopleToFollow";
 import {
@@ -32,11 +33,11 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { BsCheck } from "react-icons/bs";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { z } from "zod";
 import ImagePreview from "./ImagePreview";
 import Loading from "./Loading";
-import FollowButton from "./sub-components/FollowButton";
 
 export const ONBOARDING_STEPS = [
   {
@@ -427,6 +428,11 @@ const Step3 = ({
   userId: string;
 }) => {
   const [somePeopleToFollow, setSomePeopleToFollow] = useState<User[]>([]);
+  const [followingIds, setFollowingIds] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState({
+    id: "",
+    loading: false,
+  });
 
   useEffect(() => {
     async function fetchSomePeopleToFollow() {
@@ -444,6 +450,24 @@ const Step3 = ({
   }, [selectedTopics]);
 
   if (!somePeopleToFollow.length) return <Loading />;
+
+  async function handleFollowClick(personId: string) {
+    setIsLoading({
+      id: personId,
+      loading: true,
+    });
+    try {
+      await followUser(userId, personId);
+      setFollowingIds((prev) => [...prev, personId]);
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    } finally {
+      setIsLoading({
+        id: personId,
+        loading: false,
+      });
+    }
+  }
 
   return (
     <>
@@ -476,14 +500,29 @@ const Step3 = ({
               </div>
             </div>
 
-            <FollowButton
-              followerId={userId}
-              followingId={person.id}
-              variant="bordered"
-              radius="full"
-              size="sm"
-              className="border-dark-200"
-            />
+            {followingIds.includes(person.id) ? (
+              <Button
+                variant="bordered"
+                radius="full"
+                size="sm"
+                className="border-dark-200"
+                endContent={<BsCheck />}
+                isDisabled
+              >
+                Following
+              </Button>
+            ) : (
+              <Button
+                isLoading={isLoading.id === person.id && isLoading.loading}
+                onClick={() => handleFollowClick(person.id)}
+                variant="bordered"
+                radius="full"
+                size="sm"
+                className="border-dark-200"
+              >
+                Follow
+              </Button>
+            )}
           </div>
         ))}
       </div>

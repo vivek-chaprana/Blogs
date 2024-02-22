@@ -24,7 +24,7 @@ export default async function WithSidearLayout({
         {children}
       </section>
 
-      <SidebarHomepage />
+      <SidebarHomepage userId={user.id} />
 
       {user && !user.hasCompletedOnboarding && (
         <GettingStarted
