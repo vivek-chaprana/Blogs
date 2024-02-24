@@ -27,7 +27,6 @@ export default function BlogComment({ blogId }: { blogId: string }) {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<InputType>({ resolver: zodResolver(CommentSchema) });
 

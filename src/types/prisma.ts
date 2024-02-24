@@ -6,6 +6,22 @@ const fullBlog = Prisma.validator<Prisma.BlogPostDefaultArgs>()({
 
 export type FullBlog = Prisma.BlogPostGetPayload<typeof fullBlog>;
 
+const fullBlogWithComments = Prisma.validator<Prisma.BlogPostDefaultArgs>()({
+  include: {
+    author: true,
+    topic: true,
+    comments: {
+      include: {
+        _count: true,
+      },
+    },
+  },
+});
+
+export type FullBlogWithComments = Prisma.BlogPostGetPayload<
+  typeof fullBlogWithComments
+>;
+
 const userWithSavedIds = Prisma.validator<Prisma.UserDefaultArgs>()({
   include: {
     savedBlogPosts: {

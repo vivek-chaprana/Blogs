@@ -1,15 +1,25 @@
+import ErrorBlock from "@/components/ErrorBlock";
 import LoginForm from "@/components/LoginForm";
 import OtherLogins from "@/components/OtherLogins";
 import DividerWithText from "@/ui/DividerWithText";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const error = Array.isArray(searchParams.error)
+    ? searchParams.error[0]
+    : searchParams.error;
+
   return (
     <main className="bg-offWhite py-10">
       <h1 className="text-3xl font-bold font-sans text-center">Welcome back</h1>
       <div className="mb-3 mt-8 sm:mx-auto sm:w-full sm:max-w-md rounded-md border   p-2 bg-white">
         <div className="rounded-md px-4 py-5 sm:px-10  ">
           <LoginForm />
+          {!!error && <ErrorBlock error={error} />}
           <div className="w-full text-left pt-2">
             <Link href="/auth/forgot-password">Forgot password ?</Link>
           </div>

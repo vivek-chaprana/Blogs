@@ -1,4 +1,4 @@
-import { FullBlog, UserWithSavedIds } from "@/types/prisma";
+import { FullBlogWithComments, UserWithSavedIds } from "@/types/prisma";
 
 import BlogContentRenderer from "@/components/BlogContentRenderer";
 import { authOptions } from "@/lib/auth/auth-options";
@@ -6,13 +6,12 @@ import { fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import prisma from "@/prisma";
 import { Button, Chip, Divider, Image } from "@nextui-org/react";
-import { BlogPost } from "@prisma/client";
 import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { BsDot, BsShare } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
 import CommentSection from "./CommentSection";
-import ReportBlogModal from "./ReportBlogModal";
+import ReportModal from "./ReportModal";
 import BookmarkButton from "./sub-components/BookmarkButton";
 import FollowButton from "./sub-components/FollowButton";
 import LikeButton from "./sub-components/LikeButton";
@@ -20,7 +19,11 @@ import UnBookmarkButton from "./sub-components/UnBookmarkButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 import UnfollowButton from "./sub-components/UnfollowButton";
 
-export default async function BlogRenderer({ blog }: { blog: FullBlog }) {
+export default async function BlogRenderer({
+  blog,
+}: {
+  blog: FullBlogWithComments;
+}) {
   const session = await getServerSession(authOptions);
   const currentUser = session?.user;
 
@@ -106,7 +109,6 @@ export default async function BlogRenderer({ blog }: { blog: FullBlog }) {
 
       <Divider className="mt-5 mb-1" />
 
-      {/* Blog Actions here, like, share, etc */}
       <BlogActions blog={blog} user={user} />
 
       <Divider className="mb-5 mt-1" />
@@ -126,7 +128,7 @@ const BlogActions = ({
   blog,
   user,
 }: {
-  blog: BlogPost;
+  blog: FullBlogWithComments;
   user: UserWithSavedIds;
 }) => {
   return (
@@ -145,7 +147,7 @@ const BlogActions = ({
           <Button variant="light" size="sm" isIconOnly>
             <MdOutlineComment className="text-lg" />
           </Button>
-          1.2k
+          {blog.comments.length}
         </span>
       </div>
 
@@ -166,7 +168,7 @@ const BlogActions = ({
             <BsShare className="text-lg" />
           </Button>
         </span>
-        <ReportBlogModal blogId={blog.id} />
+        <ReportModal for="blog" id={blog.id} />
       </div>
     </div>
   );

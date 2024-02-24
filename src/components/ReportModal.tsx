@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import { BsFlag } from "react-icons/bs";
 import { z } from "zod";
 
-const reasons = [
+const blogReasons = [
   "Inappropriate Content",
   "Misinformation or Inaccuracy",
   "Copyright Violation",
@@ -31,10 +31,21 @@ const reasons = [
   "Other",
 ];
 
-export default function ReportBlogModal(
-  props: ButtonProps & { blogId: string }
+const commentReasons = [
+  "Inappropriate Content",
+  "Personal Attacks or Harassment",
+  "Spam or Unrelated Content",
+  "Misinformation or Inaccuracy",
+  "Violent or Threatening Language",
+  "Hate Speech or Discrimination",
+  "Other",
+];
+
+export default function ReportModal(
+  props: ButtonProps & { id: string; for: "blog" | "comment" }
 ) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const reasons = props.for === "blog" ? blogReasons : commentReasons;
   const [selected, setSelected] = useState<string>(reasons[0]);
 
   const FormSchema = z.object({
@@ -54,14 +65,16 @@ export default function ReportBlogModal(
     formState: { errors },
     reset,
     register,
-    watch,
   } = useForm<FormValues>({ resolver: zodResolver(FormSchema) });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleReport = async (data: FormValues) => {
     setIsLoading(true);
     try {
-      await sendReport(props.blogId, { reason: selected, other: data.other });
+      await sendReport(props.for, props.id, {
+        reason: selected,
+        other: data.other,
+      });
       toast.success("Blog reported successfully!");
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -89,7 +102,9 @@ export default function ReportBlogModal(
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-semibold">Report Blog</ModalHeader>
+              <ModalHeader className="font-semibold capitalize">
+                Report {props.for}
+              </ModalHeader>
               <ModalBody>
                 <form className="flex flex-col gap-3">
                   <RadioGroup

@@ -4,7 +4,7 @@ import { FullBlog } from "@/types/prisma";
 import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
 import Link from "next/link";
 import { BsDot, BsShare } from "react-icons/bs";
-import ReportBlogModal from "./ReportBlogModal";
+import ReportModal from "./ReportModal";
 import BlogOptionsPopover from "./sub-components/BlogOptionsPopover";
 import BlogStatusOptions from "./sub-components/BlogStatusOptions";
 import LikeButton from "./sub-components/LikeButton";
@@ -126,8 +126,9 @@ const BlogCard = async ({
               </>
             ) : (
               <>
-                <ReportBlogModal
-                  blogId={blog.id}
+                <ReportModal
+                  for="blog"
+                  id={blog.id}
                   isIconOnly
                   variant="light"
                   size="sm"

@@ -1,13 +1,13 @@
+import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import prisma from "@/prisma";
-import { Button, Image } from "@nextui-org/react";
-import Link from "next/link";
-import { BsFlag } from "react-icons/bs";
-import BlogComment from "./BlogComment";
-import { DeleteCommentButton } from "./sub-components/BlogCommentUtils";
+import { Image } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/auth-options";
+import Link from "next/link";
+import BlogComment from "./BlogComment";
+import ReportModal from "./ReportModal";
+import { DeleteCommentButton } from "./sub-components/BlogCommentUtils";
 
 export default async function CommentSection({ blogId }: { blogId: string }) {
   const blog = await prisma.blogPost.findUnique({
@@ -62,9 +62,7 @@ export default async function CommentSection({ blogId }: { blogId: string }) {
               </Link>
               {userId && (
                 <div className="flex items-center gap-3">
-                  <Button variant="light" isIconOnly>
-                    <BsFlag className="text-lg" />
-                  </Button>
+                  <ReportModal for="comment" id={comment.id} />
 
                   {userId === comment.authorId && (
                     <DeleteCommentButton commentId={comment.id} />

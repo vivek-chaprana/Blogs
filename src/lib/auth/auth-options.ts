@@ -1,10 +1,10 @@
+import { currentTime, providers } from "@/lib/constants";
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import { randomBytes } from "crypto";
 import { AuthOptions, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import { currentTime, providers } from "@/lib/constants";
 
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
@@ -136,15 +136,9 @@ export const authOptions: AuthOptions = {
 
     EmailProvider({
       type: "email",
-      sendVerificationRequest: async ({
-        identifier: email,
-        url,
-        token,
-        provider,
-      }) => {
+      sendVerificationRequest: async ({ url }) => {
         console.log(url);
       },
-      // sendVerificationRequest: async (props) => (await import("@/lib/email/sendVerificationEmail")).default(props),
       secret: process.env.NEXTAUTH_SECRET,
       generateVerificationToken() {
         return randomBytes(32).toString("hex");
@@ -203,8 +197,8 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/auth/login",
     // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+    error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify", // (used for check email message)
-    newUser: "/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+    // newUser: "/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 };
