@@ -22,7 +22,7 @@ export default async function Settings() {
   return (
     <main className="max-w-4xl mx-auto min-h-screen my-10 gap-10 flex relative">
       <section className="w-full min-h-screen flex-shrink-0">
-        <h1 className="text-4xl font-bold py-10 ps-4"> Settings</h1>
+        <h1 className="text-4xl font-bold pt-0  xs:py-5 md:py-10 ps-2 sm:ps-4"> Settings</h1>
 
         <div>
           <EmailModal email={user?.email} />

@@ -109,7 +109,6 @@ export default function DeleteAccountModal() {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  color="danger"
                   variant="light"
                   onPress={() => !isLoading && onClose()}
                   isDisabled={isLoading}

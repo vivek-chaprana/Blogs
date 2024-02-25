@@ -182,12 +182,12 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
             <ModalHeader className="flex flex-col gap-1">
               Publishing the story
             </ModalHeader>
-            <ModalBody className="px-10 py-5">
+            <ModalBody className="px-2 sm:px-5 md:px-10 py-5">
               <div className="grid grid-cols-4">
                 {/* Cover Image */}
                 <div className="col-span-full md:col-span-2 mb-5 md:mb-0 ">
                   <h4 className="font-semibold">Story Preview</h4>
-                  <div className="p-5">
+                  <div className="py-5 px-2 xs:p-5">
                     {!!coverImageUrl ? (
                       <ImagePreview
                         src={coverImageUrl}
@@ -197,7 +197,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                     ) : (
                       <label
                         htmlFor="image-upload"
-                        className="p-5 bg-offWhite border-gray border-2 rounded-lg flex flex-col justify-center items-center cursor-pointer w-3/4"
+                        className="mx-auto p-5 bg-offWhite border-gray border-2 rounded-lg flex flex-col justify-center items-center cursor-pointer xs:w-3/4"
                       >
                         <FaCloudUploadAlt fill="#2b2b2b" className="text-6xl" />
                         <p className="text-sm text-center">
@@ -221,7 +221,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                   </div>
                 </div>
                 {/* Category */}
-                <div className="col-span-full -order-1 mb-5 md:mb-0 md:col-span-2 flex flex-col gap-3">
+                <div className="col-span-full -order-1 md:order-none mb-5 md:mb-0 md:col-span-2 flex flex-col gap-3">
                   <div>
                     <h4>
                       Publishing to:{" "}
@@ -243,7 +243,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                       label="Topic of blog"
                       labelPlacement="outside"
                       variant="underlined"
-                      className="max-w-xs"
+                      className="sm:max-w-xs"
                       selectedKey={categoryValue}
                       onSelectionChange={(cat) => {
                         setCategoryValue(cat as string);
@@ -266,7 +266,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                       labelPlacement="outside"
                       variant="underlined"
                       placeholder="Add tags to your story, separated by commas"
-                      className="max-w-xs"
+                      className="sm:max-w-xs"
                       defaultValue={blog?.tags.join(", ") || ""}
                     />
                   </div>
@@ -277,7 +277,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                     defaultValue={title}
                     isReadOnly
                     type="text"
-                    className="w-4/5"
+                    className="sm:w-4/5"
                     label="Preview title"
                     labelPlacement="outside"
                     variant="underlined"
@@ -288,17 +288,17 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                     errorMessage={errors.previewDesc?.message}
                     isInvalid={!!errors.previewDesc}
                     type="text"
-                    className="w-4/5"
+                    className="sm:w-4/5"
                     label="Preview description"
                     labelPlacement="outside"
                     variant="underlined"
                   />
                 </div>
                 {/* Publish Buttons */}
-                <div className="col-span-full md:col-span-2 py-5 flex gap-5">
+                <div className="col-span-full md:col-span-2 py-5 flex flex-col xs:flex-row gap-5 items-center justify-center md:justify-start ">
                   <Button
                     color="success"
-                    className="text-white w-2/6"
+                    className="text-white w-full xs:w-2/6"
                     onClick={handleSubmit((props) =>
                       handleBlog({
                         ...props,
@@ -321,7 +321,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                         status: PostStatus.DRAFT,
                       })
                     )}
-                    className="w-2/6"
+                    className="w-full xs:w-2/6"
                     isLoading={
                       isLoading.value && isLoading.for === PostStatus.DRAFT
                     }

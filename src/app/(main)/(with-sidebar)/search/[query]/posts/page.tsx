@@ -25,7 +25,7 @@ export default async function PostsSearch({
   });
 
   if (!blogs.length)
-    return <div className="text-center text-xl my-10">No posts found</div>;
+    return <div className="text-center text-xl my-10 ">No posts found</div>;
 
   return (
     <div className="py-5">

@@ -104,8 +104,8 @@ export default function EmailModal({ email }: { email: string }) {
                 </Button>
                 <Button
                   isLoading={isLoading}
-                  color="primary"
                   onClick={handleSubmit(handleUpdateEmail)}
+                  className="bg-dark-200 text-white"
                 >
                   Update
                 </Button>

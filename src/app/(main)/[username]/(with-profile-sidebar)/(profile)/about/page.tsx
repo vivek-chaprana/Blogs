@@ -29,14 +29,14 @@ export default async function ProfileAbout({
             className="hover:text-green-900 transition-colors duration-150"
             href="followers"
           >
-            {user.followingIDs.length} Followers
+           {user.followedByIDs.length} Followers
           </Link>
           <BsDot />
           <Link
             className="hover:text-green-900 transition-colors duration-150"
             href="following"
           >
-            {user.followedByIDs.length} Following
+            {user.followingIDs.length} Following
           </Link>
         </span>
       </div>

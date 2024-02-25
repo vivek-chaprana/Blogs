@@ -190,7 +190,7 @@ export default function PasswordModal() {
                 </Button>
                 <Button
                   isLoading={isLoading}
-                  color="primary"
+                  className="bg-dark-200 text-white"
                   onClick={handleSubmit(handleUpdatePassword)}
                 >
                   Update

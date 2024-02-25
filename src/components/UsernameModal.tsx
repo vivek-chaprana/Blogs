@@ -118,7 +118,7 @@ export default function UsernameModal({ username }: { username: string }) {
                 </Button>
                 <Button
                   isLoading={isLoading}
-                  color="primary"
+                  className="bg-dark-200 text-white"
                   onClick={handleSubmit(handleUpdateUsername)}
                 >
                   Update

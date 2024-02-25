@@ -296,7 +296,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
                 </Button>
                 <Button
                   isLoading={isLoading}
-                  color="primary"
+                  className="bg-dark-200 text-white"
                   onClick={handleSubmit(handleProfileInfoUpdate)}
                 >
                   Update

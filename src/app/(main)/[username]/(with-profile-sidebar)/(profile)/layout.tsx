@@ -105,14 +105,14 @@ export default async function UserProfileLayout({
               className="hover:text-green-900 transition-colors duration-150"
               href={`${user.username}/followers`}
             >
-              {user.followingIDs.length} Followers
+              {user.followedByIDs.length} Followers
             </Link>
             <BsDot />
             <Link
               className="hover:text-green-900 transition-colors duration-150"
               href={`${user.username}/following`}
             >
-              {user.followedByIDs.length} Following
+              {user.followingIDs.length} Following
             </Link>
           </div>
         </div>
