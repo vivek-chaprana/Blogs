@@ -19,15 +19,7 @@ export default async function ProfileAbout({
   return (
     <div className="my-5">
       {/* About */}
-      {user.bio && (
-        <div className="text-sm">
-          {user.bio ||
-            `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-        deleniti culpa unde perferendis tempora totam. Tempora iusto,
-        repudiandae voluptatum reiciendis temporibus recusandae similique
-        veniam! Dignissimos numquam veritatis quisquam est laudantium!`}
-        </div>
-      )}
+      {user.bio && <div className="text-sm">{user.bio}</div>}
 
       {/* Footer */}
       <div className="flex flex-col py-5 gap-5">

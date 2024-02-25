@@ -13,6 +13,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "20": "repeat(20, minmax(0, 1fr))",
+      },
+      screens: {
+        xs: "420px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

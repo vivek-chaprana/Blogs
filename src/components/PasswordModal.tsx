@@ -77,7 +77,7 @@ export default function PasswordModal() {
   return (
     <>
       <div
-        className="w-[700px] justify-between px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+        className="justify-between px-2 xs:px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
         onClick={onOpen}
       >
         <span>

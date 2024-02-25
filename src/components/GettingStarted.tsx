@@ -222,7 +222,9 @@ export default function GettingStarted({
                       >
                         Step {++index}
                       </h2>
-                      <h3 className="text-sm font-normal">{step.title}</h3>
+                      <h3 className="text-sm font-normal hidden sm:block">
+                        {step.title}
+                      </h3>
                     </div>
                   ))}
                 </div>
@@ -236,7 +238,7 @@ export default function GettingStarted({
                         {...register("name")}
                         isInvalid={!!errors.name}
                         errorMessage={errors.name?.message}
-                        className="w-1/2"
+                        className="w-full sm:w-1/2"
                         label="Name"
                         placeholder=" "
                         variant="bordered"
@@ -250,7 +252,7 @@ export default function GettingStarted({
                         label="Bio"
                         labelPlacement="outside"
                         placeholder=""
-                        className="col-span-12 md:col-span-6 mb-6 md:mb-0 w-2/3"
+                        className="col-span-12 md:col-span-6 mb-6 md:mb-0 w-full sm:w-2/3"
                       />
                       <label htmlFor="image" className="text-sm -mb-2">
                         Profile picture
@@ -477,6 +479,7 @@ const Step3 = ({
           <div key={person.id} className="flex justify-between">
             <div className="flex gap-3">
               <Image
+                className="min-w-[50px] aspect-square"
                 src={person.image || fallbackImageUrl}
                 alt={person.name || "@" + person.username}
                 width={50}
@@ -492,10 +495,7 @@ const Step3 = ({
                   <p className="font-light text-sm">@{person.username}</p>
                 )}
                 {person.bio && (
-                  <p className="text-xs">
-                    {person.bio?.substring(0, 75) +
-                      (person.bio.length > 75 && " ...")}
-                  </p>
+                  <p className="text-xs line-clamp-2">{person.bio}</p>
                 )}
               </div>
             </div>

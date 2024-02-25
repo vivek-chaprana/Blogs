@@ -1,9 +1,9 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner, SpinnerProps } from "@nextui-org/react";
 
-export default function Loading() {
+export default function Loading(props: SpinnerProps) {
   return (
     <div className="flex items-center justify-center py-10">
-      <Spinner color="default" />
+      <Spinner color="default" {...props} />
     </div>
   );
 }

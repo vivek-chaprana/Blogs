@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BsChevronDown } from "react-icons/bs";
 
 export default function BreadcrumbsUserProfile() {
   const pathname = usePathname();
@@ -27,7 +28,7 @@ export default function BreadcrumbsUserProfile() {
         <Dropdown>
           <DropdownTrigger>
             <Button variant="light" className="capitalize">
-              {activePath}
+              {activePath} <BsChevronDown />
             </Button>
           </DropdownTrigger>
           <DropdownMenu>

@@ -12,7 +12,7 @@ import UnfollowButton from "./sub-components/UnfollowButton";
 
 export default function ProfileSidebar({ user }: { user: User }) {
   return (
-    <aside className="border-l p-3 px-5 flex flex-col gap-5  h-min top-[75px] stick  w-[30%]">
+    <aside className="border-l p-3 px-2 ld:px-5 flex-col gap-5  h-min top-[75px] stick w-[30%] hidden md:flex">
       <ProfileSection user={user} />
       <FollowingSection followings={user.followingIDs} />
       <Footer />
@@ -32,7 +32,7 @@ const ProfileSection = async ({ user }: { user: User }) => {
         alt="profile"
         width={75}
         height={75}
-        className="rounded-full"
+        className="rounded-full border "
       />
       <div>
         <h3 className="font-semibold">{user.name || "@" + user.username}</h3>

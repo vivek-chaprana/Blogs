@@ -58,7 +58,7 @@ export default function DeleteAccountModal() {
   return (
     <>
       <div
-        className="justify-between px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+        className="justify-between px-2 xs:px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
         onClick={onOpen}
       >
         <span>

@@ -10,7 +10,7 @@ import BlogStatusOptions from "./sub-components/BlogStatusOptions";
 import LikeButton from "./sub-components/LikeButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 
-const BlogCard = async ({
+const BlogCard = ({
   blog,
   userId,
   linksDisabled = false,
@@ -35,7 +35,7 @@ const BlogCard = async ({
             src={blog.author.image ?? fallbackImageUrl}
             alt={blog.author.name ?? "Author"}
           />
-          <p className="text-sm ">
+          <p className="text-xs md:text-sm ">
             {blog.author?.name ?? blog.author.username}
           </p>
         </Link>
@@ -46,7 +46,7 @@ const BlogCard = async ({
           </p>
         </span>
         {blog.authorId === userId && (
-          <span className="flex items-center text-sm font-light ">
+          <span className="items-center text-sm font-light hidden xs:inline-flex ">
             <BsDot />
             <p className="capitalize text-xs">
               {blog.status.toLocaleLowerCase()}
@@ -59,12 +59,14 @@ const BlogCard = async ({
       <Link
         href={`/${blog.author.username}/${blog.slug}`}
         className={cn(
-          "flex min-h-20 w-full justify-between",
+          "flex min-h-20 w-full justify-between gap-2",
           linksDisabled && "pointer-events-none"
         )}
       >
-        <div className="flex flex-col justify-center gap-1">
-          <h2 className="text-lg font-bold ">{blog.title}</h2>
+        <div className="flex flex-col justify-center w-3/5 ms:w-auto text-wrap">
+          <h2 className="text-base md:text-lg font-bold line-clamp-2  ">
+            {blog.title}
+          </h2>
           {blog.description && (
             <p className="text-sm hidden md:flex">
               {blog.description.substring(0, 100) +
@@ -73,7 +75,7 @@ const BlogCard = async ({
           )}
         </div>
 
-        <div className="w-[30%] sm:ms-10">
+        <div className="ms-2 sm:ms-10 w-2/5 md:w-[30%] flex items-center  ">
           <Image
             alt={blog.title}
             src={blog.coverImage || fallbackCoverImageUrl}
@@ -127,7 +129,7 @@ const BlogCard = async ({
             ) : (
               <>
                 <ReportModal
-                  for="blog"
+                  reported="blog"
                   id={blog.id}
                   isIconOnly
                   variant="light"

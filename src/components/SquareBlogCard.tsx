@@ -15,7 +15,10 @@ export default function SquareBlogCard({
   userId?: string;
 }) {
   return (
-    <div key={blog.id} className="p-5 col-span-1 flex flex-col h-full gap-1">
+    <div
+      key={blog.id}
+      className="p-0 sm:p-1 md::p-5 col-span-full sm:col-span-1 flex flex-col h-full gap-1"
+    >
       <Link
         href={`/${blog.author.username}/${blog.slug}`}
         className="items-center flex justify-center mb-3"
@@ -45,20 +48,20 @@ export default function SquareBlogCard({
       </Link>
 
       <Link
-        className="font-semibold text-base "
+        className="font-semibold text-base line-clamp-2"
         href={`/${blog.author.username}/${blog.slug}`}
       >
         {blog.title}
       </Link>
 
       {blog.description && (
-        <p className="text-xs">
+        <p className="text-xs line-clamp-2">
           {blog.description?.substring(0, 100) +
             (blog.description.length > 100 && "...")}
         </p>
       )}
 
-      <div className="flex gap-2 text-sm items-center my-3 ">
+      <div className="flex gap-2 text-xs sm:text-sm items-center my-3 ">
         <p>{blog.readingTime} min read</p>
         <BsDot />
         <p>{getFormattedDate(blog.createdAt)}</p>

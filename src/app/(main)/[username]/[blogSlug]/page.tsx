@@ -44,9 +44,9 @@ export default async function Blog(params: {
       <BlogRenderer blog={blog} />
 
       {/* Recommendations */}
-      <div className="min-h-[600px] bg-offWhite my-10">
+      <div className="min-h-[600px] p-2 md:p-0 bg-offWhite my-10">
         <div className="max-w-3xl mx-auto">
-          <section className="flex items-center justify-between py-5">
+          <section className="flex  items-center justify-between py-5">
             <div className="flex flex-col gap-4">
               <Image
                 width={100}
@@ -55,13 +55,16 @@ export default async function Blog(params: {
                 alt={blog.author.name || blog.author.username}
                 radius="full"
               />
-              <h3 className="text-2xl font-semibold">
+              <h3 className="text-lg sm:text-2xl font-semibold">
                 Written by&nbsp;
                 <Link href={`/${blog.author.username}`}>
                   {blog.author.name}
                 </Link>
               </h3>
-              <Link href={`/${blog.author.username}/followers`}>
+              <Link
+                className="text-sm sm:text-base"
+                href={`/${blog.author.username}/followers`}
+              >
                 {blog.author.followedByIDs.length} followers
               </Link>
             </div>
@@ -89,8 +92,6 @@ export default async function Blog(params: {
           <Recommended userId={userId} />
         </div>
       </div>
-
-      {/* TODO: Add recommentdations here! */}
     </div>
   );
 }
@@ -135,7 +136,7 @@ async function MoreFromUser({
       <>
         <Divider className="my-10" />
         <div>
-          <h2 className="font-semibold">
+          <h2 className="font-semibold mb-3 sm:mb-0">
             More from {user.name || "@" + user.username}
           </h2>
 
@@ -182,7 +183,7 @@ async function MoreFromTopic({
       <>
         <Divider className="my-10" />
         <div>
-          <h2 className="font-semibold lowercase first-letter:uppercase ">
+          <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
             More from topic {blog.topic.name}
           </h2>
 
@@ -218,7 +219,7 @@ async function Recommended({ userId }: { userId?: string }) {
       <>
         <Divider className="my-10" />
         <div>
-          <h2 className="font-semibold lowercase first-letter:uppercase ">
+          <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
             Recommended from us{" "}
           </h2>
 

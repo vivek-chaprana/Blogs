@@ -57,12 +57,14 @@ export default async function CommentSection({ blogId }: { blogId: string }) {
                   <h3>
                     {comment.author.name || "@" + comment.author.username}
                   </h3>
-                  <p>{getFormattedDate(comment.createdAt)}</p>
+                  <p className="text-xs">
+                    {getFormattedDate(comment.createdAt)}
+                  </p>
                 </div>
               </Link>
               {userId && (
                 <div className="flex items-center gap-3">
-                  <ReportModal for="comment" id={comment.id} />
+                  <ReportModal reported="comment" id={comment.id} />
 
                   {userId === comment.authorId && (
                     <DeleteCommentButton commentId={comment.id} />

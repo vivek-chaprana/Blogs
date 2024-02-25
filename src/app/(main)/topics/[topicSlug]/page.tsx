@@ -80,10 +80,10 @@ export default async function Topic({
       </section>
 
       {topic.BlogPost.length > 0 ? (
-        <>
+        <div className="px-2 lg:px-0">
           <RecommendedStories topic={topic} userId={user?.id} />
           <LatestStories topic={topic} userId={user?.id} />
-        </>
+        </div>
       ) : (
         <div className="text-center py-10 ">
           <p className="text-xl">No stories yet! </p>
@@ -122,7 +122,9 @@ async function RecommendedStories({
 
   return (
     <section className="py-10">
-      <h2 className="text-2xl font-sans font-semibold ">Recommended Stories</h2>
+      <h2 className="text-xl xs:text-2xl font-sans font-semibold ">
+        Recommended Stories
+      </h2>
 
       <div className="gap-5 mt-5 grid grid-cols-2">
         {recommendedStories.map((blog) => (
@@ -158,11 +160,11 @@ async function LatestStories({
 
   return (
     <section className="py-10 grid grid-cols-3">
-      <h2 className="text-2xl font-sans font-semibold col-span-1 ">
+      <h2 className="text-xl xs:text-2xl font-sans font-semibold col-span-full md:col-span-1 ">
         Latest Stories
       </h2>
 
-      <div className="gap-5 col-span-2 flex flex-col">
+      <div className="gap-5 col-span-full md:col-span-2 flex flex-col">
         {recommendedStories.map((blog) => (
           <BlogCard userId={userId} key={blog.id} blog={blog} />
         ))}

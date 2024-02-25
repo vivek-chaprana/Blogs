@@ -36,7 +36,7 @@ export default function ManageSaved({
   };
 
   return (
-    <div className="flex flex-col gap-3 py-10">
+    <div className="flex flex-col gap-3 py-5 sm:py-10">
       <CheckboxGroup
         label={manage && "Select stories to remove "}
         value={selected}

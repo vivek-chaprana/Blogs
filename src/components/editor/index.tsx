@@ -3,6 +3,7 @@
 import { CHARACTER_LIMIT } from "@/lib/constants";
 import { EditorContent, Editor as EditorType } from "@tiptap/react";
 import dynamic from "next/dynamic";
+import Loading from "../Loading";
 
 const Bubble = dynamic(() => import("@/components/editor/components/Bubble"));
 const CharacterContainer = dynamic(
@@ -39,7 +40,7 @@ const Editor = ({
   showFloating,
   showWordCounter,
 }: EditorProps) => {
-  if (!editor) return <div className="text-center">Loading Editor...</div>;
+  if (!editor) return <Loading label="Loading Editor" />;
 
   return (
     <section className="max-w-5xl mx-auto rounded-lg border ">

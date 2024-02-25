@@ -38,7 +38,7 @@ export const TooltipButton = ({
       <Button
         isIconOnly
         variant="light"
-        className={cn("text-xl", btnClassName)}
+        className={cn("text-xl col-span-1", btnClassName)}
         {...props}
       >
         {icon}
@@ -50,7 +50,7 @@ export const TooltipButton = ({
 export const CustomDropdown = ({ triggerIcon, items }: CustomDropdownProps) => {
   return (
     <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-      <DropdownTrigger>
+      <DropdownTrigger className="col-span-2 md:col-span-1">
         <Button isIconOnly variant="light" className="text-xl z-50">
           {triggerIcon}
         </Button>

@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME } from "@/lib/constants";
 import {
   Button,
-  Input,
   NavbarBrand,
   Navbar as NavbarComponent,
   NavbarContent,
@@ -11,9 +11,8 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsPencilSquare } from "react-icons/bs";
 import { MdNotificationsNone } from "react-icons/md";
-import { RiSearch2Line } from "react-icons/ri";
 import NavbarUserBlock from "./NavbarUserBlock";
-import { COMPANY_NAME } from "@/lib/constants";
+import NavbarSearch from "./sub-components/NavbarSearch";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -21,29 +20,18 @@ export default async function Navbar() {
 
   return (
     <NavbarComponent className="border-b" maxWidth="xl">
-      <NavbarBrand className="flex items-center gap-3">
+      <NavbarBrand className="flex items-center gap-3 max-w-min">
         <Link href="/" className="font-bold text-inherit">
           {COMPANY_NAME}
         </Link>
-        <Input
-          radius="full"
-          classNames={{
-            base: "max-w-full sm:max-w-[15rem] h-10",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper: "h-full font-normal text-default-500 bg-gr/50 ",
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          startContent={<RiSearch2Line size={18} />}
-          type="search"
-        />
       </NavbarBrand>
 
-      <NavbarContent as="div" justify="end">
+      <NavbarSearch />
+
+      <NavbarContent justify="end">
         {!!user ? (
           <>
-            <NavbarItem>
+            <NavbarItem className="hidden sm:flex">
               <Button
                 as={Link}
                 href="/new-story"
@@ -54,10 +42,12 @@ export default async function Navbar() {
               >
                 Write
               </Button>
+
               <Button isIconOnly as={Link} href="#" variant="light">
                 <MdNotificationsNone className="text-lg" />
               </Button>
             </NavbarItem>
+
             <NavbarUserBlock user={user} />
           </>
         ) : (

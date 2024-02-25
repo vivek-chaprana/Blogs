@@ -42,10 +42,10 @@ const commentReasons = [
 ];
 
 export default function ReportModal(
-  props: ButtonProps & { id: string; for: "blog" | "comment" }
+  props: ButtonProps & { id: string; reported: "blog" | "comment" }
 ) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const reasons = props.for === "blog" ? blogReasons : commentReasons;
+  const reasons = props.reported === "blog" ? blogReasons : commentReasons;
   const [selected, setSelected] = useState<string>(reasons[0]);
 
   const FormSchema = z.object({
@@ -71,7 +71,7 @@ export default function ReportModal(
   const handleReport = async (data: FormValues) => {
     setIsLoading(true);
     try {
-      await sendReport(props.for, props.id, {
+      await sendReport(props.reported, props.id, {
         reason: selected,
         other: data.other,
       });
@@ -103,7 +103,7 @@ export default function ReportModal(
           {(onClose) => (
             <>
               <ModalHeader className="font-semibold capitalize">
-                Report {props.for}
+                Report {props.reported}
               </ModalHeader>
               <ModalBody>
                 <form className="flex flex-col gap-3">

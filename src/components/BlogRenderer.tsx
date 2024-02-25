@@ -46,7 +46,9 @@ export default async function BlogRenderer({
 
   return (
     <section className="max-w-4xl mx-auto p-2">
-      <h1 className="text-gray-700 text-4xl font-bold my-5">{blog?.title}</h1>
+      <h1 className="text-gray-700 text-2xl sm:text-4xl font-bold my-5">
+        {blog?.title}
+      </h1>
 
       {/* Cover Image */}
       {blog.coverImage && (
@@ -77,25 +79,30 @@ export default async function BlogRenderer({
             <h4 className="font-semibold text-base">
               {blog.author.name ?? blog.author.username}
             </h4>
-            <BsDot />
             {!!currentUser &&
               blog.authorId !== currentUser?.id &&
               (blog.author.followedByIDs.includes(currentUser?.id) ? (
-                <UnfollowButton
-                  followerId={currentUser.id}
-                  followingId={blog.authorId}
-                  className="p-0"
-                  variant="light"
-                  color="danger"
-                />
+                <>
+                  <BsDot />
+                  <UnfollowButton
+                    followerId={currentUser.id}
+                    followingId={blog.authorId}
+                    className="p-0"
+                    variant="light"
+                    color="danger"
+                  />
+                </>
               ) : (
-                <FollowButton
-                  followerId={currentUser.id}
-                  followingId={blog.authorId}
-                  variant="light"
-                  color="success"
-                  className="p-0"
-                />
+                <>
+                  <BsDot />
+                  <FollowButton
+                    followerId={currentUser.id}
+                    followingId={blog.authorId}
+                    variant="light"
+                    color="success"
+                    className="p-0"
+                  />
+                </>
               ))}
           </div>
 
@@ -168,7 +175,7 @@ const BlogActions = ({
             <BsShare className="text-lg" />
           </Button>
         </span>
-        <ReportModal for="blog" id={blog.id} />
+        <ReportModal reported="blog" id={blog.id} />
       </div>
     </div>
   );

@@ -160,7 +160,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
   return (
     <>
       <div
-        className="w-[700px] justify-between px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
+        className="justify-between px-2 xs:px-5 py-2 my-5 rounded-xl flex cursor-pointer hover:bg-gray-100 transition-colors duration-150"
         onClick={onOpen}
       >
         <span>
@@ -169,7 +169,7 @@ export default function ProfileModal({ profile }: { profile: User }) {
         </span>
 
         <span className="flex items-center gap-3">
-          <p className="min-w-fit ">{profile.name}</p>
+          <p className="min-w-fit hidden xs:inline-block ">{profile.name}</p>
           <Image
             src={profile.image ?? fallbackImageUrl}
             alt={profile.name || "@" + profile.username}

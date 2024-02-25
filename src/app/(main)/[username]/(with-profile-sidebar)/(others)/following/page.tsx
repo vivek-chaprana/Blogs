@@ -24,7 +24,9 @@ export default async function Following({
   if (!user) return null;
   return (
     <div className="p-4">
-      <h1 className="text-4xl font-bold">{user.following.length} Following</h1>
+      <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold">
+        {user.following.length} Following
+      </h1>
 
       <div className="flex flex-col gap-5 py-10">
         {!!user.following.length ? (

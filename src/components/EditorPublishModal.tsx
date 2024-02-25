@@ -174,6 +174,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       size="5xl"
+      scrollBehavior="inside"
     >
       <ModalContent>
         {() => (
@@ -184,7 +185,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
             <ModalBody className="px-10 py-5">
               <div className="grid grid-cols-4">
                 {/* Cover Image */}
-                <div className="col-span-2">
+                <div className="col-span-full md:col-span-2 mb-5 md:mb-0 ">
                   <h4 className="font-semibold">Story Preview</h4>
                   <div className="p-5">
                     {!!coverImageUrl ? (
@@ -220,13 +221,13 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                   </div>
                 </div>
                 {/* Category */}
-                <div className="col-span-2 flex flex-col gap-3">
+                <div className="col-span-full -order-1 mb-5 md:mb-0 md:col-span-2 flex flex-col gap-3">
                   <div>
                     <h4>
                       Publishing to:{" "}
                       <strong> {user?.name || "@" + user?.username}</strong>
                     </h4>
-                    <p className="text-sm">
+                    <p className="text-xs xs:text-sm">
                       Add or change topic so readers know what your story is
                       about
                     </p>
@@ -271,7 +272,7 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                   </div>
                 </div>
                 {/* Title & Desc */}
-                <div className="col-span-2 flex flex-col gap-3 ">
+                <div className="col-span-full md:col-span-2 mb-5 md:mb-0  flex flex-col gap-3 ">
                   <Input
                     defaultValue={title}
                     isReadOnly
@@ -293,7 +294,8 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
                     variant="underlined"
                   />
                 </div>
-                <div className="col-span-2 py-5 flex gap-5">
+                {/* Publish Buttons */}
+                <div className="col-span-full md:col-span-2 py-5 flex gap-5">
                   <Button
                     color="success"
                     className="text-white w-2/6"

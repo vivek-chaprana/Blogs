@@ -38,10 +38,10 @@ const Topbar = ({ editor }: EditorContentProps) => {
   }
 
   return (
-    <div className="flex justify-evenly gap-2 p-2 border-b-2 border-black flex-wrap ">
+    <div className="grid grid-cols-7 xs:grid-cols-10 md:grid-cols-20 p-2 border-b-2 border-black   ">
       {/* Headings */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-        <DropdownTrigger>
+        <DropdownTrigger className="col-span-1">
           <Button isIconOnly variant="light" className="text-xl z-50">
             <RiHeading />
           </Button>
@@ -75,6 +75,7 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
+
       <TooltipButton
         content="paragraph"
         icon={<RiParagraph />}
@@ -157,11 +158,13 @@ const Topbar = ({ editor }: EditorContentProps) => {
         icon={<RiSeparator />}
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       />
-      {/* Text Alignments  */}
+
       {/* FIXME: Will find a way... to minimize the code like that with funcitons  */}
       {/* <CustomDropdown triggerIcon={<RiAlignJustify />} items={textAlignments} /> */}
+
+      {/* Text Alignments  */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-        <DropdownTrigger>
+        <DropdownTrigger className="col-span-1">
           <Button isIconOnly variant="light" className="text-xl">
             <RiAlignJustify />
           </Button>
@@ -189,9 +192,10 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
+
       {/* Font Family */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-        <DropdownTrigger>
+        <DropdownTrigger className="col-span-1">
           <Button isIconOnly variant="light" className="text-xl">
             <RiFontFamily />
           </Button>
@@ -219,9 +223,10 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
+
       {/* Colors */}
       <Dropdown className="[&>div>ul]:flex-row [&>div>ul]:flex-wrap">
-        <DropdownTrigger>
+        <DropdownTrigger className="col-span-1">
           <Button isIconOnly variant="light" className="text-xl">
             <RiFontColor />
           </Button>
@@ -256,6 +261,7 @@ const Topbar = ({ editor }: EditorContentProps) => {
             ))}
         </DropdownMenu>
       </Dropdown>
+
       <TooltipButton
         content="Undo"
         icon={<MdUndo />}

@@ -25,7 +25,9 @@ export default async function Followers({
 
   return (
     <div className="p-4">
-      <h1 className="text-4xl font-bold">{user.followedBy.length} Followers</h1>
+      <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold">
+        {user.followedBy.length} Followers
+      </h1>
 
       <div className="flex flex-col gap-5 py-10">
         {!!user.followedBy.length ? (

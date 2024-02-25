@@ -86,7 +86,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
         placeholder="Title of your blog"
         className="mb-10"
         classNames={{
-          input: "text-4xl leading-loose	",
+          input: "text-xl sm:text-3xl md:text-4xl leading-loose	",
         }}
         defaultValue={blog?.title || ""}
       />

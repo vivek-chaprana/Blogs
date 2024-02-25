@@ -20,9 +20,9 @@ export default async function Settings() {
   if (!profile) return null;
 
   return (
-    <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative">
-      <section className="min-w-3xl max-w-3xl min-h-screen flex-shrink-0">
-        <h1 className="text-4xl font-bold py-10"> Settings</h1>
+    <main className="max-w-4xl mx-auto min-h-screen my-10 gap-10 flex relative">
+      <section className="w-full min-h-screen flex-shrink-0">
+        <h1 className="text-4xl font-bold py-10 ps-4"> Settings</h1>
 
         <div>
           <EmailModal email={user?.email} />

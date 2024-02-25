@@ -10,31 +10,26 @@ export default function UserCard({
   signedInUserId,
 }: {
   user: User;
-  signedInUserId: string;
+  signedInUserId?: string;
 }) {
   return (
     <div className="flex justify-between items-center">
       <Link href={`/${user.username}`} className="flex items-center gap-5">
         <Image
+          className="min-w-[50px] h-[50px] xs:w-auto aspect-square shrink-0 "
           src={user.image || fallbackImageUrl}
-          width={75}
-          height={75}
           alt={user.username}
           radius="full"
         />
 
-        <div className="flex flex-col justify-center gap-2">
+        <div className="flex flex-col justify-center gap-2 shrink ">
           <h3 className="font-semibold">{user.name || "@" + user.username}</h3>
-          {user.bio && (
-            <p className="text-sm">
-              {user.bio?.substring(0, 85) +
-                (user.bio?.length > 85 ? " ..." : "")}
-            </p>
-          )}
+          {user.bio && <p className="text-sm line-clamp-2">{user.bio}</p>}
         </div>
       </Link>
 
-      {signedInUserId !== user.id &&
+      {signedInUserId &&
+        signedInUserId !== user.id &&
         (user.followedByIDs.includes(signedInUserId) ? (
           <UnfollowButton
             radius="full"

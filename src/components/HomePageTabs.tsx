@@ -27,10 +27,10 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
   };
 
   return (
-    <div className="relative overflow-x-hidden">
+    <div className="relative overflow-x-hidden max-w-[calc(100vw-20px)]">
       <div
         ref={ref}
-        className="flex gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-10"
+        className="flex gap-3 sm:gap-5 text-sm border-b overflow-x-scroll scrollbar-hide scroll-smooth overscroll-x-contain px-2 sm:px-5 md:px-10"
       >
         {currentPostiion > 0 && (
           <Button
@@ -65,7 +65,7 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
             "min-w-max font-semibold text-gray-500 hover:text-dark-200 transition-colors py-4"
           )}
           href={{
-            pathname: "/",
+            pathname: "/topics",
           }}
         >
           <BsPlus className="text-lg" />

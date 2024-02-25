@@ -5,16 +5,18 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
 } from "@nextui-org/react";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BsBell, BsPencil } from "react-icons/bs";
 
 export default function NavbarUserBlock(props: { user: User }) {
   const {
-    user: { name, image, email, username, isVerified },
+    user: { name, image, email, username },
   } = props ?? {};
   const router = useRouter();
   return (
@@ -31,10 +33,30 @@ export default function NavbarUserBlock(props: { user: User }) {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
+        <DropdownItem key="profile-details" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{email}</p>
         </DropdownItem>
+
+        <DropdownSection showDivider className="sm:hidden">
+          <DropdownItem
+            as={Link}
+            href="/new-story"
+            key="new-story"
+            startContent={<BsPencil />}
+          >
+            New Story
+          </DropdownItem>
+          <DropdownItem
+            as={Link}
+            href="/notifications"
+            key="notifications"
+            startContent={<BsBell />}
+          >
+            Notifications
+          </DropdownItem>
+        </DropdownSection>
+
         <DropdownItem as={Link} href={`/${username}`} key="profile">
           My Profile
         </DropdownItem>

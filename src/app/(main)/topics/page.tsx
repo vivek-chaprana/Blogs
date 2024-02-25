@@ -25,16 +25,16 @@ export default async function ExploreTopics() {
 
   return (
     <section className="flex flex-col items-center gap-5 py-10">
-      <h1 className="text-4xl font-sans font-semibold text-center">
+      <h1 className="text-2xl xs:text-3xl sm:text-4xl font-sans font-semibold text-center">
         Explore Topics
       </h1>
       <Input
-        className="w-3/6"
+        className="w-4/5 xs:w-3/6"
         placeholder="Search all topics"
         startContent={<BsSearch />}
         radius="full"
       />
-      <p className="text-sm text-center">
+      <p className="text-sm text-center px-2 xs:px-0">
         Recommended :{" "}
         {topTopics.map((topic, index) => (
           <Link
@@ -50,13 +50,16 @@ export default async function ExploreTopics() {
 
       {/* Content */}
 
-      <div className="grid grid-cols-2 gap-10">
+      <div className="grid grid-cols-2 gap-10 p-3 md:p-0">
         {!!topics?.length &&
           topics.map((topic) => (
-            <div key={topic.id} className="flex flex-col gap-1 ">
+            <div
+              key={topic.id}
+              className="flex flex-col col-span-full sm:col-span-1 gap-1 "
+            >
               <Link
                 href={"/topic/" + topic.slug}
-                className="text-lg font-semibold text-gray-700 "
+                className="text-base xs:text-lg font-semibold text-gray-700 "
               >
                 {topic.name}
               </Link>

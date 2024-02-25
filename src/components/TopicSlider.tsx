@@ -30,7 +30,7 @@ export default function TopicSlider({ topics }: { topics: Topic[] }) {
   return (
     <div
       ref={ref}
-      className="flex gap-3 overflow-scroll scrollbar-hide scroll-smooth overscroll-x-contain py-5 px-3"
+      className="flex gap-1 xs:gap-3 overflow-scroll scrollbar-hide scroll-smooth overscroll-x-contain py-5 px-3"
     >
       <Link href="/topics" className="text-lg font-semibold text-gray-700">
         <Chip

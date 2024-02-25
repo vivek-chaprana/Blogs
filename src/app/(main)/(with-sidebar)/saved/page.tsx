@@ -32,7 +32,9 @@ export default async function List({
   return (
     <div className="py-10">
       <div className="flex justify-between items-center ">
-        <h1 className="text-4xl font-bold">Your library</h1>
+        <h1 className="text-xl xs:text-3xl sm:text-4xl font-bold">
+          Your library
+        </h1>
         {!searchParams?.manage && !!savedBlogPosts?.length && (
           <Link href={{ pathname: "/saved", query: { manage: "true" } }}>
             <Button radius="full" variant="light" color="warning">

@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { Editor } from "@tiptap/react";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { RiLink, RiLinkUnlink } from "react-icons/ri";
 import { z } from "zod";
 import { TooltipButton } from ".";
@@ -41,7 +41,7 @@ export default function LinkUnlinkBtn({ editor, variant }: LinkUnlinkBtnProps) {
       onOpenChange={(open) => setIsLinkPopupOpen(open)}
     >
       <PopoverTrigger>
-        <Button isIconOnly variant={variant} className="text-xl">
+        <Button isIconOnly variant={variant} className="text-xl col-span-1">
           <RiLink />
         </Button>
       </PopoverTrigger>
