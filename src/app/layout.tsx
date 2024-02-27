@@ -17,9 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <AuthProvider>
-        <body className={inter.className + " bg-white "}>
+        <body className={inter.className + " bg-white  "}>
           {children}
           <Toaster position="bottom-right" />
         </body>

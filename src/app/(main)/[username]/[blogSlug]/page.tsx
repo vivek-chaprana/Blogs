@@ -15,6 +15,9 @@ import { notFound } from "next/navigation";
 export default async function Blog(params: {
   params: { username: string; blogSlug: string };
 }) {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
   const blog = await prisma.blogPost.findUnique({
     where: {
       slug: params.params.blogSlug,
@@ -36,8 +39,8 @@ export default async function Blog(params: {
 
   if (!blog) return notFound();
 
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
+  if (blog?.authorId !== userId && blog?.status !== PostStatus.PUBLISHED)
+    return notFound();
 
   return (
     <div>

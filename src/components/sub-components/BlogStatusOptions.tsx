@@ -44,18 +44,23 @@ export default function BlogStatusOptions({
         disallowEmptySelection
         selectionMode="single"
       >
-        {Object.values(PostStatus).map((status) => (
-          <DropdownItem
-            onClick={() => handleChangeStatus(status)}
-            className={cn("capitalize", blogStatus === status && "bg-gray-200")}
-            key={status}
-            endContent={
-              status === blogStatus && <BsCheck className="text-lg" />
-            }
-          >
-            {status.toLocaleLowerCase()}
-          </DropdownItem>
-        ))}
+        {Object.values(PostStatus)
+          .filter((status) => status !== PostStatus.DRAFT)
+          .map((status) => (
+            <DropdownItem
+              onClick={() => handleChangeStatus(status)}
+              className={cn(
+                "capitalize",
+                blogStatus === status && "bg-gray-200"
+              )}
+              key={status}
+              endContent={
+                status === blogStatus && <BsCheck className="text-lg" />
+              }
+            >
+              {status.toLocaleLowerCase()}
+            </DropdownItem>
+          ))}
       </DropdownMenu>
     </Dropdown>
   );

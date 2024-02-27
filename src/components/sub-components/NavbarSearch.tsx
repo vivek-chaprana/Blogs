@@ -6,11 +6,20 @@ import { RiSearch2Line } from "react-icons/ri";
 
 export default function NavbarSearch() {
   const [search, setSearch] = useState("");
+  const [showHint, setShowHint] = useState(false);
   const router = useRouter();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      router.push(`/search/${search}/posts`);
+      const searchIs = search.startsWith("@")
+        ? "users"
+        : search.startsWith("#")
+        ? "tags"
+        : "posts";
+
+      const query =
+        searchIs === "users" || searchIs === "tags" ? search.slice(1) : search;
+      router.push(`/search/${query}/${searchIs}`);
     }
   };
 
@@ -30,6 +39,21 @@ export default function NavbarSearch() {
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       onKeyDown={handleKeyDown}
+      onFocusChange={(focused) => setShowHint(focused)}
+      description={
+        showHint ? (
+          <div className="bg-gray-50 border p-2 flex flex-col text-sm gap-1 rounded-lg">
+            <p>
+              Use <span className="text-black">@</span> for users{" "}
+            </p>
+            <p>
+              Use <span className="text-black">#</span> for tags
+            </p>
+          </div>
+        ) : (
+          ""
+        )
+      }
     />
   );
 }

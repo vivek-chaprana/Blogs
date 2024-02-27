@@ -33,6 +33,13 @@ export default async function Home({
 
   if (!searchParams?.feed || !searchParams?.topic)
     blogs = await prisma.blogPost.findMany({
+      where: {
+        status: PostStatus.PUBLISHED,
+        authorId: {
+          not: currentUser.id,
+        },
+      },
+      take: 10,
       include: {
         author: true,
         topic: true,
@@ -40,10 +47,6 @@ export default async function Home({
       orderBy: {
         createdAt: "desc",
       },
-      where: {
-        status: PostStatus.PUBLISHED,
-      },
-      take: 10,
     });
 
   if (searchParams?.feed === "following")
@@ -54,6 +57,7 @@ export default async function Home({
           in: foundUser.followingIDs,
         },
       },
+      take: 10,
       include: {
         author: true,
         topic: true,
@@ -61,7 +65,6 @@ export default async function Home({
       orderBy: {
         createdAt: "desc",
       },
-      take: 10,
     });
 
   if (searchParams?.topic)
@@ -72,6 +75,7 @@ export default async function Home({
           slug: searchParams.topic as string,
         },
       },
+      take: 10,
       include: {
         author: true,
         topic: true,
@@ -79,7 +83,6 @@ export default async function Home({
       orderBy: {
         createdAt: "desc",
       },
-      take: 10,
     });
 
   return (

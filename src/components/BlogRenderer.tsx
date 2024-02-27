@@ -8,6 +8,7 @@ import prisma from "@/prisma";
 import { Button, Chip, Divider, Image } from "@nextui-org/react";
 import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { BsDot, BsShare } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
 import CommentSection from "./CommentSection";
@@ -18,6 +19,7 @@ import LikeButton from "./sub-components/LikeButton";
 import UnBookmarkButton from "./sub-components/UnBookmarkButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 import UnfollowButton from "./sub-components/UnfollowButton";
+import { PostStatus } from "@prisma/client";
 
 export default async function BlogRenderer({
   blog,
@@ -126,7 +128,7 @@ export default async function BlogRenderer({
 
       <BlogActions blog={blog} user={user} />
 
-      <CommentSection blogId={blog.id} />
+      {blog.status !== PostStatus.DRAFT && <CommentSection blogId={blog.id} />}
     </section>
   );
 }
@@ -151,7 +153,14 @@ const BlogActions = ({
         </span>
 
         <span className="flex items-center gap-1">
-          <Button variant="light" size="sm" isIconOnly>
+          <Button
+            variant="light"
+            size="sm"
+            isIconOnly
+            as={Link}
+            href="#commentSection"
+          >
+            {/* <CommentButton > */}
             <MdOutlineComment className="text-lg" />
           </Button>
           {blog.comments.length}

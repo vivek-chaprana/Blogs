@@ -13,16 +13,14 @@ export default async function PostsSearch({
 
   const blogs = await prisma.blogPost.findMany({
     where: {
-      title: {
-        contains: params.query,
-        mode: "insensitive",
+      tags: {
+        hasSome: [params.query],
       },
       status: PostStatus.PUBLISHED,
     },
-    take: 10,
     include: {
-      author: true,
       topic: true,
+      author: true,
     },
   });
 

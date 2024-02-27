@@ -29,6 +29,10 @@ export default async function SearchLayout({
               name: "Users",
               url: "users",
             },
+            {
+              name: "Tags",
+              url: "tags",
+            },
           ]}
         />
       </div>
