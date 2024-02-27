@@ -222,7 +222,7 @@ export async function ReportBlogEmailTemplate({
                             <table style="width: 100%" cellpadding="0" cellspacing="0" role="presentation">
                               <tr>
                                 <td>
-                                  <a href="https://example.com" class="dark-text-gray-50"
+                                  <a href=${WEBAPP_URL} class="dark-text-gray-50"
                                     style="text-decoration: none; font-weight: 700; color: #191847">
                                     ${COMPANY_NAME}
                                   </a>
@@ -576,7 +576,7 @@ export async function ReportCommentEmailTemplate({
                           <table style="width: 100%" cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                               <td>
-                                <a href="https://example.com" class="dark-text-gray-50"
+                                <a href=${WEBAPP_URL} class="dark-text-gray-50"
                                   style="text-decoration: none; font-weight: 700; color: #191847">
                                   ${COMPANY_NAME}
                                 </a>

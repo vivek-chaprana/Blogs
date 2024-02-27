@@ -1,5 +1,6 @@
 import ProfileSidebar from "@/components/ProfileSidebar";
 import prisma from "@/prisma";
+import { notFound } from "next/navigation";
 
 export default async function UserLayout({
   children,
@@ -15,7 +16,7 @@ export default async function UserLayout({
   });
 
   if (!user) {
-    return <div>User not found</div>;
+    return notFound();
   }
 
   return (

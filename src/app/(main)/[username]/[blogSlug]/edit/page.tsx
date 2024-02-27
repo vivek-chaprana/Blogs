@@ -2,7 +2,7 @@ import NewStoryForm from "@/components/NewStoryForm";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
 import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function EditBlogPage(params: {
   params: { username: string; blogSlug: string };
@@ -24,7 +24,7 @@ export default async function EditBlogPage(params: {
   if (!blog) return notFound();
 
   const { user } = (await getServerSession(authOptions)) ?? {};
-  if (!user) return null;
+  if (!user) redirect("/auth/login");
 
   if (user.id !== blog.author.id) return notFound();
 

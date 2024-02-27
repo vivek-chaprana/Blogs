@@ -1,17 +1,12 @@
 import Footer from "@/components/Footer";
 import TopicSlider from "@/components/TopicSlider";
-import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
-import { getServerSession } from "next-auth";
 
 export default async function WithSidearLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
-  const { user } = session ?? {};
-
   const topics = await prisma.topic.findMany({
     orderBy: {
       BlogPost: {
@@ -30,7 +25,6 @@ export default async function WithSidearLayout({
 
         <div>{children}</div>
       </main>
-      <Footer classes="justify-center border-t py-5 " />
     </>
   );
 }

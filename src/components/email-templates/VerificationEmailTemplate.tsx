@@ -205,7 +205,7 @@ export default function VerificationEmailTemplate({
                         <table style="width: 100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td>
-                              <a href="https://example.com" class="dark-text-gray-50"
+                              <a href=${WEBAPP_URL} class="dark-text-gray-50"
                                 style="text-decoration: none; font-weight: 700; color: #191847">
                                 ${COMPANY_NAME}
                               </a>
@@ -266,7 +266,11 @@ export default function VerificationEmailTemplate({
                               </div>
                               <p class="dark-text-gray-50"
                                 style="margin: 0; font-size: 16px; line-height: 26px; color: #191847">
-                                Hi ${name || username || email?.substring(0, email.indexOf("@"))},
+                                Hi ${
+                                  name ||
+                                  username ||
+                                  email?.substring(0, email.indexOf("@"))
+                                },
                                 <br>
                                 <br>
                                 We use this easy verification step to make sure it's really you trying to sign in. Click
