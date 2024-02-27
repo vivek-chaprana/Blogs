@@ -17,7 +17,7 @@ export default async function SearchLayout({
         Result for <span className="text-black">{query}</span>
       </h1>
 
-      <div className="flex gap-5  text-sm border-b pt-10 pb-1">
+      <div className="flex gap-2 xs:gap-5 text-sm border-b pt-10 pb-1">
         <Tabs
           base={`search/${query}`}
           links={[

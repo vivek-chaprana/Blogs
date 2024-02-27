@@ -74,7 +74,10 @@ const TopPicks = async () => {
         </div>
       ))}
 
-      <Link href="/" className="text-sm font-normal text-green-600">
+      <Link
+        href="/recommendations/top-picks"
+        className="text-sm font-normal text-green-600"
+      >
         See all
       </Link>
     </div>
@@ -136,7 +139,10 @@ const RecommendedTopics = async () => {
             </Chip>
           ))}
       </div>
-      <Link href="/topics" className="text-sm font-normal text-green-600">
+      <Link
+        href="/recommendations/topics"
+        className="text-sm font-normal text-green-600"
+      >
         See more topics
       </Link>
     </div>
@@ -205,7 +211,10 @@ const WhoToFollow = async ({ userId }: { userId: string }) => {
             </div>
           ))}
       </div>
-      <Link href="#" className="text-sm font-normal text-green-600">
+      <Link
+        href="/recommendations/people"
+        className="text-sm font-normal text-green-600"
+      >
         See more suggestions
       </Link>
     </div>

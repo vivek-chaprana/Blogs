@@ -1,5 +1,6 @@
 import BlogCard from "@/components/BlogCard";
 import { authOptions } from "@/lib/auth/auth-options";
+import generateCaseVariations from "@/lib/utils/generateCaseVariations";
 import prisma from "@/prisma";
 import { PostStatus } from "@prisma/client";
 import { getServerSession } from "next-auth";
@@ -14,7 +15,7 @@ export default async function PostsSearch({
   const blogs = await prisma.blogPost.findMany({
     where: {
       tags: {
-        hasSome: [params.query],
+        hasSome: generateCaseVariations(params.query),
       },
       status: PostStatus.PUBLISHED,
     },

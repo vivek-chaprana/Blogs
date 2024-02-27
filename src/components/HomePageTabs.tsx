@@ -5,7 +5,12 @@ import { Button, cn } from "@nextui-org/react";
 import { Topic } from "@prisma/client";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { BsChevronLeft, BsChevronRight, BsPlus } from "react-icons/bs";
+import {
+  BsChevronLeft,
+  BsChevronRight,
+  BsCompass,
+  BsPlus,
+} from "react-icons/bs";
 
 const activeClasses = "text-dark-100 border-b-dark-100 border-b-2";
 
@@ -59,7 +64,6 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
             <BsChevronRight />
           </Button>
         )}
-
         <Link
           className={cn(
             "min-w-max font-semibold text-gray-500 hover:text-dark-200 transition-colors py-4"
@@ -68,7 +72,7 @@ function HomePageTabs({ topics }: { topics: Topic[] }) {
             pathname: "/topics",
           }}
         >
-          <BsPlus className="text-lg" />
+          <BsPlus className="text-lg inline" />
         </Link>
         <Link
           className={cn(

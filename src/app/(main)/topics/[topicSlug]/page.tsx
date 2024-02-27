@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
 import { PostStatus, Topic } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { BsDot } from "react-icons/bs";
 
 export default async function Topic({
@@ -32,13 +33,7 @@ export default async function Topic({
   });
 
   if (!topic) {
-    return (
-      <div>
-        <h1 className="text-4xl font-sans font-semibold text-center">
-          Topic not found
-        </h1>
-      </div>
-    );
+    redirect("/topics");
   }
 
   return (
