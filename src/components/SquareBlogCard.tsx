@@ -1,11 +1,17 @@
 import LikeButton from "@/components/sub-components/LikeButton";
-import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
+import {
+  WEBAPP_URL,
+  fallbackCoverImageUrl,
+  fallbackImageUrl,
+} from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Chip, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { BsDot } from "react-icons/bs";
 import UnLikeButton from "./sub-components/UnLikeButton";
+import ReportModal from "./ReportModal";
+import ShareButton from "./sub-components/ShareButton";
 
 export default function SquareBlogCard({
   blog,
@@ -77,7 +83,26 @@ export default function SquareBlogCard({
           {blog.topic.name || "Nextjs"}
         </Chip>
         {!!userId && (
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2">
+            <ReportModal
+              reported="blog"
+              id={blog.id}
+              isIconOnly
+              variant="light"
+              size="sm"
+              className="text-lg text-gray-500"
+            />
+
+            <ShareButton
+              size="sm"
+              className="text-lg text-gray-500"
+              url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
+              media={blog.coverImage ?? fallbackCoverImageUrl}
+              title={blog.title}
+              desc={blog.description ?? undefined}
+              tags={blog.tags}
+            />
+
             {blog.likedByUsersIds.includes(userId) ? (
               <UnLikeButton
                 blogId={blog.id}

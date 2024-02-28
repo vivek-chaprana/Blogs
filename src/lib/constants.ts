@@ -47,3 +47,13 @@ export const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ];
+
+// Others
+export const footerLinks = [
+  { name: "help", url: "/help" },
+  { name: "about", url: "/about" },
+  { name: "privacy policy", url: "/privacy-policy" },
+  { name: "terms & conditions", url: "/terms-and-conditions" },
+  { name: "contact", url: "contact" },
+  { name: "FAQs", url: "faqs" },
+];

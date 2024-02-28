@@ -1,0 +1,4 @@
+{
+    "editor.quickSuggestionsDelay": 10,
+    "terminal.integrated.gpuAcceleration": "auto"
+}

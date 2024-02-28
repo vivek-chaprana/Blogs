@@ -2,24 +2,25 @@ import { FullBlogWithComments, UserWithSavedIds } from "@/types/prisma";
 
 import BlogContentRenderer from "@/components/BlogContentRenderer";
 import { authOptions } from "@/lib/auth/auth-options";
-import { fallbackImageUrl } from "@/lib/constants";
+import { WEBAPP_URL, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import prisma from "@/prisma";
 import { Button, Chip, Divider, Image } from "@nextui-org/react";
+import { PostStatus } from "@prisma/client";
 import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { BsDot, BsShare } from "react-icons/bs";
+import { BsDot } from "react-icons/bs";
 import { MdOutlineComment } from "react-icons/md";
 import CommentSection from "./CommentSection";
 import ReportModal from "./ReportModal";
 import BookmarkButton from "./sub-components/BookmarkButton";
 import FollowButton from "./sub-components/FollowButton";
 import LikeButton from "./sub-components/LikeButton";
+import ShareButton from "./sub-components/ShareButton";
 import UnBookmarkButton from "./sub-components/UnBookmarkButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 import UnfollowButton from "./sub-components/UnfollowButton";
-import { PostStatus } from "@prisma/client";
 
 export default async function BlogRenderer({
   blog,
@@ -180,9 +181,13 @@ const BlogActions = ({
           )}
         </span>
         <span className="flex items-center gap-1">
-          <Button variant="light" size="sm" isIconOnly>
-            <BsShare className="text-lg" />
-          </Button>
+          <ShareButton
+            url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
+            media={blog.coverImage ?? undefined}
+            title={blog.title}
+            desc={blog.description ?? undefined}
+            tags={blog.tags}
+          />
         </span>
         <ReportModal reported="blog" id={blog.id} />
       </div>

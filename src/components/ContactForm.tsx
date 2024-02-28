@@ -47,7 +47,7 @@ export default function ContactForm({ user }: { user?: User }) {
   };
 
   return (
-    <section className="max-w-4xl mx-auto px-2 py-10 xs:p-10 ">
+    <section id="contact-us" className="max-w-4xl mx-auto px-2 py-10 xs:p-10 ">
       <h3 className="text-2xl xs:text-3xl font-serif font-bold my-10">
         Contact Us
       </h3>

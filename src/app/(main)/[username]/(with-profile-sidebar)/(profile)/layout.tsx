@@ -1,8 +1,13 @@
 import FollowButton from "@/components/sub-components/FollowButton";
+import ShareButton from "@/components/sub-components/ShareButton";
 import Tabs from "@/components/sub-components/Tabs";
 import UnfollowButton from "@/components/sub-components/UnfollowButton";
 import { authOptions } from "@/lib/auth/auth-options";
-import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
+import {
+  WEBAPP_URL,
+  fallbackCoverImageUrl,
+  fallbackImageUrl,
+} from "@/lib/constants";
 import prisma from "@/prisma";
 import { Button, Image, Tooltip } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
@@ -93,9 +98,15 @@ export default async function UserProfileLayout({
                 </Tooltip>
               )}
               <Tooltip content="Share Profile" closeDelay={0}>
-                <Button variant="light" color="success" isIconOnly>
+                <ShareButton
+                  url={`${WEBAPP_URL}/${user.username}`}
+                  title={user.name || "@" + user.username}
+                  media={user.image || undefined}
+                  desc={user.bio || undefined}
+                  size="md"
+                >
                   <FaShare className="text-teal-700 text-lg" />
-                </Button>
+                </ShareButton>
               </Tooltip>
             </div>
           </div>

@@ -6,7 +6,9 @@ export default function Faqs() {
   return (
     <main>
       <section className="py-10 flex flex-col gap-10 max-w-4xl mx-auto ">
-        <h1 className="text-4xl font-bold ">Frequently Asked Questions</h1>
+        <h1 className="text-4xl font-bold font-serif ">
+          Frequently Asked Questions
+        </h1>
         <div
           className="max-w-3xl mx-auto bg-white-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-15 border p-5 border-dark-200
 "

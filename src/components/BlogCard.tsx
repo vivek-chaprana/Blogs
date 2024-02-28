@@ -1,13 +1,18 @@
-import { fallbackCoverImageUrl, fallbackImageUrl } from "@/lib/constants";
+import {
+  WEBAPP_URL,
+  fallbackCoverImageUrl,
+  fallbackImageUrl,
+} from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
-import { Avatar, Button, Chip, Image, cn } from "@nextui-org/react";
+import { Avatar, Chip, Image, cn } from "@nextui-org/react";
 import Link from "next/link";
-import { BsDot, BsShare } from "react-icons/bs";
+import { BsDot } from "react-icons/bs";
 import ReportModal from "./ReportModal";
 import BlogOptionsPopover from "./sub-components/BlogOptionsPopover";
 import BlogStatusOptions from "./sub-components/BlogStatusOptions";
 import LikeButton from "./sub-components/LikeButton";
+import ShareButton from "./sub-components/ShareButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 
 const BlogCard = ({
@@ -123,6 +128,13 @@ const BlogCard = ({
             )}
             {blog.authorId === userId ? (
               <>
+                <ShareButton
+                  url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
+                  media={blog.coverImage ?? fallbackCoverImageUrl}
+                  title={blog.title}
+                  desc={blog.description ?? undefined}
+                  tags={blog.tags}
+                />
                 <BlogStatusOptions blogStatus={blog.status} blogId={blog.id} />
                 <BlogOptionsPopover blog={blog} />
               </>
@@ -137,14 +149,15 @@ const BlogCard = ({
                   className="text-lg text-gray-500"
                 />
 
-                <Button
-                  isIconOnly
-                  variant="light"
+                <ShareButton
                   size="sm"
                   className="text-lg text-gray-500"
-                >
-                  <BsShare />
-                </Button>
+                  url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
+                  media={blog.coverImage ?? fallbackCoverImageUrl}
+                  title={blog.title}
+                  desc={blog.description ?? undefined}
+                  tags={blog.tags}
+                />
               </>
             )}
           </div>
