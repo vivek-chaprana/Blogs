@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth/auth-options";
-import { COMPANY_NAME, COMPANY_INITIALS } from "@/lib/constants";
+import { COMPANY_INITIALS, COMPANY_NAME } from "@/lib/constants";
 import {
   Button,
   NavbarBrand,
@@ -9,8 +9,7 @@ import {
 } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { BsPencilSquare } from "react-icons/bs";
-import { MdNotificationsNone } from "react-icons/md";
+import { BsBell, BsPencilSquare } from "react-icons/bs";
 import NavbarUserBlock from "./NavbarUserBlock";
 import NavbarSearch from "./sub-components/NavbarSearch";
 
@@ -45,7 +44,7 @@ export default async function Navbar() {
               </Button>
 
               <Button isIconOnly as={Link} href="#" variant="light">
-                <MdNotificationsNone className="text-lg" />
+                <BsBell className="text-lg" />
               </Button>
             </NavbarItem>
 

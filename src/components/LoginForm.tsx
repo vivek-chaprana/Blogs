@@ -82,8 +82,7 @@ export default function LoginForm() {
 
       <Button
         type="submit"
-        color="primary"
-        className="w-full p-0"
+        className="w-full p-0 bg-dark-200 text-white"
         isLoading={isLoading}
       >
         Sign In

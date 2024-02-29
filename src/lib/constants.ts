@@ -41,8 +41,7 @@ export const providers = {
 // Cloudinary
 export const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
 export const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-// export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-// export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
 // Editor
 export const WORDS_PER_MINUTE = 200;
 export const TIME_PER_IMAGE = 0.083;

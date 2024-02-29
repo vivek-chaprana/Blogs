@@ -43,7 +43,7 @@ export default function GetInTouch() {
               {/* Icon */}
               <Link
                 href={item.url}
-                className="rounded-full w-min p-3 sm:p-5 bg-white/5 bg-clip-padding backdrop-filter backdrop-blur-sm  border border-gray-200 "
+                className="rounded-full w-min p-3 sm:p-5 bg-white/5 bg-clip-padding backdrop-filter backdrop-blur-sm  border border-gray-200 hover:bg-white/10 transition-all "
               >
                 {item.icon}
               </Link>

@@ -36,7 +36,7 @@ export default function About() {
         </p>
 
         <blockquote className="p-0 border-0">
-          <span className="bg-black/15 text-lg xs:text-xl leading-10 py-1 not-italic ">
+          <span className="bg-black/15 text-lg xs:text-xl !leading-10 p-1 not-italic ">
             Ultimately, our goal is to deepen our collective understanding of
             the world through the power of writing.
           </span>

@@ -98,6 +98,24 @@ export default async function Home({
           No blogs found
         </div>
       )}
+      {!!blogs.length ? (
+        blogs.map((blog) => (
+          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
+        ))
+      ) : (
+        <div className="text-center text-lg font-light py-10">
+          No blogs found
+        </div>
+      )}
+      {!!blogs.length ? (
+        blogs.map((blog) => (
+          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
+        ))
+      ) : (
+        <div className="text-center text-lg font-light py-10">
+          No blogs found
+        </div>
+      )}
       <Loading />
     </section>
   );

@@ -48,7 +48,7 @@ export default async function UserLayout({
   }
 
   return (
-    <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative">
+    <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative border-red-500 ">
       <section className="min-h-screen flex-1">{children}</section>
       <ProfileSidebar user={user} />
     </main>

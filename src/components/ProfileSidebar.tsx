@@ -15,7 +15,7 @@ export default async function ProfileSidebar({ user }: { user: PrismaUser }) {
   const currentUser = session?.user;
 
   return (
-    <aside className="border-l p-3 px-2 ld:px-5 flex-col gap-5  h-min top-[75px] stick w-[30%] hidden md:flex">
+    <aside className="border-l p-3 px-2 ld:px-5 flex-col gap-5  h-min top-[70px] sticky w-[30%] hidden md:flex">
       <ProfileSection user={user} currentUser={currentUser} />
       {currentUser && <FollowingSection followings={user.followingIDs} />}
       <Footer />

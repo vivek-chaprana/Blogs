@@ -58,6 +58,46 @@ export default async function ProfilePage({
       ) : (
         <p>No blogs yet!</p>
       )}
+      {!!userBlogs?.length ? (
+        <>
+          {userBlogs.map((blog) => (
+            <BlogCard userId={user?.id} key={blog.id} blog={blog} />
+          ))}
+          <Loading />
+        </>
+      ) : (
+        <p>No blogs yet!</p>
+      )}
+      {!!userBlogs?.length ? (
+        <>
+          {userBlogs.map((blog) => (
+            <BlogCard userId={user?.id} key={blog.id} blog={blog} />
+          ))}
+          <Loading />
+        </>
+      ) : (
+        <p>No blogs yet!</p>
+      )}
+      {!!userBlogs?.length ? (
+        <>
+          {userBlogs.map((blog) => (
+            <BlogCard userId={user?.id} key={blog.id} blog={blog} />
+          ))}
+          <Loading />
+        </>
+      ) : (
+        <p>No blogs yet!</p>
+      )}
+      {!!userBlogs?.length ? (
+        <>
+          {userBlogs.map((blog) => (
+            <BlogCard userId={user?.id} key={blog.id} blog={blog} />
+          ))}
+          <Loading />
+        </>
+      ) : (
+        <p>No blogs yet!</p>
+      )}
     </>
   );
 }

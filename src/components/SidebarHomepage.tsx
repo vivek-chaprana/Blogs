@@ -9,13 +9,14 @@ import FollowButton from "./sub-components/FollowButton";
 
 export default function SidebarHomepage({ userId }: { userId: string }) {
   return (
-    <aside className="border-l p-3 xl:px-5 flex-col gap-5 h-min -top-[calc(100%-100px)] sticky w-1/3 hidden lg:flex">
+    <aside className="border-l p-3 xl:px-5 flex-col gap-5 h-min w-1/3 hidden -top-[calc(100%+64px)] sticky lg:flex">
       <TopPicks />
       <StartWriting />
       <RecommendedTopics />
       <WhoToFollow userId={userId} />
       <ReadingList userId={userId} />
       <Footer />
+      <div className="hidden "></div>
     </aside>
   );
 }
