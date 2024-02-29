@@ -1,6 +1,14 @@
 import FaqAccordion from "@/components/FaqAccordion";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
+import { Metadata } from "next";
+import { COMPANY_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Freuently Asked Questions | " + COMPANY_NAME,
+  description:
+    "Find answers to the most common questions about " + COMPANY_NAME + ".",
+};
 
 export default function Faqs() {
   return (

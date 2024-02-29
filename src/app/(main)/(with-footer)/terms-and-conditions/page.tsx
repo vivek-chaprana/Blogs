@@ -1,5 +1,14 @@
 import { COMPANY_NAME } from "@/lib/constants";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms and Conditons | " + COMPANY_NAME,
+  description:
+    "Terms and Conditions for using " +
+    COMPANY_NAME +
+    ". Please read these terms carefully before using our platform. By accessing or using our website, you agree to comply with and be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our platform.",
+};
 
 export default function TermsAndConditions() {
   return (

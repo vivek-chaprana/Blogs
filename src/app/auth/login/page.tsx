@@ -3,6 +3,14 @@ import LoginForm from "@/components/LoginForm";
 import OtherLogins from "@/components/OtherLogins";
 import DividerWithText from "@/ui/DividerWithText";
 import Link from "next/link";
+import { Metadata } from "next";
+import { COMPANY_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Sign In | " + COMPANY_NAME,
+  description:
+    "Log in to your account on " + COMPANY_NAME + " and start writing.",
+};
 
 export default function LoginPage({
   searchParams,

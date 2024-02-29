@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth/auth-options";
-import { COMPANY_NAME } from "@/lib/constants";
+import { COMPANY_NAME, COMPANY_INITIALS } from "@/lib/constants";
 import {
   Button,
   NavbarBrand,
@@ -21,8 +21,9 @@ export default async function Navbar() {
   return (
     <NavbarComponent className="border-b" maxWidth="xl">
       <NavbarBrand className="flex items-center gap-3 max-w-min">
-        <Link href="/" className="font-bold text-inherit">
-          {COMPANY_NAME}
+        <Link href="/" className="font-bold text-inherit font-brand text-2xl">
+          <span className="inline sm:hidden">{COMPANY_INITIALS}</span>
+          <span className="hidden sm:inline">{COMPANY_NAME}</span>
         </Link>
       </NavbarBrand>
 
@@ -53,12 +54,17 @@ export default async function Navbar() {
         ) : (
           <NavbarItem className="flex gap-2 text-sm items-center ">
             <Link
-              className="hover:text-black underline-offset-1 hover:underline"
+              className="hover:text-black underline-offset-1 hover:underline hidden xs:inline-flex"
               href="/about"
             >
               Our Story
             </Link>
-            <Button as={Link} href="/auth/login" variant="light">
+            <Button
+              as={Link}
+              href="/auth/login"
+              variant="light"
+              className="hidden sm:inline-flex"
+            >
               Sign in{" "}
             </Button>
             <Button

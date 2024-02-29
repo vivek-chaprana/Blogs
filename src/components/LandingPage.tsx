@@ -73,6 +73,8 @@ export default async function LandingPage() {
               topic.
             </p>
             <Button
+              as={Link}
+              href="/register"
               className="text-white bg-dark-200 w-min my-10 "
               radius="full"
             >

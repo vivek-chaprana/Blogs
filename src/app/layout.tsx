@@ -3,8 +3,15 @@ import { fallbackMetadata } from "@/lib/constants";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import localFont from "next/font/local";
 
 export const metadata: Metadata = fallbackMetadata;
+
+const brandFont = localFont({
+  src: "fonts/BemirsDemoVersionRegular.ttf",
+  display: "swap",
+  variable: "--font-brand",
+});
 
 export default function RootLayout({
   children,
@@ -14,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <AuthProvider>
-        <body className="bg-white">
+        <body className={`bg-white ${brandFont.variable}`}>
           <link
             rel="apple-touch-icon"
             href="/apple-touch-icon.png"

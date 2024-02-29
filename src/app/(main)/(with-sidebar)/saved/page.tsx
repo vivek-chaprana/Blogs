@@ -1,10 +1,17 @@
 import ManageSaved from "@/components/ManageSaved";
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
 import { Button } from "@nextui-org/react";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Saved | " + COMPANY_NAME,
+  description: `View and manage your saved blogs. Save blogs to read later, or to keep track of your favorite authors and topics.`,
+};
 
 export default async function List({
   searchParams,

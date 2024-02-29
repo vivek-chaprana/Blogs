@@ -1,11 +1,15 @@
-import Footer from "@/components/Footer";
 import SquareBlogCard from "@/components/SquareBlogCard";
 import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
 import { PostStatus } from "@prisma/client";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Page Not Found | " + COMPANY_NAME,
+};
 
 export default async function NotFound() {
   const session = await getServerSession(authOptions);

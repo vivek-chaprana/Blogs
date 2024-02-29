@@ -1,6 +1,34 @@
 import ProfileSidebar from "@/components/ProfileSidebar";
+import { COMPANY_NAME, fallbackMetadata } from "@/lib/constants";
 import prisma from "@/prisma";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: Readonly<{
+  params: { username: string };
+}>): Promise<Metadata> {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: params?.username,
+    },
+    select: {
+      name: true,
+      username: true,
+      bio: true,
+    },
+  });
+
+  if (!user) return fallbackMetadata;
+
+  return {
+    title: (user.name || "@" + user.username) + " | " + COMPANY_NAME,
+    description: `The profile of ${
+      user.name || "@" + user.username
+    } on ${COMPANY_NAME}. ${user.bio}`,
+  };
+}
 
 export default async function UserLayout({
   children,

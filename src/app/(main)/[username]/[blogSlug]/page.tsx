@@ -3,14 +3,55 @@ import SquareBlogCard from "@/components/SquareBlogCard";
 import FollowButton from "@/components/sub-components/FollowButton";
 import UnfollowButton from "@/components/sub-components/UnfollowButton";
 import { authOptions } from "@/lib/auth/auth-options";
-import { fallbackImageUrl } from "@/lib/constants";
+import {
+  WEBAPP_URL,
+  fallbackImageUrl,
+  fallbackMetadata,
+} from "@/lib/constants";
 import prisma from "@/prisma";
 import { FullBlog } from "@/types/prisma";
 import { Divider, Image } from "@nextui-org/react";
 import { PostStatus, User } from "@prisma/client";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata(params: {
+  params: { username: string; blogSlug: string };
+}): Promise<Metadata> {
+  const blog = await prisma.blogPost.findUnique({
+    where: {
+      slug: params.params.blogSlug,
+      author: {
+        username: params.params.username,
+      },
+    },
+    select: {
+      title: true,
+      description: true,
+      author: {
+        select: {
+          name: true,
+          username: true,
+        },
+      },
+    },
+  });
+
+  if (!blog) return fallbackMetadata;
+
+  return {
+    title: blog.title,
+    description: blog.description || "No description available.",
+    authors: [
+      {
+        name: blog.author.name || "@" + blog.author.username,
+        url: `${WEBAPP_URL}/${blog.author.username}`,
+      },
+    ],
+  };
+}
 
 export default async function Blog(params: {
   params: { username: string; blogSlug: string };

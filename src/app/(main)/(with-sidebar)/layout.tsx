@@ -8,15 +8,11 @@ const GettingStarted = dynamic(() => import("@/components/GettingStarted"));
 
 export default async function WithSidearLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: any;
 }>) {
   const session = await getServerSession(authOptions);
   const { user } = session ?? {};
-
-  console.log(params);
 
   if (!user) return <LandingPage />;
 

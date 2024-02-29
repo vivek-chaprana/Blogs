@@ -1,7 +1,15 @@
 import Tabs from "@/components/sub-components/Tabs";
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME } from "@/lib/constants";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Recommendations | " + COMPANY_NAME,
+  description:
+    "Adjust recommendations by updating what you're following, your reading history, and who you've muted.",
+};
 
 export default async function SearchLayout({
   children,

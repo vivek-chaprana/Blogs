@@ -8,6 +8,13 @@ import { redirect } from "next/navigation";
 import { FaCheck } from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { RxCross1 } from "react-icons/rx";
+import { Metadata } from "next";
+import { COMPANY_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Verify | " + COMPANY_NAME,
+  description: "Verify your account on " + COMPANY_NAME + " .",
+};
 
 export default async function VerifyPage({
   searchParams,

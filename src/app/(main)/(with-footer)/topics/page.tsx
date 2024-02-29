@@ -1,7 +1,17 @@
+import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
 import { Divider, Input } from "@nextui-org/react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { BsDot, BsSearch } from "react-icons/bs";
+
+export const metadata: Metadata = {
+  title: "Explore | " + COMPANY_NAME,
+  description:
+    "Explore different topics and find the most popular ones on " +
+    COMPANY_NAME +
+    ".",
+};
 
 export default async function ExploreTopics() {
   const topics = await prisma.topic.findMany({

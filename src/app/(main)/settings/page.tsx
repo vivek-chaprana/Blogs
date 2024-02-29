@@ -4,9 +4,17 @@ import PasswordModal from "@/components/PasswordModal";
 import ProfileModal from "@/components/ProfileModal";
 import UsernameModal from "@/components/UsernameModal";
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Settings | " + COMPANY_NAME,
+  description:
+    "Manage your account, profile, and settings on " + COMPANY_NAME + ".",
+};
 
 export default async function Settings() {
   const session = await getServerSession(authOptions);

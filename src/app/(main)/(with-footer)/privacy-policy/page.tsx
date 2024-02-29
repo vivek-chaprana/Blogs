@@ -1,5 +1,11 @@
 import { COMPANY_NAME } from "@/lib/constants";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | " + COMPANY_NAME,
+  description: "Privact policy of " + COMPANY_NAME + " .",
+};
 
 export default function PrivacyPolicy() {
   return (

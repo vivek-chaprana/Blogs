@@ -3,11 +3,35 @@ import SquareBlogCard from "@/components/SquareBlogCard";
 import FollowTopicButton from "@/components/sub-components/FollowTopicButton";
 import UnfollowTopicButton from "@/components/sub-components/UnfollowTopicButton";
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME, fallbackMetadata } from "@/lib/constants";
 import prisma from "@/prisma";
 import { PostStatus, Topic } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { BsDot } from "react-icons/bs";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { topicSlug: string };
+}) {
+  const topic = await prisma.topic.findUnique({
+    where: {
+      slug: params.topicSlug,
+    },
+    select: {
+      name: true,
+      description: true,
+    },
+  });
+
+  if (!topic) return fallbackMetadata;
+
+  return {
+    title: topic.name + " | " + COMPANY_NAME,
+    description: topic.description,
+  };
+}
 
 export default async function Topic({
   params,

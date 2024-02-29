@@ -2,10 +2,20 @@ import ContactForm from "@/components/ContactForm";
 import FaqAccordion from "@/components/FaqAccordion";
 import GetInTouch from "@/components/GetInTouch";
 import { authOptions } from "@/lib/auth/auth-options";
+import { COMPANY_NAME } from "@/lib/constants";
 import { Input } from "@nextui-org/react";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsSearch } from "react-icons/bs";
+
+export const metadata: Metadata = {
+  title: "Help | " + COMPANY_NAME,
+  description:
+    "Welcome to our Help Center of " +
+    COMPANY_NAME +
+    "! Discover comprehensive solutions and guides for everything from account setup to advanced features. If you have any questions or require assistance, our dedicated support team is at your service.",
+};
 
 export default async function Help() {
   const session = await getServerSession(authOptions);

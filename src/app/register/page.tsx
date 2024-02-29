@@ -1,8 +1,16 @@
 import OtherLoginsRegistrationPage from "@/components/OtherLoginsRegistrationPage";
 import SignUpForm from "@/components/SignUpForm";
+import { COMPANY_NAME } from "@/lib/constants";
 import DividerWithText from "@/ui/DividerWithText";
 import { Divider } from "@nextui-org/react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Sign Up | " + COMPANY_NAME,
+  description:
+    "Create your account on " + COMPANY_NAME + " and join the community.",
+};
 
 const RegistrationPage = () => {
   return (

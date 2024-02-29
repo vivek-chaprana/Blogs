@@ -14,7 +14,8 @@ export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "vivek2003ji@outlook.com";
 export const currentTime = () =>
   new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });
 
-export const COMPANY_NAME = "BLOGS";
+export const COMPANY_NAME = "NextBlogs";
+export const COMPANY_INITIALS = "NB";
 
 export const fallbackImageUrl =
   "https://i.pinimg.com/564x/a9/99/ee/a999ee87f1cc57beb5cc1c60fc96cded.jpg";
