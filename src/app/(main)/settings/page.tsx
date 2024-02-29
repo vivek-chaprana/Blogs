@@ -6,23 +6,27 @@ import UsernameModal from "@/components/UsernameModal";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
 import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Settings() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
 
-  if (!user) return null;
+  if (!user) redirect("/auth/login");
 
   const profile = await prisma.user.findUnique({
     where: { id: user.id },
   });
 
-  if (!profile) return null;
+  if (!profile) return notFound();
 
   return (
     <main className="max-w-4xl mx-auto min-h-screen my-10 gap-10 flex relative">
       <section className="w-full min-h-screen flex-shrink-0">
-        <h1 className="text-4xl font-bold pt-0  xs:py-5 md:py-10 ps-2 sm:ps-4"> Settings</h1>
+        <h1 className="text-4xl font-bold pt-0  xs:py-5 md:py-10 ps-2 sm:ps-4">
+          {" "}
+          Settings
+        </h1>
 
         <div>
           <EmailModal email={user?.email} />

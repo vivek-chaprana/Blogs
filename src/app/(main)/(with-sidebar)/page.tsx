@@ -6,6 +6,7 @@ import prisma from "@/prisma";
 import { FullBlog } from "@/types/prisma";
 import { PostStatus } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Home({
   searchParams,
@@ -15,7 +16,7 @@ export default async function Home({
   const session = await getServerSession(authOptions);
   const currentUser = session?.user;
 
-  if (!currentUser) return null;
+  if (!currentUser) redirect("/auth/login");
 
   const foundUser = await prisma.user.findUnique({
     where: {
@@ -27,7 +28,7 @@ export default async function Home({
     },
   });
 
-  if (!foundUser) return null;
+  if (!foundUser) return notFound();
 
   let blogs: FullBlog[] = [];
 

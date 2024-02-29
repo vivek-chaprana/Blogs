@@ -29,16 +29,25 @@ const RegistrationPage = () => {
 const TermsAndConditions = () => (
   <div className="text-xs bg-gr -m-2 mt-0  p-3">
     By signing up, you agree to our{" "}
-    <Link className="hover:font-semibold hover:text-b transition-all" href="#">
+    <Link
+      className="hover:font-semibold hover:text-b transition-all"
+      href="/terms-and-conditions"
+    >
       Terms of Service
     </Link>{" "}
     and{" "}
-    <Link className="hover:font-semibold hover:text-b transition-all" href="#">
+    <Link
+      className="hover:font-semibold hover:text-b transition-all"
+      href="/privacy-policy"
+    >
       Privacy Policy
     </Link>
     .
     <br /> Need help?{" "}
-    <Link className="hover:font-semibold hover:text-b transition-all" href="#">
+    <Link
+      className="hover:font-semibold hover:text-b transition-all"
+      href="/contact"
+    >
       Get in touch
     </Link>
     .

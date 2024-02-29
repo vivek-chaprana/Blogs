@@ -1,10 +1,16 @@
 import Tabs from "@/components/sub-components/Tabs";
+import { authOptions } from "@/lib/auth/auth-options";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function SearchLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user } = (await getServerSession(authOptions)) ?? {};
+  if (!user) redirect("/auth/login");
+
   return (
     <main className="">
       <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl text-dark-400 font-bold mt-5">

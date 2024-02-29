@@ -114,14 +114,14 @@ export default async function UserProfileLayout({
           <div className="flex gap-2 items-center text-sm text-green-700  ">
             <Link
               className="hover:text-green-900 transition-colors duration-150"
-              href={`${user.username}/followers`}
+              href={`/${user.username}/followers`}
             >
               {user.followedByIDs.length} Followers
             </Link>
             <BsDot />
             <Link
               className="hover:text-green-900 transition-colors duration-150"
-              href={`${user.username}/following`}
+              href={`/${user.username}/following`}
             >
               {user.followingIDs.length} Following
             </Link>

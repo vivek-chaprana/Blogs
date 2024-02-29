@@ -3,28 +3,33 @@ import { authOptions } from "@/lib/auth/auth-options";
 import { fallbackImageUrl } from "@/lib/constants";
 import prisma from "@/prisma";
 import { Image } from "@nextui-org/react";
-import { User } from "@prisma/client";
-import { getServerSession } from "next-auth";
+import { User as PrismaUser } from "@prisma/client";
+import { User as AuthUser, getServerSession } from "next-auth";
 import Link from "next/link";
 import FollowButton from "./sub-components/FollowButton";
 import MyLink from "./sub-components/MyLink";
 import UnfollowButton from "./sub-components/UnfollowButton";
 
-export default function ProfileSidebar({ user }: { user: User }) {
+export default async function ProfileSidebar({ user }: { user: PrismaUser }) {
+  const session = await getServerSession(authOptions);
+  const currentUser = session?.user;
+
   return (
     <aside className="border-l p-3 px-2 ld:px-5 flex-col gap-5  h-min top-[75px] stick w-[30%] hidden md:flex">
-      <ProfileSection user={user} />
-      <FollowingSection followings={user.followingIDs} />
+      <ProfileSection user={user} currentUser={currentUser} />
+      {currentUser && <FollowingSection followings={user.followingIDs} />}
       <Footer />
     </aside>
   );
 }
 
-const ProfileSection = async ({ user }: { user: User }) => {
-  const session = await getServerSession(authOptions);
-  const currentUser = session?.user;
-  if (!currentUser) return null;
-
+const ProfileSection = ({
+  user,
+  currentUser,
+}: {
+  user: PrismaUser;
+  currentUser?: AuthUser;
+}) => {
   return (
     <section className="flex flex-col gap-4">
       <Image
@@ -46,7 +51,8 @@ const ProfileSection = async ({ user }: { user: User }) => {
       </div>
 
       {user.bio && <p className="text-sm">{user.bio}</p>}
-      {user.id !== currentUser.id &&
+      {currentUser &&
+        user.id !== currentUser.id &&
         (user.followedByIDs.includes(currentUser.id) ? (
           <UnfollowButton
             followerId={currentUser.id}

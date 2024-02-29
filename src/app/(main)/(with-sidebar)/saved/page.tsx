@@ -4,6 +4,7 @@ import prisma from "@/prisma";
 import { Button } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function List({
   searchParams,
@@ -12,7 +13,7 @@ export default async function List({
 }) {
   const session = await getServerSession(authOptions);
 
-  if (!session) return <div>Unauthorized</div>;
+  if (!session) redirect("/auth/login");
 
   const { savedBlogPosts } =
     (await prisma.user.findFirst({

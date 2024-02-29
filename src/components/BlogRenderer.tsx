@@ -30,22 +30,22 @@ export default async function BlogRenderer({
   const session = await getServerSession(authOptions);
   const currentUser = session?.user;
 
-  if (!currentUser) return null;
+  let user: UserWithSavedIds | null = null;
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: currentUser.id,
-    },
-    include: {
-      savedBlogPosts: {
-        select: {
-          id: true,
+  if (currentUser) {
+    user = await prisma.user.findUnique({
+      where: {
+        id: currentUser.id,
+      },
+      include: {
+        savedBlogPosts: {
+          select: {
+            id: true,
+          },
         },
       },
-    },
-  });
-
-  if (!user) return null;
+    });
+  }
 
   return (
     <section className="max-w-4xl mx-auto p-2">
@@ -119,7 +119,7 @@ export default async function BlogRenderer({
 
       <Divider className="mt-5 mb-1" />
 
-      <BlogActions blog={blog} user={user} />
+      <BlogActions blog={blog} user={user || null} />
 
       <Divider className="mb-5 mt-1" />
 
@@ -127,7 +127,7 @@ export default async function BlogRenderer({
 
       <BlogTags tags={blog.tags} />
 
-      <BlogActions blog={blog} user={user} />
+      <BlogActions blog={blog} user={user || null} />
 
       {blog.status !== PostStatus.DRAFT && <CommentSection blogId={blog.id} />}
     </section>
@@ -139,19 +139,21 @@ const BlogActions = ({
   user,
 }: {
   blog: FullBlogWithComments;
-  user: UserWithSavedIds;
+  user: UserWithSavedIds | null;
 }) => {
   return (
     <div className="flex justify-between items-center text-sm">
       <div className="flex items-center gap-5">
-        <span className="flex items-center gap-1">
-          {blog.likedByUsersIds.includes(user.id) ? (
-            <UnLikeButton variant="light" blogId={blog.id} userId={user.id} />
-          ) : (
-            <LikeButton variant="light" blogId={blog.id} userId={user.id} />
-          )}
-          {blog.likedByUsersIds.length}
-        </span>
+        {user && (
+          <span className="flex items-center gap-1">
+            {blog.likedByUsersIds.includes(user.id) ? (
+              <UnLikeButton variant="light" blogId={blog.id} userId={user.id} />
+            ) : (
+              <LikeButton variant="light" blogId={blog.id} userId={user.id} />
+            )}
+            {blog.likedByUsersIds.length}
+          </span>
+        )}
 
         <span className="flex items-center gap-1">
           <Button
@@ -169,17 +171,23 @@ const BlogActions = ({
       </div>
 
       <div className="flex items-center gap-5">
-        <span className="flex items-center gap-1">
-          {user.savedBlogPosts.some((post) => post.id === blog.id) ? (
-            <UnBookmarkButton
-              blogId={blog.id}
-              userId={user.id}
-              variant="light"
-            />
-          ) : (
-            <BookmarkButton blogId={blog.id} userId={user.id} variant="light" />
-          )}
-        </span>
+        {user && (
+          <span className="flex items-center gap-1">
+            {user.savedBlogPosts.some((post) => post.id === blog.id) ? (
+              <UnBookmarkButton
+                blogId={blog.id}
+                userId={user.id}
+                variant="light"
+              />
+            ) : (
+              <BookmarkButton
+                blogId={blog.id}
+                userId={user.id}
+                variant="light"
+              />
+            )}
+          </span>
+        )}
         <span className="flex items-center gap-1">
           <ShareButton
             url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
@@ -189,7 +197,7 @@ const BlogActions = ({
             tags={blog.tags}
           />
         </span>
-        <ReportModal reported="blog" id={blog.id} />
+        {user && <ReportModal reported="blog" id={blog.id} />}
       </div>
     </div>
   );

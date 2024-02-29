@@ -1,11 +1,12 @@
 import NewStoryForm from "@/components/NewStoryForm";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function NewStory() {
   const { user } = (await getServerSession()) ?? {};
 
   if (!user) {
-    return null;
+    redirect("/auth/login");
   }
 
   return (
