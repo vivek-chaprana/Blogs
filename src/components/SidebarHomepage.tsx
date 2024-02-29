@@ -84,7 +84,7 @@ const TopPicks = async () => {
   );
 };
 
-const StartWriting = () => {
+export const StartWriting = () => {
   return (
     <div className="rounded-md bg-blue-300 text-black p-5 flex flex-col gap-4">
       <h3 className="font-semibold">Writing on {COMPANY_NAME}</h3>

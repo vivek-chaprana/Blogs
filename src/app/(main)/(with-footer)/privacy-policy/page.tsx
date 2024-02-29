@@ -113,7 +113,7 @@ export default function PrivacyPolicy() {
         <h2>8. Contact Us</h2>
         <p>
           If you have any questions, comments, or concerns regarding this
-          Privacy Policy or our privacy practices, please don't hesitate to{" "}
+          Privacy Policy or our privacy practices, please don&apos;t hesitate to{" "}
           <Link href="/contact">Contact Us</Link> .
         </p>
       </section>

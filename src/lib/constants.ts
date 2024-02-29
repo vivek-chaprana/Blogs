@@ -22,6 +22,15 @@ export const fallbackImageUrl =
 export const fallbackCoverImageUrl =
   "https://images.unsplash.com/photo-1624396963238-df0e48367ff7?q=80&w=2036&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
+export const fallbackMetadata = {
+  title: COMPANY_NAME,
+  description:
+    "Immerse yourself in a wealth of knowledge and diverse viewpoints at [Your Blog Site Name]. Explore engaging articles, spark creativity, and join a vibrant community of thinkers. Elevate your online experience with our unique blend of ideas and perspectives.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
 export const providers = {
   GOOGLE: "google",
   GITHUB: "github",

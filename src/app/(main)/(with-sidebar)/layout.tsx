@@ -1,8 +1,8 @@
+import LandingPage from "@/components/LandingPage";
 import SidebarHomepage from "@/components/SidebarHomepage";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
-import { redirect } from "next/navigation";
 
 const GettingStarted = dynamic(() => import("@/components/GettingStarted"));
 
@@ -14,9 +14,7 @@ export default async function WithSidearLayout({
   const session = await getServerSession(authOptions);
   const { user } = session ?? {};
 
-  if (!user) {
-    redirect("/auth/login");
-  }
+  if (!user) return <LandingPage />;
 
   return (
     <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex justify-center lg:justify-start relative">
@@ -24,7 +22,7 @@ export default async function WithSidearLayout({
         {children}
       </section>
 
-      <SidebarHomepage userId={user.id} />
+      {user && <SidebarHomepage userId={user.id} />}
 
       {user && !user.hasCompletedOnboarding && (
         <GettingStarted

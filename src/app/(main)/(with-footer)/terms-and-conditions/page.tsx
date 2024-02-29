@@ -63,12 +63,13 @@ export default function TermsAndConditions() {
       <section>
         <h2>6. Limitation of Liability</h2>
         <p>
-          {COMPANY_NAME} is provided on an "as-is" and "as-available" basis. We
-          make no warranties or representations about the accuracy,
-          completeness, or reliability of the content on our platform. In no
-          event shall {COMPANY_NAME} be liable for any direct, indirect,
-          incidental, special, or consequential damages arising out of or in any
-          way connected with your use of our platform.
+          {COMPANY_NAME} is provided on an &quot;as-is&quot; and
+          &quot;as-available&quot; basis. We make no warranties or
+          representations about the accuracy, completeness, or reliability of
+          the content on our platform. In no event shall {COMPANY_NAME} be
+          liable for any direct, indirect, incidental, special, or consequential
+          damages arising out of or in any way connected with your use of our
+          platform.
         </p>
       </section>
 
@@ -104,7 +105,7 @@ export default function TermsAndConditions() {
         <h2>10. Contact Information</h2>
         <p>
           If you have any questions or concerns about these Terms and
-          Conditions, please don't hesitate to{" "}
+          Conditions, please don&apos;t hesitate to{" "}
           <Link href="/contact">Contact Us</Link> .
         </p>
       </section>

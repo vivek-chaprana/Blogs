@@ -51,17 +51,23 @@ export default async function Navbar() {
             <NavbarUserBlock user={user} />
           </>
         ) : (
-          <NavbarItem className="flex gap-2">
-            <Button as={Link} color="primary" href="/register" variant="flat">
-              Sign Up
+          <NavbarItem className="flex gap-2 text-sm items-center ">
+            <Link
+              className="hover:text-black underline-offset-1 hover:underline"
+              href="/about"
+            >
+              Our Story
+            </Link>
+            <Button as={Link} href="/auth/login" variant="light">
+              Sign in{" "}
             </Button>
             <Button
               as={Link}
-              color="secondary"
-              href="/auth/login"
-              variant="flat"
+              href="/register"
+              className="text-white bg-dark-200"
+              radius="full"
             >
-              Sign In
+              Get started
             </Button>
           </NavbarItem>
         )}
