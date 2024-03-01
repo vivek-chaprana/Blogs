@@ -22,7 +22,7 @@ export default function LoginPage({
     : searchParams.error;
 
   return (
-    <main className="bg-offWhite py-10">
+    <main className="bg-offWhite py-10 min-h-screen px-2 xs:px-5 sm:px-0">
       <h1 className="text-3xl font-bold font-sans text-center">Welcome back</h1>
       <div className="mb-3 mt-8 sm:mx-auto sm:w-full sm:max-w-md rounded-md border   p-2 bg-white">
         <div className="rounded-md px-4 py-5 sm:px-10  ">

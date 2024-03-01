@@ -33,3 +33,17 @@ const userWithSavedIds = Prisma.validator<Prisma.UserDefaultArgs>()({
 });
 
 export type UserWithSavedIds = Prisma.UserGetPayload<typeof userWithSavedIds>;
+
+const fullComment = Prisma.validator<Prisma.CommentDefaultArgs>()({
+  include: {
+    author: true,
+    replies: true,
+    blogPost: {
+      select: {
+        authorId: true,
+      },
+    },
+  },
+});
+
+export type FullComment = Prisma.CommentGetPayload<typeof fullComment>;

@@ -64,8 +64,8 @@ export default async function LandingPage() {
             <h1 className="text-8xl text-dark-200 font-bold font-serif text-center">
               <TypewriterEffectSmooth
                 words={words}
-                textClassnames=" text-4xl xs:text-5xl sm:text-7xl md:text-8xl text-dark-200 font-bold font-serif"
-                cursorClassName="bg-black border h-10"
+                textClassnames="text-4xl xs:text-5xl sm:text-7xl md:text-8xl text-dark-200 font-bold font-serif"
+                cursorClassName="bg-black border "
               />
             </h1>
             <p className="text-base md:text-lg mt-4 text-dark-200 font-semibold inter-var text-center">

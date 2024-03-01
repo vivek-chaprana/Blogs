@@ -1,6 +1,6 @@
 "use client";
 
-import { createComment } from "@/lib/actions/comment";
+import { createComment, replyToComment } from "@/lib/actions/comment";
 import getErrorMessage from "@/lib/utils/getErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
@@ -19,7 +19,13 @@ const CommentSchema = z.object({
 
 type InputType = z.infer<typeof CommentSchema>;
 
-export default function BlogComment({ blogId }: { blogId: string }) {
+export default function BlogComment({
+  blogId,
+  parentCommentId,
+}: {
+  blogId: string;
+  parentCommentId?: string;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -33,7 +39,8 @@ export default function BlogComment({ blogId }: { blogId: string }) {
   const handleComment = async (data: InputType) => {
     setIsLoading(true);
     try {
-      await createComment(blogId, data.comment);
+      if (parentCommentId) await replyToComment(parentCommentId, data.comment);
+      else await createComment(blogId, data.comment);
       toast.success("Comment created successfully.");
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -64,7 +71,7 @@ export default function BlogComment({ blogId }: { blogId: string }) {
           color="primary"
           className="w-min bg-dark-200 text-white"
         >
-          Comment
+          {parentCommentId ? "Reply" : "Comment"}
         </Button>
       </form>
     </div>

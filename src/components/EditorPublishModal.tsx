@@ -69,7 +69,6 @@ const EditorPublishModal = (props: EditorPublishModalProps) => {
     blog?.topicID || ""
   );
 
-  console.log(categoryValue);
   const [coverImageUrl, setCoverImageUrl] = useState<string>(
     blog?.coverImage || ""
   );

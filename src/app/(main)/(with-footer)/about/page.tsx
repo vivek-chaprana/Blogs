@@ -1,8 +1,7 @@
 import { COMPANY_NAME } from "@/lib/constants";
+import { Metadata } from "next";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
-
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About | " + COMPANY_NAME,
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className=" min-h-screen ">
+    <main className=" min-h-screen">
       <div className="max-w-3xl sm:text-lg text-dark-200 prose py-10 px-2 xs:px-5 sm:p-x-10 mb-10">
         <h1 className="text-4xl xs:text-5xl sm:text-7xl font-bold font-serif ">
           Everyone has a story to tell.

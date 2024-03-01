@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const RegistrationPage = () => {
   return (
-    <main className="bg-offWhite py-10">
+    <main className="bg-offWhite py-10 min-h-screen px-2 xs:px-5 sm:px-0">
       <h1 className="text-3xl font-bold font-sans text-center">
         Create your account
       </h1>
