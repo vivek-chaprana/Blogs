@@ -2,6 +2,7 @@
 import { fallbackImageUrl } from "@/lib/constants";
 import {
   Avatar,
+  Badge,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -22,7 +23,10 @@ import {
   BsQuestionCircle,
 } from "react-icons/bs";
 
-export default function NavbarUserBlock(props: { user: User }) {
+export default function NavbarUserBlock(props: {
+  user: User;
+  notificationsCount: number;
+}) {
   const {
     user: { name, image, email, username },
   } = props ?? {};
@@ -55,11 +59,23 @@ export default function NavbarUserBlock(props: { user: User }) {
           >
             New Story
           </DropdownItem>
+
           <DropdownItem
             as={Link}
             href="/notifications"
             key="notifications"
-            startContent={<BsBell />}
+            startContent={
+              <Badge
+                content={
+                  props.notificationsCount > 0 ? props.notificationsCount : null
+                }
+                size="sm"
+                color="danger"
+                placement="top-right"
+              >
+                <BsBell />
+              </Badge>
+            }
           >
             Notifications
           </DropdownItem>

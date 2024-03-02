@@ -71,7 +71,10 @@ export default async function Navbar() {
               </Badge>
             </NavbarItem>
 
-            <NavbarUserBlock user={user} />
+            <NavbarUserBlock
+              user={user}
+              notificationsCount={notificationsCount}
+            />
           </>
         ) : (
           <NavbarItem className="flex gap-2 text-sm items-center ">
