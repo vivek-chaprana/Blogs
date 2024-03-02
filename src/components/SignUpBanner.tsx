@@ -56,7 +56,12 @@ export default function SignUpBanner() {
               Tell your story. Find your audience.
             </span>
 
-            <Button className="text-white bg-dark-200" radius="full">
+            <Button
+              as={Link}
+              href="/register"
+              className="text-white bg-dark-200"
+              radius="full"
+            >
               Sign up for free{" "}
             </Button>
           </div>
