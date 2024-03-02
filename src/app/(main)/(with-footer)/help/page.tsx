@@ -77,9 +77,9 @@ export default async function Help() {
 
       <section
         id="faqs"
-        className="py-10 flex flex-col gap-10  mx-auto max-w-4xl "
+        className="py-10 flex flex-col gap-10  mx-auto max-w-4xl px-1 xs:px-3 sm:px-5 lg:px-0 "
       >
-        <h1 className="text-2xl xs:text-3xl font-bold font-serif -ms-10 ">
+        <h1 className="text-2xl xs:text-3xl font-bold font-serif lg:-ms-10 ">
           Frequently Asked Questions
         </h1>
         <div

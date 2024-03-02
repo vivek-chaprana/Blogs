@@ -1,7 +1,5 @@
 import BlogRenderer from "@/components/BlogRenderer";
 import SquareBlogCard from "@/components/SquareBlogCard";
-import FollowButton from "@/components/sub-components/FollowButton";
-import UnfollowButton from "@/components/sub-components/UnfollowButton";
 import { authOptions } from "@/lib/auth/auth-options";
 import {
   WEBAPP_URL,
@@ -14,8 +12,16 @@ import { Divider, Image } from "@nextui-org/react";
 import { PostStatus, User } from "@prisma/client";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+const SignUpBanner = dynamic(() => import("@/components/SignUpBanner"));
+const FollowButton = dynamic(
+  () => import("@/components/sub-components/FollowButton")
+);
+const UnfollowButton = dynamic(
+  () => import("@/components/sub-components/UnfollowButton")
+);
 
 export async function generateMetadata(params: {
   params: { username: string; blogSlug: string };
@@ -86,6 +92,8 @@ export default async function Blog(params: {
   return (
     <div>
       <BlogRenderer blog={blog} />
+
+      {!userId && <SignUpBanner />}
 
       {/* Recommendations */}
       <div className="min-h-[600px] p-2 md:p-0 bg-offWhite my-10">
