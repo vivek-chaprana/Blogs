@@ -1,6 +1,7 @@
 import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_INITIALS, COMPANY_NAME } from "@/lib/constants";
 import {
+  Badge,
   Button,
   NavbarBrand,
   Navbar as NavbarComponent,
@@ -12,10 +13,18 @@ import Link from "next/link";
 import { BsBell, BsPencilSquare } from "react-icons/bs";
 import NavbarUserBlock from "./NavbarUserBlock";
 import NavbarSearch from "./sub-components/NavbarSearch";
+import prisma from "@/prisma";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   const { user } = session ?? {};
+
+  const notificationsCount = await prisma.notification.count({
+    where: {
+      userId: user?.id,
+      seen: false,
+    },
+  });
 
   return (
     <NavbarComponent className="border-b" maxWidth="xl">
@@ -43,9 +52,23 @@ export default async function Navbar() {
                 Write
               </Button>
 
-              <Button isIconOnly as={Link} href="#" variant="light">
-                <BsBell className="text-lg" />
-              </Button>
+              <Badge
+                content={notificationsCount > 0 ? notificationsCount : null}
+                size="sm"
+                color="danger"
+                shape="circle"
+                placement="top-right"
+              >
+                <Button
+                  radius="full"
+                  isIconOnly
+                  as={Link}
+                  href="/notifications"
+                  variant="light"
+                >
+                  <BsBell className="text-lg" />
+                </Button>
+              </Badge>
             </NavbarItem>
 
             <NavbarUserBlock user={user} />

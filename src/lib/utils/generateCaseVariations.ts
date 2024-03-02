@@ -1,19 +1,22 @@
 export default function generateCaseVariations(query: string) {
-  const lowerCase = query.toLowerCase();
-  const upperCase = query.toUpperCase();
-  const titleCase = query.charAt(0).toUpperCase() + query.slice(1);
-  const camelCase = query.replace(/\s(\w)/g, (_, match) => match.toUpperCase());
-  const pascalCase = query.replace(
+  const string = decodeURIComponent(query);
+
+  const lowerCase = string.toLowerCase();
+  const upperCase = string.toUpperCase();
+  const titleCase = string.charAt(0).toUpperCase() + string.slice(1);
+  const camelCase = string.replace(/\s(\w)/g, (_, match) =>
+    match.toUpperCase()
+  );
+  const pascalCase = string.replace(
     /(\w)(\w*)/g,
     (_, first, rest) => first.toUpperCase() + rest.toLowerCase()
   );
-  const kebabCase = query.replace(/\s/g, "-").toLowerCase();
-  const snakeCase = query.replace(/\s/g, "_").toLowerCase();
-  const dotNotation = query.replace(/\s/g, ".").toLowerCase();
-
+  const kebabCase = string.replace(/\s/g, "-").toLowerCase();
+  const snakeCase = string.replace(/\s/g, "_").toLowerCase();
+  const dotNotation = string.replace(/\s/g, ".").toLowerCase();
   return Array.from(
     new Set([
-      query,
+      string,
       lowerCase,
       upperCase,
       titleCase,

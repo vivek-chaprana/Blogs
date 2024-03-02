@@ -5,12 +5,7 @@ import { Button, cn } from "@nextui-org/react";
 import { Topic } from "@prisma/client";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import {
-  BsChevronLeft,
-  BsChevronRight,
-  BsCompass,
-  BsPlus,
-} from "react-icons/bs";
+import { BsChevronLeft, BsChevronRight, BsPlus } from "react-icons/bs";
 
 const activeClasses = "text-dark-100 border-b-dark-100 border-b-2";
 

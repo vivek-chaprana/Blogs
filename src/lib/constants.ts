@@ -45,7 +45,7 @@ export const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 // Editor
 export const WORDS_PER_MINUTE = 200;
 export const TIME_PER_IMAGE = 0.083;
-export const CHARACTER_LIMIT = 2000;
+export const CHARACTER_LIMIT = 10000;
 
 // Images Options
 export const MAX_FILE_SIZE = 5 * 1024 * 1024;

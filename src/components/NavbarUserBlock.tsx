@@ -12,7 +12,15 @@ import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BsBell, BsBookmark, BsBoxArrowRight, BsGear, BsPencil, BsPerson, BsQuestionCircle } from "react-icons/bs";
+import {
+  BsBell,
+  BsBookmark,
+  BsBoxArrowRight,
+  BsGear,
+  BsPencil,
+  BsPerson,
+  BsQuestionCircle,
+} from "react-icons/bs";
 
 export default function NavbarUserBlock(props: { user: User }) {
   const {
@@ -57,16 +65,36 @@ export default function NavbarUserBlock(props: { user: User }) {
           </DropdownItem>
         </DropdownSection>
 
-        <DropdownItem as={Link} href={`/${username}`} key="profile" startContent={<BsPerson />}>
+        <DropdownItem
+          as={Link}
+          href={`/${username}`}
+          key="profile"
+          startContent={<BsPerson />}
+        >
           My Profile
         </DropdownItem>
-        <DropdownItem as={Link} href="/saved" key="saved" startContent={<BsBookmark />}>
+        <DropdownItem
+          as={Link}
+          href="/saved"
+          key="saved"
+          startContent={<BsBookmark />}
+        >
           Saved
         </DropdownItem>
-        <DropdownItem as={Link} href="/settings" key="settings" startContent={<BsGear />}>
+        <DropdownItem
+          as={Link}
+          href="/settings"
+          key="settings"
+          startContent={<BsGear />}
+        >
           Settings
         </DropdownItem>
-        <DropdownItem as={Link} href="/help" key="help_and_feedback" startContent={<BsQuestionCircle />}>
+        <DropdownItem
+          as={Link}
+          href="/help"
+          key="help_and_feedback"
+          startContent={<BsQuestionCircle />}
+        >
           Help & Feedback
         </DropdownItem>
         <DropdownItem

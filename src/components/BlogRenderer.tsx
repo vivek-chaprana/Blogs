@@ -208,7 +208,12 @@ const BlogTags = ({ tags }: { tags: string[] }) => {
     <div className="flex flex-wrap gap-2 my-10">
       {!!tags?.length &&
         tags.map((tag) => (
-          <Chip key={tag} className="bg-gray-200 p-3 capitalize">
+          <Chip
+            as={Link}
+            href={`/search/${tag}/tags`}
+            key={tag}
+            className="bg-gray-200 p-3 capitalize"
+          >
             {tag}
           </Chip>
         ))}

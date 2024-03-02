@@ -1,10 +1,13 @@
 import OtherLoginsRegistrationPage from "@/components/OtherLoginsRegistrationPage";
 import SignUpForm from "@/components/SignUpForm";
+import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME } from "@/lib/constants";
 import DividerWithText from "@/ui/DividerWithText";
 import { Divider } from "@nextui-org/react";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign Up | " + COMPANY_NAME,
@@ -12,7 +15,10 @@ export const metadata: Metadata = {
     "Create your account on " + COMPANY_NAME + " and join the community.",
 };
 
-const RegistrationPage = () => {
+const RegistrationPage = async () => {
+  const session = await getServerSession(authOptions);
+  if (session?.user) redirect("/");
+
   return (
     <main className="bg-offWhite py-10 min-h-screen px-2 xs:px-5 sm:px-0">
       <h1 className="text-3xl font-bold font-sans text-center">

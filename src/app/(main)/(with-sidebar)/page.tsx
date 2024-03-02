@@ -94,27 +94,7 @@ export default async function Home({
           <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
         ))
       ) : (
-        <div className="text-center text-lg font-light py-10">
-          No blogs found
-        </div>
-      )}
-      {!!blogs.length ? (
-        blogs.map((blog) => (
-          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
-        ))
-      ) : (
-        <div className="text-center text-lg font-light py-10">
-          No blogs found
-        </div>
-      )}
-      {!!blogs.length ? (
-        blogs.map((blog) => (
-          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
-        ))
-      ) : (
-        <div className="text-center text-lg font-light py-10">
-          No blogs found
-        </div>
+        <div className="text-center text-lg py-10">No blogs yet!</div>
       )}
       <Loading />
     </section>

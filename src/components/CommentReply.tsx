@@ -112,7 +112,6 @@ export default function CommentReply({
           variant="light"
           onClick={() => setShowReplies(false)}
           className="w-min mx-auto text-sm"
-          isLoading={isLoading}
         >
           Hide replies
         </Button>

@@ -1,10 +1,11 @@
 import { EditorPublishModalInputType } from "@/components/EditorPublishModal";
+import { sendNotification } from "@/lib/actions/notification";
 import { authOptions } from "@/lib/auth/auth-options";
 import generateUniqueSlug from "@/lib/utils/generateUniqueSlug";
 import getErrorMessage from "@/lib/utils/getErrorMessage";
 import mySlugify from "@/lib/utils/mySlugify";
 import prisma from "@/prisma";
-import { PostStatus } from "@prisma/client";
+import { NotificationType, PostStatus } from "@prisma/client";
 import { JSONContent } from "@tiptap/core";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -36,6 +37,41 @@ export async function POST(req: NextRequest) {
   const slug = await generateUniqueSlug(data.title, userId);
 
   try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        username: true,
+        followedByIDs: true,
+        image: true,
+        name: true,
+      },
+    });
+
+    if (!user)
+      return NextResponse.json(
+        { status: false, message: "User not found." },
+        { status: 404 }
+      );
+
+    const topic = await prisma.topic.findUnique({
+      where: {
+        slug: mySlugify(data.topic),
+      },
+      select: {
+        id: true,
+        userIDs: true,
+        name: true,
+      },
+    });
+
+    if (!topic)
+      return NextResponse.json(
+        { status: false, message: "Topic not found." },
+        { status: 404 }
+      );
+
     await prisma.blogPost.create({
       data: {
         title: data.title,
@@ -55,10 +91,31 @@ export async function POST(req: NextRequest) {
         },
         topic: {
           connect: {
-            slug: mySlugify(data.topic),
+            id: topic.id,
           },
         },
       },
+    });
+
+    if (data.status !== PostStatus.PUBLISHED)
+      return NextResponse.json({ success: true });
+
+    // Sending notification to followers
+    await sendNotification({
+      userIds: user.followedByIDs,
+      link: `/${user.username}/${slug}`,
+      message: `${user.name || "@" + user.username} published a new blog.`,
+      notificationType: NotificationType.FOLLOWER_POST,
+      imageUrl: user.image ?? undefined,
+    });
+
+    // Sending notification to topic followers
+    await sendNotification({
+      userIds: topic.userIDs.filter((id) => id !== userId),
+      link: `/${user.username}/${slug}`,
+      message: `A new blog was published in ${topic.name}.`,
+      notificationType: NotificationType.TOPIC_POST,
+      imageUrl: user.image ?? undefined,
     });
 
     return NextResponse.json({ success: true });

@@ -54,17 +54,18 @@ model User {
   sessions               Session[]
   createdAt              DateTime  @default(now())
 
-  blogPost          BlogPost[] @relation("BlogPostAuthor")
+  blogPost          BlogPost[]     @relation("BlogPostAuthor")
   comment           Comment[]
   savedBlogPosts    BlogPost[]
-  followedBy        User[]     @relation("UserFollows", fields: [followedByIDs], references: [id])
-  followedByIDs     String[]   @db.ObjectId
-  following         User[]     @relation("UserFollows", fields: [followingIDs], references: [id])
-  followingIDs      String[]   @db.ObjectId
-  followingTopicIDs String[]   @db.ObjectId
-  followingTopics   Topic[]    @relation(fields: [followingTopicIDs], references: [id])
-  likedBlogPosts    BlogPost[] @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
-  likedBlogPostsIds String[]   @db.ObjectId
+  followedBy        User[]         @relation("UserFollows", fields: [followedByIDs], references: [id])
+  followedByIDs     String[]       @db.ObjectId
+  following         User[]         @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs      String[]       @db.ObjectId
+  followingTopicIDs String[]       @db.ObjectId
+  followingTopics   Topic[]        @relation(fields: [followingTopicIDs], references: [id])
+  likedBlogPosts    BlogPost[]     @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
+  likedBlogPostsIds String[]       @db.ObjectId
+  Notification      Notification[]
 }
 
 model VerificationToken {
@@ -127,9 +128,33 @@ model Comment {
   replies         Comment[] @relation("replies")
 }
 
+model Notification {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String           @db.ObjectId
+  message   String
+  timestamp DateTime         @default(now())
+  seen      Boolean          @default(false)
+  link      String
+  image     String?
+  type      NotificationType
+
+  user User @relation(fields: [userId], references: [id])
+}
+
 // Enum for blog post status
 enum PostStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+// Enum for notification type
+enum NotificationType {
+  FOLLOW
+  COMMENT
+  REPLY
+  FOLLOWER_POST
+  TOPIC_POST
+  SYSTEM
+  ANNOUNCEMENT
 }

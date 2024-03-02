@@ -54,7 +54,7 @@ export default async function NotFound() {
         </section>
 
         {blogs && (
-          <section className="max-w-4xl mx-auto grid grid-cols-2 py-5 gap-5 ">
+          <section className="max-w-4xl mx-auto grid grid-cols-2 py-5 gap-5 px-2 md:px-0 ">
             {blogs.map((blog) => (
               <SquareBlogCard blog={blog} key={blog.id} userId={userId} />
             ))}

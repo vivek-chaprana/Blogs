@@ -1,10 +1,13 @@
 import ErrorBlock from "@/components/ErrorBlock";
 import LoginForm from "@/components/LoginForm";
 import OtherLogins from "@/components/OtherLogins";
-import DividerWithText from "@/ui/DividerWithText";
-import Link from "next/link";
-import { Metadata } from "next";
+import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME } from "@/lib/constants";
+import DividerWithText from "@/ui/DividerWithText";
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign In | " + COMPANY_NAME,
@@ -12,7 +15,7 @@ export const metadata: Metadata = {
     "Log in to your account on " + COMPANY_NAME + " and start writing.",
 };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -20,6 +23,9 @@ export default function LoginPage({
   const error = Array.isArray(searchParams.error)
     ? searchParams.error[0]
     : searchParams.error;
+
+  const session = await getServerSession(authOptions);
+  if (session?.user) redirect("/");
 
   return (
     <main className="bg-offWhite py-10 min-h-screen px-2 xs:px-5 sm:px-0">
