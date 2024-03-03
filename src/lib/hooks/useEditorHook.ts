@@ -7,8 +7,14 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
+import Superscript from "@tiptap/extension-superscript";
+import Subscript from "@tiptap/extension-subscript";
+import Highlight from "@tiptap/extension-highlight";
+import Youtube from "@tiptap/extension-youtube";
 import { JSONContent, useEditor } from "@tiptap/react";
+import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
+import { WEBAPP_URL } from "../constants";
 
 export const useEditorHook = (editable?: boolean, content?: JSONContent) => {
   const editor = useEditor({
@@ -40,6 +46,21 @@ export const useEditorHook = (editable?: boolean, content?: JSONContent) => {
         },
       }),
       Typography,
+      Image.configure({
+        allowBase64: true,
+      }),
+      Superscript,
+      Subscript,
+      Highlight.configure({
+        multicolor: true,
+      }),
+      Youtube.configure({
+        controls: true,
+        allowFullscreen: false,
+        autoplay: false,
+        origin: WEBAPP_URL,
+        progressBarColor: "black",
+      }),
     ],
     injectCSS: true,
     editorProps: {

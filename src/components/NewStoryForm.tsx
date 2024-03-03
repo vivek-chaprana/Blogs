@@ -10,8 +10,9 @@ import { User } from "next-auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { RiSettings3Fill } from "react-icons/ri";
+import { RiQuestionLine, RiSettings3Fill } from "react-icons/ri";
 import { z } from "zod";
+import EditorHelpModal from "./EditorHelpModal";
 import EditorPublishModal from "./EditorPublishModal";
 import EditorSettingsModal from "./EditorSettingsModal";
 
@@ -39,6 +40,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
   } = useForm<NewStoryFormInputType>({ resolver: zodResolver(FormSchema) });
 
   const settingModal = useDisclosure();
+  const helpModal = useDisclosure();
   const publishModal = useDisclosure();
 
   const [showTopbar, setShowTopbar] = useState(true);
@@ -53,6 +55,15 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
           <strong>{blog?.status || "Draft"} </strong> in {user.name}
         </span>
         <div className="flex items-center  gap-4">
+          <Button
+            variant="light"
+            isIconOnly
+            className="text-xl"
+            onClick={helpModal.onOpen}
+          >
+            <RiQuestionLine />
+          </Button>
+
           {/* Editor Settings */}
           <Button
             variant="light"
@@ -99,6 +110,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
           showWordCounter={showWordCounter}
         />
       )}
+      <EditorHelpModal modal={helpModal} />
       {/* Editor Settings Modal */}
       <EditorSettingsModal
         isOpen={settingModal.isOpen}

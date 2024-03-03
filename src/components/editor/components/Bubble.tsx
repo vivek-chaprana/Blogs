@@ -199,20 +199,20 @@ function Bubble({ editor }: { editor: Editor }) {
             colors.map((col, index) => (
               <DropdownItem
                 onClick={() => {
-                  col !== "default"
-                    ? editor.commands.setColor(col)
+                  col.content !== "default"
+                    ? editor.commands.setColor(col.value)
                     : editor.commands.unsetColor();
                 }}
-                startContent={<RiFontColor fill={col} />}
+                startContent={<RiFontColor fill={col.value} />}
                 key={index}
                 className={cn(
                   "capitalize",
-                  editor.isActive("textStyle", { color: col })
+                  editor.isActive("textStyle", { color: col.value })
                     ? "bg-gray-200"
                     : ""
                 )}
               >
-                {col}
+                {col.content}
               </DropdownItem>
             ))}
         </DropdownMenu>

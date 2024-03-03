@@ -7,6 +7,8 @@ import {
   RiListUnordered,
 } from "react-icons/ri";
 import { TooltipButton } from ".";
+import AddEditImageBtn from "./AddEditImageBtn";
+import YoutubeBtn from "./YoutubeBtn";
 
 export default function Floating({ editor }: { editor: Editor }) {
   if (!editor) return null;
@@ -41,6 +43,9 @@ export default function Floating({ editor }: { editor: Editor }) {
         icon={<RiCodeBoxLine />}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       />
+
+      <AddEditImageBtn editor={editor} />
+      <YoutubeBtn editor={editor} />
     </FloatingMenu>
   );
 }

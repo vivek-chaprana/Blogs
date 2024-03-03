@@ -3,7 +3,7 @@
 import { CHARACTER_LIMIT } from "@/lib/constants";
 import { EditorContent, Editor as EditorType } from "@tiptap/react";
 import dynamic from "next/dynamic";
-import Loading from "../Loading";
+import Loading from "@/components/Loading";
 
 const Bubble = dynamic(() => import("@/components/editor/components/Bubble"));
 const CharacterContainer = dynamic(
@@ -24,10 +24,11 @@ interface EditorProps {
 
 /*
   TODO: In future might add.. 
-  - Subscript
-  - Superscipt
-  - Highlight
-  - Images support
+  - Subscript ✅
+  - Superscipt  ✅
+  - Highlight ✅
+  - Images support ✅
+  - Youtube video support ✅
   - A guide for keyboard shortcuts
 
   This looks like an overkill to me though! Still we'll see. 

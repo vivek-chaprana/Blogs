@@ -3005,6 +3005,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-highlight@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@tiptap/extension-highlight@npm:2.2.4"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+  checksum: 10c0/ae27b553682d75cbef81a55a0a7b1ae5367c5cd12c498cc39b4718d84d9782a1d2555721d44d1724fe5b05996da8f7c46611ec6f53c023f61556a16df3860392
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-history@npm:^2.1.16":
   version: 2.1.16
   resolution: "@tiptap/extension-history@npm:2.1.16"
@@ -3101,6 +3110,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-subscript@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@tiptap/extension-subscript@npm:2.2.4"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+  checksum: 10c0/f8d5e952f16a384d412dfa78a818763bca9dfe062f87abd716eb217a1ef18478f4bac7511d9d88c8f3c61001abf736267cb12343de0609023d876783fe6eefd8
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-superscript@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@tiptap/extension-superscript@npm:2.2.4"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+  checksum: 10c0/50dee65ff82668b7b3fd9c6708f51bd79be8718fc3d297a760abee647986a38603c230efe58b1674ed06b624cd1b54845d78d21b9603aa38978402e7f67054e8
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-text-align@npm:^2.1.16":
   version: 2.1.16
   resolution: "@tiptap/extension-text-align@npm:2.1.16"
@@ -3143,6 +3170,15 @@ __metadata:
   peerDependencies:
     "@tiptap/core": ^2.0.0
   checksum: 10c0/6eb103cac24f6114c6daf5ac046946444705503057c09375d354c6c1699676d5cd790e006b53afb361cf97a61163961220973b72902a31a0d7275354345e2265
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-youtube@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@tiptap/extension-youtube@npm:2.2.4"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0
+  checksum: 10c0/48a585ac8a761cd7ffe10470fcc731bf9df741f22c456b165698ac9cca19404a31d07f849b8037459e95182ab3a3b929a013bb2d3374ef7344d7220a733c8b95
   languageName: node
   linkType: hard
 
@@ -3796,14 +3832,18 @@ __metadata:
     "@tiptap/extension-floating-menu": "npm:^2.1.16"
     "@tiptap/extension-focus": "npm:^2.1.16"
     "@tiptap/extension-font-family": "npm:^2.1.16"
+    "@tiptap/extension-highlight": "npm:^2.2.4"
     "@tiptap/extension-image": "npm:^2.1.16"
     "@tiptap/extension-link": "npm:^2.1.16"
     "@tiptap/extension-list-item": "npm:^2.1.16"
     "@tiptap/extension-placeholder": "npm:^2.1.16"
+    "@tiptap/extension-subscript": "npm:^2.2.4"
+    "@tiptap/extension-superscript": "npm:^2.2.4"
     "@tiptap/extension-text-align": "npm:^2.1.16"
     "@tiptap/extension-text-style": "npm:^2.1.16"
     "@tiptap/extension-typography": "npm:^2.1.16"
     "@tiptap/extension-underline": "npm:^2.1.16"
+    "@tiptap/extension-youtube": "npm:^2.2.4"
     "@tiptap/html": "npm:^2.2.1"
     "@tiptap/pm": "npm:^2.1.16"
     "@tiptap/react": "npm:^2.1.16"

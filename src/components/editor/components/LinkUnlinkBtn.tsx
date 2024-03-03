@@ -28,8 +28,8 @@ export default function LinkUnlinkBtn({ editor, variant }: LinkUnlinkBtnProps) {
       urlInputSchema.parse(url);
     } catch {
       setIsInvalid(true);
+      return;
     }
-
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
     setUrl("");
     setIsInvalid(false);
@@ -37,10 +37,11 @@ export default function LinkUnlinkBtn({ editor, variant }: LinkUnlinkBtnProps) {
 
   return !editor.getAttributes("link").href ? (
     <Popover
+      placement="bottom"
       isOpen={isLinkPopupOpen}
       onOpenChange={(open) => setIsLinkPopupOpen(open)}
     >
-      <PopoverTrigger>
+      <PopoverTrigger title="Add Link">
         <Button isIconOnly variant={variant} className="text-xl col-span-1">
           <RiLink />
         </Button>
@@ -63,17 +64,17 @@ export default function LinkUnlinkBtn({ editor, variant }: LinkUnlinkBtnProps) {
           />
           <div className="w-full flex justify-between">
             <Button
-              className="bg-dark-200 text-gr hover:bg-black hover:text-white"
-              onClick={handleLinking}
-            >
-              Add
-            </Button>
-            <Button
               color="danger"
               variant="light"
               onClick={() => setIsLinkPopupOpen(false)}
             >
               Cancel
+            </Button>
+            <Button
+              className="bg-dark-200 text-gr hover:bg-black hover:text-white"
+              onClick={handleLinking}
+            >
+              Add
             </Button>
           </div>
         </form>

@@ -13,16 +13,46 @@ import {
 } from "react-icons/ri";
 
 export const colors = [
-  "default",
-  "gray",
-  "brown",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "purple",
-  "pink",
-  "red",
+  {
+    content: "default",
+    value: "default",
+  },
+  {
+    content: "gray",
+    value: "#808080",
+  },
+  {
+    content: "brown",
+    value: "#A52A2A",
+  },
+  {
+    content: "orange",
+    value: "#FFA500",
+  },
+  {
+    content: "yellow",
+    value: "#FFFF00",
+  },
+  {
+    content: "green",
+    value: "#008000",
+  },
+  {
+    content: "blue",
+    value: "#0000FF",
+  },
+  {
+    content: "purple",
+    value: "#800080",
+  },
+  {
+    content: "pink",
+    value: "#FFC0CB",
+  },
+  {
+    content: "red",
+    value: "#FF0000",
+  },
 ];
 
 export const textAlignments = [

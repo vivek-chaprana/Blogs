@@ -33,6 +33,7 @@ const config: Config = {
         brand: ["var(--font-brand), serif"],
       },
       gridTemplateColumns: {
+        "13": "repeat(13, minmax(0, 1fr))",
         "20": "repeat(20, minmax(0, 1fr))",
       },
       animation: {
