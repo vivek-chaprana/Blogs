@@ -55,6 +55,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
           <strong>{blog?.status || "Draft"} </strong> in {user.name}
         </span>
         <div className="flex items-center  gap-4">
+          {/* Editor Help */}
           <Button
             variant="light"
             isIconOnly
@@ -101,6 +102,8 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
         }}
         defaultValue={blog?.title || ""}
       />
+
+      {/* Editor */}
       {editor && (
         <Editor
           editor={editor}
@@ -110,7 +113,10 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
           showWordCounter={showWordCounter}
         />
       )}
+
+      {/* Editor Help Modal */}
       <EditorHelpModal modal={helpModal} />
+
       {/* Editor Settings Modal */}
       <EditorSettingsModal
         isOpen={settingModal.isOpen}
@@ -124,6 +130,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
         showWordCounter={showWordCounter}
         setShowWordCounter={setShowWordCounter}
       />
+
       {/* Publish Modal */}
       <EditorPublishModal
         isOpen={publishModal.isOpen}

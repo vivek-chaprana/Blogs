@@ -43,9 +43,12 @@ const EditorSettingsModal = (props: EditorSettingsModalProps) => {
               Editor settings
             </ModalHeader>
             <ModalBody>
-              <div className=" flex flex-col gap-2 ">
+              <div className=" flex flex-col gap-2  ">
                 <Switch
-                  size="sm"
+                  classNames={{
+                    wrapper: "group-data-[selected=true]:bg-dark-200 ",
+                  }}
+                  size="md"
                   className="capitalize"
                   isSelected={showTopbar}
                   onValueChange={setShowTopbar}
@@ -53,7 +56,10 @@ const EditorSettingsModal = (props: EditorSettingsModalProps) => {
                   Topbar
                 </Switch>
                 <Switch
-                  size="sm"
+                  classNames={{
+                    wrapper: "group-data-[selected=true]:bg-dark-200 ",
+                  }}
+                  size="md"
                   className="capitalize"
                   isSelected={showBubble}
                   onValueChange={setShowBubble}
@@ -61,7 +67,10 @@ const EditorSettingsModal = (props: EditorSettingsModalProps) => {
                   Bubble Menu
                 </Switch>
                 <Switch
-                  size="sm"
+                  classNames={{
+                    wrapper: "group-data-[selected=true]:bg-dark-200 ",
+                  }}
+                  size="md"
                   className="capitalize"
                   isSelected={showFloating}
                   onValueChange={setShowFloating}
@@ -69,7 +78,10 @@ const EditorSettingsModal = (props: EditorSettingsModalProps) => {
                   Floating Menu
                 </Switch>
                 <Switch
-                  size="sm"
+                  classNames={{
+                    wrapper: "group-data-[selected=true]:bg-dark-200 ",
+                  }}
+                  size="md"
                   className="capitalize"
                   isSelected={showWordCounter}
                   onValueChange={setShowWordCounter}
@@ -79,7 +91,11 @@ const EditorSettingsModal = (props: EditorSettingsModalProps) => {
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" variant="light" onPress={onClose}>
+              <Button
+                color="primary"
+                className="bg-dark-200 text-gray-50"
+                onPress={onClose}
+              >
                 Done
               </Button>
             </ModalFooter>
