@@ -22,18 +22,6 @@ interface EditorProps {
   showWordCounter?: boolean;
 }
 
-/*
-  TODO: In future might add.. 
-  - Subscript ✅
-  - Superscipt  ✅
-  - Highlight ✅
-  - Images support ✅
-  - Youtube video support ✅
-  - A guide for keyboard shortcuts
-
-  This looks like an overkill to me though! Still we'll see. 
-*/
-
 const Editor = ({
   editor,
   showTopbar,
