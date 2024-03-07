@@ -1,6 +1,6 @@
 import { Skeleton } from "@nextui-org/react";
 
-export default function () {
+export default function NotificationCardSkeleton() {
   return (
     <div className="flex items-center gap-2 px-2 py-5 xs:p-5 border-b last:border-b-0 cursor-pointer rounded-lg rounded-s-none">
       <Skeleton className="w-[40px] h-[40px] rounded-full" />

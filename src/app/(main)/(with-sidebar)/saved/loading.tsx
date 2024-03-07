@@ -1,7 +1,7 @@
 import { BlogCardSkeleton } from "@/components/skeleton";
 import { Skeleton } from "@nextui-org/react";
 
-export default function () {
+export default function Loading() {
   return (
     <div className="py-10">
       <div className="flex justify-between items-center ">

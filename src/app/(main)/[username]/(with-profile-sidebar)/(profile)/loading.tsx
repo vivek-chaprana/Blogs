@@ -1,6 +1,6 @@
 import { BlogCardSkeleton } from "@/components/skeleton";
 
-export default function () {
+export default function Loading() {
   return (
     <>
       {new Array(3).fill(0).map((_, i) => (

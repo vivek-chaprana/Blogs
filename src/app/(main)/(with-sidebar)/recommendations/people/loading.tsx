@@ -1,6 +1,6 @@
 import { UserCardSkeleton } from "@/components/skeleton";
 
-export default function () {
+export default function Loading() {
   return (
     <div className="py-5">
       {new Array(5).fill(null).map((_, i) => (

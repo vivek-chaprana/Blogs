@@ -1,7 +1,7 @@
 import { UserCardSkeleton } from "@/components/skeleton";
 import { Skeleton } from "@nextui-org/react";
 
-export default function () {
+export default function Loading() {
   return (
     <div className="p-4">
       <Skeleton className="rounded-md">

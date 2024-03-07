@@ -1,6 +1,6 @@
 import { Button, Skeleton } from "@nextui-org/react";
 
-export default function () {
+export default function UserCardSkeleton() {
   return (
     <div className="flex justify-between items-center ">
       <div className="flex items-center gap-5 w-full">
