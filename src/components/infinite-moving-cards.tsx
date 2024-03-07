@@ -3,9 +3,10 @@
 import { fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
-import { Avatar, cn } from "@nextui-org/react";
+import { Avatar, Skeleton, cn } from "@nextui-org/react";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
+import { BsDot } from "react-icons/bs";
 
 export const InfiniteMovingCards = ({
   items,
@@ -14,7 +15,7 @@ export const InfiniteMovingCards = ({
   pauseOnHover = true,
   className,
 }: {
-  items: FullBlog[];
+  items?: FullBlog[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
@@ -88,40 +89,66 @@ export const InfiniteMovingCards = ({
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
-        {items.map((blog) => (
-          <li
-            className="w-[250px] sm:w-[350px] max-w-full relative rounded-2xl border flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] flex flex-col justify-evenly gap-2"
-            key={blog.id}
-          >
-            <div className="flex items-center gap-1 text-sm font-semibold ">
-              <Link
-                href={`/${blog.author.username}`}
-                className="inline-flex gap-2 items-center "
+        {!!items
+          ? items.map((blog) => (
+              <li
+                className="w-[250px] sm:w-[350px] max-w-full relative rounded-2xl border flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] flex flex-col justify-evenly gap-2"
+                key={blog.id}
               >
-                <Avatar
-                  src={blog.author.image || fallbackImageUrl}
-                  alt={blog.author.name || blog.author.username}
-                  radius="full"
-                  size="sm"
-                />
-                {blog.author.name || "@" + blog.author.username}
-              </Link>
-              <span className="font-normal">in</span>
-              <Link href={`/topics/${blog.topic.slug}`}>{blog.topic.name}</Link>
-            </div>
-            <Link href={`/${blog.author.username}/${blog.slug}`}>
-              <h3 className="text-lg font-semibold line-clamp-2">
-                {blog.title}
-              </h3>
-              <p className=" line-clamp-1">{blog.description}</p>
-            </Link>
+                <div className="flex items-center gap-1 text-sm font-semibold ">
+                  <Link
+                    href={`/${blog.author.username}`}
+                    className="inline-flex gap-2 items-center "
+                  >
+                    <Avatar
+                      src={blog.author.image || fallbackImageUrl}
+                      alt={blog.author.name || blog.author.username}
+                      radius="full"
+                      size="sm"
+                    />
+                    {blog.author.name || "@" + blog.author.username}
+                  </Link>
+                  <span className="font-normal">in</span>
+                  <Link href={`/topics/${blog.topic.slug}`}>
+                    {blog.topic.name}
+                  </Link>
+                </div>
+                <Link href={`/${blog.author.username}/${blog.slug}`}>
+                  <h3 className="text-lg font-semibold line-clamp-2">
+                    {blog.title}
+                  </h3>
+                  <p className=" line-clamp-1">{blog.description}</p>
+                </Link>
 
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span>{getFormattedDate(blog.createdAt)}</span>
-              {blog?.readingTime && <span>{blog?.readingTime} min read</span>}
-            </div>
-          </li>
-        ))}
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <span>{getFormattedDate(blog.createdAt)}</span>
+                  <BsDot />
+                  {blog?.readingTime && (
+                    <span>{blog?.readingTime} min read</span>
+                  )}
+                </div>
+              </li>
+            ))
+          : new Array(5).fill(0).map((_, i) => (
+              <li
+                className="w-[250px] sm:w-[350px] max-w-full relative rounded-2xl border flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] flex flex-col justify-evenly gap-2"
+                key={i}
+              >
+                <div className="flex gap-2">
+                  <Skeleton className="rounded-full w-[30px] h-[30px]" />
+                  <Skeleton className="rounded-md h-6 w-7/12" />
+                </div>
+
+                <Skeleton className="h-8 w-3/4 rounded-md" />
+                <Skeleton className="h-4 w-11/12 rounded-md" />
+                <Skeleton className="h-4 w-2/5 rounded-md" />
+
+                <div className="flex gap-2">
+                  <Skeleton className="w-1/3 h-4 rounded-md" />
+                  <Skeleton className="w-1/3 h-4 rounded-md" />
+                </div>
+              </li>
+            ))}
       </ul>
     </div>
   );

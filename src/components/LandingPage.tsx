@@ -6,11 +6,13 @@ import { TypewriterEffectSmooth } from "@/components/TypewriterEffect ";
 import { WavyBackground } from "@/components/WavyBackground";
 import { InfiniteMovingCards } from "@/components/infinite-moving-cards";
 import prisma from "@/prisma";
-
-import { Button, Chip } from "@nextui-org/react";
+import { Button, Chip, Skeleton } from "@nextui-org/react";
 import { PostStatus } from "@prisma/client";
 import Link from "next/link";
+import { Suspense } from "react";
 import { MdOutlineTrendingUp } from "react-icons/md";
+import Await from "./Await";
+import { BlogCardSkeleton } from "./skeleton";
 
 const words = [
   {
@@ -26,7 +28,7 @@ const words = [
 ];
 
 export default async function LandingPage() {
-  const blogs = await prisma.blogPost.findMany({
+  const blogsPromise = prisma.blogPost.findMany({
     take: 10,
     where: {
       status: PostStatus.PUBLISHED,
@@ -42,7 +44,7 @@ export default async function LandingPage() {
     },
   });
 
-  const topics = await prisma.topic.findMany({
+  const topicsPromise = prisma.topic.findMany({
     take: 9,
     orderBy: {
       BlogPost: {
@@ -50,8 +52,6 @@ export default async function LandingPage() {
       },
     },
   });
-
-  if (!topics.length) return null;
 
   return (
     <main className="">
@@ -94,16 +94,39 @@ export default async function LandingPage() {
 
         <div>
           <div className="py-10 rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-            <InfiniteMovingCards items={blogs} direction="right" speed="slow" />
+            <Suspense
+              fallback={<InfiniteMovingCards direction="right" speed="slow" />}
+            >
+              <Await promise={blogsPromise}>
+                {(blogs) => (
+                  <InfiniteMovingCards
+                    items={blogs}
+                    direction="right"
+                    speed="slow"
+                  />
+                )}
+              </Await>
+            </Suspense>
           </div>
         </div>
       </section>
 
       <section className="flex max-w-6xl mx-auto gap-10 relative px-2 sm:px-4 lg:px-2">
         <div className="flex-1">
-          {blogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
-          ))}
+          <Suspense
+            fallback={new Array(3).fill(0).map((_, i) => (
+              <BlogCardSkeleton key={i} />
+            ))}
+          >
+            <Await promise={blogsPromise}>
+              {(blogs) => (
+                <>
+                  {!!blogs.length &&
+                    blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)}
+                </>
+              )}
+            </Await>
+          </Suspense>
           <Loading />
         </div>
 
@@ -114,17 +137,33 @@ export default async function LandingPage() {
               Discover more of what matters to you
             </h3>
             <div className="flex flex-wrap gap-2">
-              {topics &&
-                topics.map((topic) => (
-                  <Chip
-                    as={Link}
-                    href={`/topics/${topic.slug}`}
-                    key={topic.id}
-                    classNames={{ base: "px-3 py-5 bg-gray-200" }}
-                  >
-                    {topic.name}
-                  </Chip>
+              <Suspense
+                fallback={new Array(6).fill(0).map((_, i) => (
+                  <Skeleton key={i} className="overflow-hidden rounded-full">
+                    <Chip classNames={{ base: "px-3 py-5 bg-gray-200" }}>
+                      Lorem.
+                    </Chip>
+                  </Skeleton>
                 ))}
+              >
+                <Await promise={topicsPromise}>
+                  {(topics) => (
+                    <>
+                      {!!topics.length &&
+                        topics.map((topic) => (
+                          <Chip
+                            as={Link}
+                            href={`/topics/${topic.slug}`}
+                            key={topic.id}
+                            classNames={{ base: "px-3 py-5 bg-gray-200" }}
+                          >
+                            {topic.name}
+                          </Chip>
+                        ))}
+                    </>
+                  )}
+                </Await>
+              </Suspense>
             </div>
             <Link href="/topics" className="text-sm font-normal text-green-600">
               See more topics
