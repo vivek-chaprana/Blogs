@@ -15,6 +15,7 @@ import { z } from "zod";
 import EditorHelpModal from "./EditorHelpModal";
 import EditorPublishModal from "./EditorPublishModal";
 import EditorSettingsModal from "./EditorSettingsModal";
+import Loading from "./Loading";
 
 const FormSchema = z.object({
   title: z
@@ -104,7 +105,7 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
       />
 
       {/* Editor */}
-      {editor && (
+      {editor ? (
         <Editor
           editor={editor}
           showTopbar={showTopbar}
@@ -112,6 +113,8 @@ export default function NewStoryForm({ user, blog }: NewStoryFormProps) {
           showFloating={showFloating}
           showWordCounter={showWordCounter}
         />
+      ) : (
+        <Loading label="Loading Editor" />
       )}
 
       {/* Editor Help Modal */}

@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import NewStoryForm from "@/components/NewStoryForm";
 import { authOptions } from "@/lib/auth/auth-options";
 import { WEBAPP_URL, fallbackMetadata } from "@/lib/constants";
@@ -5,6 +6,7 @@ import prisma from "@/prisma";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export async function generateMetadata(params: {
   params: { username: string; blogSlug: string };
@@ -68,7 +70,9 @@ export default async function EditBlogPage(params: {
 
   return (
     <main className="min-h-screen bg-white ">
-      <NewStoryForm user={user} blog={blog} />
+      <Suspense fallback={<Loading />}>
+        <NewStoryForm user={user} blog={blog} />
+      </Suspense>
     </main>
   );
 }

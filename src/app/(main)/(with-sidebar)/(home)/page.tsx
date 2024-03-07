@@ -1,5 +1,4 @@
 import BlogCard from "@/components/BlogCard";
-import HomePageTabs from "@/components/HomePageTabs";
 import Loading from "@/components/Loading";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
@@ -86,17 +85,14 @@ export default async function Home({
       },
     });
 
-  return (
-    <section className="">
-      <HomePageTabs topics={foundUser.followingTopics} />
-      {!!blogs.length ? (
-        blogs.map((blog) => (
-          <BlogCard userId={currentUser.id} key={blog.id} blog={blog} />
-        ))
-      ) : (
-        <div className="text-center text-lg py-10">No blogs yet!</div>
-      )}
+  return !!blogs.length ? (
+    <>
+      {blogs.map((blog) => (
+        <BlogCard key={blog.id} userId={currentUser.id} blog={blog} />
+      ))}
       <Loading />
-    </section>
+    </>
+  ) : (
+    <div className="text-center text-lg py-10">No blogs yet!</div>
   );
 }

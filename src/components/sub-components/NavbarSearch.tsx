@@ -10,6 +10,7 @@ export default function NavbarSearch() {
   const router = useRouter();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!search) return;
     if (e.key === "Enter") {
       const searchIs = search.startsWith("@")
         ? "users"

@@ -1,5 +1,10 @@
+import Await from "@/components/Await";
 import BlogCard from "@/components/BlogCard";
 import SquareBlogCard from "@/components/SquareBlogCard";
+import {
+  BlogCardSkeleton,
+  SquareBlogCardSkeleton,
+} from "@/components/skeleton";
 import FollowTopicButton from "@/components/sub-components/FollowTopicButton";
 import UnfollowTopicButton from "@/components/sub-components/UnfollowTopicButton";
 import { authOptions } from "@/lib/auth/auth-options";
@@ -8,6 +13,7 @@ import prisma from "@/prisma";
 import { PostStatus, Topic } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { BsDot } from "react-icons/bs";
 
 export async function generateMetadata({
@@ -49,6 +55,9 @@ export default async function Topic({
         },
       },
       BlogPost: {
+        where: {
+          status: PostStatus.PUBLISHED,
+        },
         include: {
           _count: true,
         },
@@ -113,14 +122,14 @@ export default async function Topic({
   );
 }
 
-async function RecommendedStories({
+function RecommendedStories({
   topic,
   userId,
 }: {
   topic: Topic;
   userId?: string;
 }) {
-  const recommendedStories = await prisma.blogPost.findMany({
+  const promise = prisma.blogPost.findMany({
     where: {
       topicID: topic.id,
       status: PostStatus.PUBLISHED,
@@ -137,8 +146,6 @@ async function RecommendedStories({
     },
   });
 
-  if (!recommendedStories.length) return null;
-
   return (
     <section className="py-10">
       <h2 className="text-xl xs:text-2xl font-sans font-semibold ">
@@ -146,21 +153,33 @@ async function RecommendedStories({
       </h2>
 
       <div className="gap-5 mt-5 grid grid-cols-2">
-        {recommendedStories.map((blog) => (
-          <SquareBlogCard key={blog.id} blog={blog} userId={userId} />
-        ))}
+        <Suspense
+          fallback={
+            <>
+              {new Array(2).fill(0).map((_, i) => (
+                <SquareBlogCardSkeleton key={i} />
+              ))}
+            </>
+          }
+        >
+          <Await promise={promise}>
+            {(recommendedStories) => (
+              <>
+                {!!recommendedStories.length &&
+                  recommendedStories.map((blog) => (
+                    <SquareBlogCard key={blog.id} blog={blog} userId={userId} />
+                  ))}
+              </>
+            )}
+          </Await>
+        </Suspense>
       </div>
     </section>
   );
 }
-async function LatestStories({
-  topic,
-  userId,
-}: {
-  topic: Topic;
-  userId?: string;
-}) {
-  const recommendedStories = await prisma.blogPost.findMany({
+
+function LatestStories({ topic, userId }: { topic: Topic; userId?: string }) {
+  const promise = prisma.blogPost.findMany({
     where: {
       topicID: topic.id,
       status: PostStatus.PUBLISHED,
@@ -175,8 +194,6 @@ async function LatestStories({
     },
   });
 
-  if (!recommendedStories.length) return null;
-
   return (
     <section className="py-10 grid grid-cols-3">
       <h2 className="text-xl xs:text-2xl font-sans font-semibold col-span-full md:col-span-1 ">
@@ -184,9 +201,26 @@ async function LatestStories({
       </h2>
 
       <div className="gap-5 col-span-full md:col-span-2 flex flex-col">
-        {recommendedStories.map((blog) => (
-          <BlogCard userId={userId} key={blog.id} blog={blog} />
-        ))}
+        <Suspense
+          fallback={
+            <>
+              {new Array(3).fill(0).map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))}
+            </>
+          }
+        >
+          <Await promise={promise}>
+            {(recommendedStories) => (
+              <>
+                {!!recommendedStories.length &&
+                  recommendedStories.map((blog) => (
+                    <BlogCard userId={userId} key={blog.id} blog={blog} />
+                  ))}
+              </>
+            )}
+          </Await>
+        </Suspense>
       </div>
     </section>
   );

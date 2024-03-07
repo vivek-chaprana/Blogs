@@ -23,6 +23,7 @@ export default function ManageSaved({
   const router = useRouter();
 
   const handleRemoveFromSaved = async () => {
+    if (!selected.length) return;
     setIsLoading(true);
     try {
       await removeMultipleFromSaved({ blogs: selected });
@@ -79,6 +80,7 @@ export default function ManageSaved({
               color="danger"
               onClick={handleRemoveFromSaved}
               isLoading={isLoading}
+              disabled={!selected.length}
             >
               Remove
             </Button>
@@ -90,6 +92,7 @@ export default function ManageSaved({
             <Checkbox
               key={blog.id}
               value={blog.id}
+              color="primary"
               classNames={{
                 wrapper: manage ? "" : "hidden",
                 label: "px-5 ",

@@ -1,4 +1,6 @@
+import Await from "@/components/Await";
 import SquareBlogCard from "@/components/SquareBlogCard";
+import { SquareBlogCardSkeleton } from "@/components/skeleton";
 import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
@@ -6,6 +8,7 @@ import { PostStatus } from "@prisma/client";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Page Not Found | " + COMPANY_NAME,
@@ -15,7 +18,7 @@ export default async function NotFound() {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  const blogs = await prisma.blogPost.findMany({
+  const promise = prisma.blogPost.findMany({
     where: {
       status: PostStatus.PUBLISHED,
     },
@@ -53,13 +56,32 @@ export default async function NotFound() {
           </Link>
         </section>
 
-        {blogs && (
-          <section className="max-w-4xl mx-auto grid grid-cols-2 py-5 gap-5 px-2 md:px-0 ">
-            {blogs.map((blog) => (
-              <SquareBlogCard blog={blog} key={blog.id} userId={userId} />
-            ))}
-          </section>
-        )}
+        <section className="max-w-4xl mx-auto grid grid-cols-2 py-5 gap-5 px-2 md:px-0 ">
+          <Suspense
+            fallback={
+              <>
+                {new Array(4).fill(null).map((_, i) => (
+                  <SquareBlogCardSkeleton key={i} />
+                ))}
+              </>
+            }
+          >
+            <Await promise={promise}>
+              {(blogs) => (
+                <>
+                  {!!blogs.length &&
+                    blogs.map((blog) => (
+                      <SquareBlogCard
+                        blog={blog}
+                        key={blog.id}
+                        userId={userId}
+                      />
+                    ))}
+                </>
+              )}
+            </Await>
+          </Suspense>
+        </section>
       </main>
     </>
   );

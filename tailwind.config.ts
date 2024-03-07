@@ -39,11 +39,17 @@ const config: Config = {
       animation: {
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        dash: "dash var(--animation-duration, 2.5s) cubic-bezier(0.35, 0.04, 0.63, 0.95) infinite",
       },
       keyframes: {
         scroll: {
           to: {
             transform: "translate(calc(-50% - 0.5rem))",
+          },
+        },
+        dash: {
+          to: {
+            strokeDashoffset: "136",
           },
         },
       },

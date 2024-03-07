@@ -53,7 +53,6 @@ export default async function ProfilePage({
           {userBlogs.map((blog) => (
             <BlogCard userId={user?.id} key={blog.id} blog={blog} />
           ))}
-          <Loading />
         </>
       ) : (
         <div className="text-center py-5 ">No blogs yet!</div>

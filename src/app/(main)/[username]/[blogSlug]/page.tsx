@@ -1,5 +1,7 @@
+import Await from "@/components/Await";
 import BlogRenderer from "@/components/BlogRenderer";
 import SquareBlogCard from "@/components/SquareBlogCard";
+import { SquareBlogCardSkeleton } from "@/components/skeleton";
 import { authOptions } from "@/lib/auth/auth-options";
 import {
   WEBAPP_URL,
@@ -15,6 +17,7 @@ import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 const SignUpBanner = dynamic(() => import("@/components/SignUpBanner"));
 const FollowButton = dynamic(
   () => import("@/components/sub-components/FollowButton")
@@ -148,7 +151,7 @@ export default async function Blog(params: {
   );
 }
 
-async function MoreFromUser({
+function MoreFromUser({
   user,
   blogId,
   userId,
@@ -157,7 +160,7 @@ async function MoreFromUser({
   blogId: string;
   userId?: string;
 }) {
-  const foundUser = await prisma.user.findUnique({
+  const promise = prisma.user.findUnique({
     where: {
       id: user.id,
     },
@@ -184,33 +187,43 @@ async function MoreFromUser({
   if (!user) return null;
 
   return (
-    !!foundUser?.blogPost.length && (
-      <>
-        <Divider className="my-10" />
-        <div>
-          <h2 className="font-semibold mb-3 sm:mb-0">
-            More from {user.name || "@" + user.username}
-          </h2>
+    <Suspense
+      fallback={
+        <FallbackUI title={`More from ${user.name || "@" + user.username}`} />
+      }
+    >
+      <Await promise={promise}>
+        {(foundUser) => (
+          <>
+            {!!foundUser?.blogPost.length && (
+              <>
+                <Divider className="my-10" />
+                <div>
+                  <h2 className="font-semibold mb-3 sm:mb-0">
+                    More from {user.name || "@" + user.username}
+                  </h2>
 
-          <div className="grid grid-cols-2 gap-5 ">
-            {foundUser?.blogPost.map((blog) => (
-              <SquareBlogCard key={blog.id} blog={blog} userId={userId} />
-            ))}
-          </div>
-        </div>
-      </>
-    )
+                  <div className="grid grid-cols-2 gap-5 ">
+                    {foundUser?.blogPost.map((blog) => (
+                      <SquareBlogCard
+                        key={blog.id}
+                        blog={blog}
+                        userId={userId}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </Await>
+    </Suspense>
   );
 }
 
-async function MoreFromTopic({
-  blog,
-  userId,
-}: {
-  blog: FullBlog;
-  userId?: string;
-}) {
-  const moreBlogs = await prisma.blogPost.findMany({
+function MoreFromTopic({ blog, userId }: { blog: FullBlog; userId?: string }) {
+  const promise = prisma.blogPost.findMany({
     where: {
       topic: {
         id: blog.topic.id,
@@ -231,27 +244,41 @@ async function MoreFromTopic({
   });
 
   return (
-    !!moreBlogs.length && (
-      <>
-        <Divider className="my-10" />
-        <div>
-          <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
-            More from topic {blog.topic.name}
-          </h2>
+    <Suspense
+      fallback={<FallbackUI title={`More from topic ${blog.topic.name}`} />}
+    >
+      <Await promise={promise}>
+        {(moreBlogs) => (
+          <>
+            {!!moreBlogs.length && (
+              <>
+                <Divider className="my-10" />
+                <div>
+                  <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
+                    More from topic {blog.topic.name}
+                  </h2>
 
-          <div className="grid grid-cols-2 gap-5">
-            {moreBlogs.map((blog) => (
-              <SquareBlogCard key={blog.id} blog={blog} userId={userId} />
-            ))}
-          </div>
-        </div>
-      </>
-    )
+                  <div className="grid grid-cols-2 gap-5">
+                    {moreBlogs.map((blog) => (
+                      <SquareBlogCard
+                        key={blog.id}
+                        blog={blog}
+                        userId={userId}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </Await>
+    </Suspense>
   );
 }
 
-async function Recommended({ userId }: { userId?: string }) {
-  const recommended = await prisma.blogPost.findMany({
+function Recommended({ userId }: { userId?: string }) {
+  const promise = prisma.blogPost.findMany({
     where: {
       status: PostStatus.PUBLISHED,
     },
@@ -267,21 +294,52 @@ async function Recommended({ userId }: { userId?: string }) {
     },
   });
   return (
-    !!recommended.length && (
-      <>
-        <Divider className="my-10" />
-        <div>
-          <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
-            Recommended from us{" "}
-          </h2>
+    <Suspense fallback={<FallbackUI title={`Recommended from us `} />}>
+      <Await promise={promise}>
+        {(recommended) => (
+          <>
+            {!!recommended.length && (
+              <>
+                <Divider className="my-10" />
+                <div>
+                  <h2 className="font-semibold mb-3 sm:mb-0 lowercase first-letter:uppercase ">
+                    Recommended from us{" "}
+                  </h2>
 
-          <div className="grid grid-cols-2 gap-5">
-            {recommended.map((blog) => (
-              <SquareBlogCard key={blog.id} blog={blog} userId={userId} />
-            ))}
-          </div>
-        </div>
-      </>
-    )
+                  <div className="grid grid-cols-2 gap-5">
+                    {recommended.map((blog) => (
+                      <SquareBlogCard
+                        key={blog.id}
+                        blog={blog}
+                        userId={userId}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </Await>
+    </Suspense>
   );
 }
+
+const FallbackUI = ({ title }: { title: string }) => {
+  return (
+    <>
+      <Divider className="my-10" />
+      <div>
+        <h2 className="font-semibold mb-3 sm:mb-0 first-letter:uppercase ">
+          {title}
+        </h2>
+
+        <div className="grid grid-cols-2 gap-5">
+          {new Array(2).fill(0).map((_, i) => (
+            <SquareBlogCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};

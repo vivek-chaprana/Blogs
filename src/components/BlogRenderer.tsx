@@ -21,6 +21,8 @@ import ShareButton from "./sub-components/ShareButton";
 import UnBookmarkButton from "./sub-components/UnBookmarkButton";
 import UnLikeButton from "./sub-components/UnLikeButton";
 import UnfollowButton from "./sub-components/UnfollowButton";
+import { Suspense } from "react";
+import Loading from "./Loading";
 
 export default async function BlogRenderer({
   blog,
@@ -129,7 +131,11 @@ export default async function BlogRenderer({
 
       <BlogActions blog={blog} user={user || null} />
 
-      {blog.status !== PostStatus.DRAFT && <CommentSection blogId={blog.id} />}
+      {blog.status !== PostStatus.DRAFT && (
+        <Suspense fallback={<Loading label="Loading comments" />}>
+          <CommentSection blogId={blog.id} />
+        </Suspense>
+      )}
     </section>
   );
 }
