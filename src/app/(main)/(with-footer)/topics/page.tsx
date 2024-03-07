@@ -48,7 +48,7 @@ export default async function ExploreTopics() {
         Recommended :{" "}
         {topTopics.map((topic, index) => (
           <Link
-            href={`/topic/${topic.slug}`}
+            href={`/topics/${topic.slug}`}
             key={topic.id}
             className="hover:underline"
           >
@@ -68,7 +68,7 @@ export default async function ExploreTopics() {
               className="flex flex-col col-span-full sm:col-span-1 gap-1 "
             >
               <Link
-                href={"/topic/" + topic.slug}
+                href={"/topics/" + topic.slug}
                 className="text-base xs:text-lg font-semibold text-gray-700 "
               >
                 {topic.name}

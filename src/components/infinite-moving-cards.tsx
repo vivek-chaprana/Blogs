@@ -107,7 +107,7 @@ export const InfiniteMovingCards = ({
                 {blog.author.name || "@" + blog.author.username}
               </Link>
               <span className="font-normal">in</span>
-              <Link href={`/topic/${blog.topic.slug}`}>{blog.topic.name}</Link>
+              <Link href={`/topics/${blog.topic.slug}`}>{blog.topic.name}</Link>
             </div>
             <Link href={`/${blog.author.username}/${blog.slug}`}>
               <h3 className="text-lg font-semibold line-clamp-2">
