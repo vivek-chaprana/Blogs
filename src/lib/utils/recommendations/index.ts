@@ -226,6 +226,18 @@ export async function getTopicsRecommendations({
             },
           },
           take: take - recommendations.length,
+          include: {
+            BlogPost: {
+              include: {
+                _count: true,
+              },
+            },
+            users: {
+              include: {
+                _count: true,
+              },
+            },
+          },
         })),
       ],
     };

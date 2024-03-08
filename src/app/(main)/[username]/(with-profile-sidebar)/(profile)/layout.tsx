@@ -42,7 +42,7 @@ export default async function UserProfileLayout({
         <Link
           href={"/settings"}
           className={cn(
-            "flex items-center justify-center bg-gray-100 h-44 ",
+            "flex items-center justify-center bg-gray-100 h-44 rounded ",
             session?.user.id === user.id
               ? ""
               : "cursor-default pointer-events-none"
