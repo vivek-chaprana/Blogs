@@ -1,8 +1,4 @@
-import {
-  WEBAPP_URL,
-  fallbackCoverImageUrl,
-  fallbackImageUrl,
-} from "@/lib/constants";
+import { WEBAPP_URL, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Avatar, Chip, Image, cn } from "@nextui-org/react";
@@ -81,17 +77,21 @@ const BlogCard = ({
         </div>
 
         <div className="ms-2 sm:ms-10 w-2/5 md:w-[30%] flex items-center  ">
-          <Image
-            alt={blog.title}
-            src={blog.coverImage || fallbackCoverImageUrl}
-          />
+          {blog.coverImage && <Image alt={blog.title} src={blog.coverImage} />}
         </div>
       </Link>
 
       {/* Bottom details */}
-      <div className="text-sm flex items-center justify-between pt-3 md:pt-0 md:max-w-[70%]">
+      <div
+        className={cn(
+          "text-sm flex items-center justify-between pt-3 md:pt-0 md:max-w-[70%]",
+          !blog.coverImage ? "md:max-w-none" : ""
+        )}
+      >
         <div className="flex items-center gap-2">
           <Chip
+            as={Link}
+            href={`/topics/${blog.topic.slug}`}
             size="sm"
             className="capitalize"
             classNames={{ base: "bg-gray-200" }}
@@ -130,7 +130,7 @@ const BlogCard = ({
               <>
                 <ShareButton
                   url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
-                  media={blog.coverImage ?? fallbackCoverImageUrl}
+                  media={blog.coverImage ?? ""}
                   title={blog.title}
                   desc={blog.description ?? undefined}
                   tags={blog.tags}
@@ -153,7 +153,7 @@ const BlogCard = ({
                   size="sm"
                   className="text-lg text-gray-500"
                   url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
-                  media={blog.coverImage ?? fallbackCoverImageUrl}
+                  media={blog.coverImage ?? ""}
                   title={blog.title}
                   desc={blog.description ?? undefined}
                   tags={blog.tags}

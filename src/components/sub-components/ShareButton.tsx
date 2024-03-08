@@ -98,14 +98,14 @@ export default function ShareButton({
   const [copied, setCopied] = useState(false);
 
   return (
-    <Popover backdrop="blur" placement="bottom" showArrow>
+    <Popover backdrop="blur" placement="bottom">
       <PopoverTrigger>
         <Button variant="light" size="sm" isIconOnly {...rest}>
           {children || <BsShare className="text-lg" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto">
-        <div className="flex gap-3 justify-evenly flex-wrap px-2 py-1">
+        <div className="flex gap-3 justify-center flex-wrap px-2 py-1">
           {platforms.map((platform, index) => (
             <Tooltip content={platform.name} key={index} closeDelay={0}>
               <platform.shareButton

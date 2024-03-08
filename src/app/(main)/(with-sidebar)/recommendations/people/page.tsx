@@ -1,42 +1,14 @@
 import UserCard from "@/components/UserCard";
 import { authOptions } from "@/lib/auth/auth-options";
-import prisma from "@/prisma";
+import { getPeopleRecommendations } from "@/lib/utils/recommendations";
 import { getServerSession } from "next-auth";
 
 const People = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      followingTopics: true,
-    },
-  });
-
-  const recommendations = await prisma.user.findMany({
-    where: {
-      id: {
-        not: userId,
-        notIn: currentUser?.followingIDs,
-      },
-
-      blogPost: {
-        some: {
-          topicID: {
-            in: currentUser?.followingTopics.map((topic) => topic.id),
-          },
-        },
-      },
-    },
-    orderBy: {
-      followedBy: {
-        _count: "desc",
-      },
-    },
-  });
+  if (!userId) return null;
+  const recommendations = await getPeopleRecommendations({ userId });
 
   if (!recommendations.length)
     return (

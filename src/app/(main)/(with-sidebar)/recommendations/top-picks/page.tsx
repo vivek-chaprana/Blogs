@@ -1,56 +1,15 @@
 import BlogCard from "@/components/BlogCard";
 import { authOptions } from "@/lib/auth/auth-options";
-import prisma from "@/prisma";
+import { getTopPicks } from "@/lib/utils/recommendations";
 import { getServerSession } from "next-auth";
 
 const TopPicks = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      followingTopics: true,
-      following: true,
-      likedBlogPosts: true,
-    },
-  });
+  if (!userId) return null;
 
-  const likedBlogPostsTopics = await prisma.blogPost.findMany({
-    where: {
-      id: {
-        in: currentUser?.likedBlogPosts.map((blog) => blog.id),
-      },
-    },
-    select: {
-      topicID: true,
-    },
-  });
-
-  const interestedTopics = Array.from(
-    new Set<string>([
-      ...likedBlogPostsTopics.map((blog) => blog.topicID),
-      ...(currentUser ? currentUser?.followingTopicIDs : []),
-    ])
-  );
-
-  const recommendations = await prisma.blogPost.findMany({
-    where: {
-      topicID: {
-        in: interestedTopics,
-      },
-      authorId: {
-        not: userId,
-        in: currentUser?.following.map((user) => user.id),
-      },
-    },
-    include: {
-      author: true,
-      topic: true,
-    },
-  });
+  const recommendations = await getTopPicks({ userId });
 
   if (!recommendations.length)
     return (

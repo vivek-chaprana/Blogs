@@ -21,6 +21,8 @@ import {
   BsPencil,
   BsPerson,
   BsQuestionCircle,
+  BsStar,
+  BsStars,
 } from "react-icons/bs";
 
 export default function NavbarUserBlock(props: {
@@ -78,6 +80,15 @@ export default function NavbarUserBlock(props: {
             }
           >
             Notifications
+          </DropdownItem>
+
+          <DropdownItem
+            as={Link}
+            startContent={<BsStar />}
+            href="/recommmendations"
+            key="recommendations"
+          >
+            Recommendations
           </DropdownItem>
         </DropdownSection>
 

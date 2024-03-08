@@ -3,13 +3,9 @@ import ShareButton from "@/components/sub-components/ShareButton";
 import Tabs from "@/components/sub-components/Tabs";
 import UnfollowButton from "@/components/sub-components/UnfollowButton";
 import { authOptions } from "@/lib/auth/auth-options";
-import {
-  WEBAPP_URL,
-  fallbackCoverImageUrl,
-  fallbackImageUrl,
-} from "@/lib/constants";
+import { COMPANY_NAME, WEBAPP_URL, fallbackImageUrl } from "@/lib/constants";
 import prisma from "@/prisma";
-import { Button, Image, Tooltip } from "@nextui-org/react";
+import { Button, Image, Tooltip, cn } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsDot } from "react-icons/bs";
@@ -38,13 +34,32 @@ export default async function UserProfileLayout({
   return (
     <div className=" ">
       {/* Cover Image */}
-      <div className="flex items-center justify-center">
-        <Image
-          src={user.coverImage || fallbackCoverImageUrl}
-          alt="Cover Image"
-          radius="none"
-        />
-      </div>
+      {user.coverImage ? (
+        <div className="flex items-center justify-center">
+          <Image src={user.coverImage} alt="Cover Image" radius="none" />
+        </div>
+      ) : (
+        <Link
+          href={"/settings"}
+          className={cn(
+            "flex items-center justify-center bg-gray-100 h-44 ",
+            session?.user.id === user.id
+              ? ""
+              : "cursor-default pointer-events-none"
+          )}
+        >
+          {session?.user.id === user.id ? (
+            <p>Add an cover image to make your profile look better.</p>
+          ) : (
+            <h1
+              unselectable="on"
+              className="select-none  text-2xl pointer-events-none text-gray-300 font-extrabold font-brand"
+            >
+              {COMPANY_NAME}
+            </h1>
+          )}
+        </Link>
+      )}
 
       <section className="p-5 my-5">
         {/* Main profile */}

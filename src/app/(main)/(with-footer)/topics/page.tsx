@@ -1,6 +1,12 @@
+import TopicsSearchBar from "@/components/TopicsSearchBar";
 import { COMPANY_NAME } from "@/lib/constants";
 import prisma from "@/prisma";
-import { Divider, Input } from "@nextui-org/react";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Divider,
+  Input,
+} from "@nextui-org/react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { BsDot, BsSearch } from "react-icons/bs";
@@ -38,12 +44,7 @@ export default async function ExploreTopics() {
       <h1 className="text-2xl xs:text-3xl sm:text-4xl font-sans font-semibold text-center">
         Explore Topics
       </h1>
-      <Input
-        className="w-4/5 xs:w-3/6"
-        placeholder="Search all topics"
-        startContent={<BsSearch />}
-        radius="full"
-      />
+      <TopicsSearchBar />
       <p className="text-sm text-center px-2 xs:px-0">
         Recommended :{" "}
         {topTopics.map((topic, index) => (
@@ -59,7 +60,6 @@ export default async function ExploreTopics() {
       <Divider className="my-10" />
 
       {/* Content */}
-
       <div className="grid grid-cols-2 gap-10 p-3 md:p-0">
         {!!topics?.length &&
           topics.map((topic) => (
@@ -93,9 +93,10 @@ export default async function ExploreTopics() {
       <Divider className="my-10" />
       <div className="bg-gray-100 text-sm w-full py-5 text-center">
         See a topic you think should be added or removed here?{" "}
+        <br className="xs:hidden " />
         <Link
           className="underline hover:underline-offset-2 transition-all ms-1"
-          href="#"
+          href="/contact"
         >
           Suggest an edit.
         </Link>

@@ -52,14 +52,20 @@ export default async function Notifications({
       );
   }
 
+  const filteredNotifications = notifications.filter(filterNotifications);
+
   if (!notifications.length)
     return <div className="py-5 text-center">You&apos;re all caught up.</div>;
 
   return (
     <div className="flex flex-col gap-2 ">
-      {notifications.filter(filterNotifications).map((notification) => (
-        <NotificationCard key={notification.id} notificaiton={notification} />
-      ))}
+      {!!filteredNotifications.length ? (
+        filteredNotifications.map((notification) => (
+          <NotificationCard key={notification.id} notificaiton={notification} />
+        ))
+      ) : (
+        <div className="py-5 text-center text-lg">No notifications found.</div>
+      )}
     </div>
   );
 }

@@ -1,17 +1,13 @@
 import LikeButton from "@/components/sub-components/LikeButton";
-import {
-  WEBAPP_URL,
-  fallbackCoverImageUrl,
-  fallbackImageUrl,
-} from "@/lib/constants";
+import { COMPANY_NAME, WEBAPP_URL, fallbackImageUrl } from "@/lib/constants";
 import getFormattedDate from "@/lib/utils/getFormattedDate";
 import { FullBlog } from "@/types/prisma";
 import { Chip, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { BsDot } from "react-icons/bs";
-import UnLikeButton from "./sub-components/UnLikeButton";
 import ReportModal from "./ReportModal";
 import ShareButton from "./sub-components/ShareButton";
+import UnLikeButton from "./sub-components/UnLikeButton";
 
 export default function SquareBlogCard({
   blog,
@@ -29,12 +25,23 @@ export default function SquareBlogCard({
         href={`/${blog.author.username}/${blog.slug}`}
         className="items-center flex justify-center mb-3"
       >
-        <Image
-          src={blog.coverImage || fallbackCoverImageUrl}
-          alt={blog.title}
-          radius="none"
-          className="h-[200px] w-auto"
-        />
+        {blog.coverImage ? (
+          <Image
+            src={blog.coverImage}
+            alt={blog.title}
+            radius="none"
+            className="h-[200px] w-auto"
+          />
+        ) : (
+          <div className="flex items-center justify-center bg-gray-100 h-[200px] w-full">
+            <h1
+              unselectable="on"
+              className="select-none  text-2xl pointer-events-none text-gray-300 font-extrabold font-brand"
+            >
+              {COMPANY_NAME}
+            </h1>
+          </div>
+        )}
       </Link>
 
       <Link
@@ -97,7 +104,7 @@ export default function SquareBlogCard({
               size="sm"
               className="text-lg text-gray-500"
               url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
-              media={blog.coverImage ?? fallbackCoverImageUrl}
+              media={blog.coverImage ?? ""}
               title={blog.title}
               desc={blog.description ?? undefined}
               tags={blog.tags}

@@ -1,7 +1,7 @@
 import FollowTopicButton from "@/components/sub-components/FollowTopicButton";
 import UnfollowTopicButton from "@/components/sub-components/UnfollowTopicButton";
 import { authOptions } from "@/lib/auth/auth-options";
-import prisma from "@/prisma";
+import { getTopicsRecommendations } from "@/lib/utils/recommendations";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsDot } from "react-icons/bs";
@@ -10,69 +10,9 @@ const Topics = async () => {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      followingTopics: true,
-      following: true,
-      likedBlogPosts: true,
-      blogPost: {
-        select: {
-          topicID: true,
-        },
-      },
-    },
-  });
-
-  const followingsTopics = await prisma.user.findMany({
-    where: {
-      id: {
-        in: currentUser?.followedByIDs,
-      },
-    },
-    select: {
-      followingTopicIDs: true,
-    },
-  });
-
-  const followingsTopicIds = followingsTopics
-    .map((user) => user.followingTopicIDs)
-    .flat();
-
-  const blogPostTopicIds = currentUser?.blogPost.map((blog) => blog.topicID);
-  const likedBlogPostsTopicIds = currentUser?.likedBlogPosts.map(
-    (blog) => blog.topicID
-  );
-
-  const interestedTopics = Array.from(
-    new Set([
-      ...followingsTopicIds,
-      ...(blogPostTopicIds || []),
-      ...(likedBlogPostsTopicIds || []),
-    ])
-  );
-
-  const recommendations = await prisma.topic.findMany({
-    where: {
-      id: {
-        in: interestedTopics,
-        notIn: currentUser?.followingTopicIDs,
-      },
-    },
-    include: {
-      BlogPost: {
-        include: {
-          _count: true,
-        },
-      },
-      users: {
-        include: {
-          _count: true,
-        },
-      },
-    },
+  if (!userId) return null;
+  const { recommendations, currentUser } = await getTopicsRecommendations({
+    userId,
   });
 
   if (!recommendations?.length)

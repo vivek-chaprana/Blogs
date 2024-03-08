@@ -8,9 +8,13 @@ import {
 } from "@/components/skeleton";
 import FollowButton from "@/components/sub-components/FollowButton";
 import { COMPANY_NAME, fallbackImageUrl } from "@/lib/constants";
+import {
+  getPeopleRecommendations,
+  getTopPicks,
+  getTopicsRecommendations,
+} from "@/lib/utils/recommendations";
 import prisma from "@/prisma";
 import { Avatar, Button, Chip, cn } from "@nextui-org/react";
-import { PostStatus } from "@prisma/client";
 import Link from "next/link";
 import { Suspense } from "react";
 import { BsBookmark } from "react-icons/bs";
@@ -18,9 +22,9 @@ import { BsBookmark } from "react-icons/bs";
 export default function SidebarHomepage({ userId }: { userId: string }) {
   return (
     <aside className="border-l p-3 xl:px-5 flex-col gap-5 h-min w-1/3 hidden -top-[calc(100%+64px)] sticky lg:flex">
-      <TopPicks />
+      <TopPicks userId={userId} />
       <StartWriting />
-      <RecommendedTopics />
+      <RecommendedTopics userId={userId} />
       <WhoToFollow userId={userId} />
       <ReadingList userId={userId} />
       <Footer />
@@ -28,22 +32,8 @@ export default function SidebarHomepage({ userId }: { userId: string }) {
   );
 }
 
-const TopPicks = () => {
-  const promise = prisma.blogPost.findMany({
-    orderBy: {
-      likedByUsers: {
-        _count: "desc",
-      },
-    },
-    include: {
-      author: true,
-      topic: true,
-    },
-    where: {
-      status: PostStatus.PUBLISHED,
-    },
-    take: 3,
-  });
+const TopPicks = ({ userId }: { userId: string }) => {
+  const promise = getTopPicks({ take: 3, userId });
 
   return (
     <div className="flex flex-col gap-2">
@@ -125,15 +115,8 @@ export const StartWriting = () => {
   );
 };
 
-const RecommendedTopics = () => {
-  const promise = prisma.topic.findMany({
-    take: 8,
-    orderBy: {
-      BlogPost: {
-        _count: "desc",
-      },
-    },
-  });
+const RecommendedTopics = ({ userId }: { userId: string }) => {
+  const promise = getTopicsRecommendations({ userId, take: 7 });
 
   return (
     <div className="flex flex-col gap-4">
@@ -141,10 +124,10 @@ const RecommendedTopics = () => {
       <div className="flex flex-wrap gap-2">
         <Suspense fallback={<RecommendedTopicsSkeleton />}>
           <Await promise={promise}>
-            {(topics) => (
+            {({ recommendations }) => (
               <>
-                {!!topics.length &&
-                  topics.map((topic) => (
+                {!!recommendations.length &&
+                  recommendations.map((topic) => (
                     <Chip
                       as={Link}
                       href={`/topics/${topic.slug}`}
@@ -172,24 +155,7 @@ const RecommendedTopics = () => {
 const WhoToFollow = ({ userId }: { userId: string }) => {
   if (!userId) return null;
 
-  const promise = prisma.user.findMany({
-    where: {
-      followedBy: {
-        none: {
-          id: userId,
-        },
-      },
-      id: {
-        not: userId,
-      },
-    },
-    take: 3,
-    orderBy: {
-      followedBy: {
-        _count: "desc",
-      },
-    },
-  });
+  const promise = getPeopleRecommendations({ userId, take: 3 });
 
   return (
     <div className="flex flex-col gap-4">
