@@ -15,7 +15,7 @@ function getFormattedDate(inputDate: Date): string {
   if (hoursDifference < 24)
     return `${hoursDifference} ${hoursDifference === 1 ? "hour" : "hours"} ago`;
 
-  if (hoursDifference < 48) return "yesterday";
+  if (hoursDifference < 48) return "Yesterday";
 
   if (hoursDifference < 168) {
     const daysOfWeek = [

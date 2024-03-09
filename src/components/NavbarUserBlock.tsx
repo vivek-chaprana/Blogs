@@ -85,7 +85,7 @@ export default function NavbarUserBlock(props: {
           <DropdownItem
             as={Link}
             startContent={<BsStar />}
-            href="/recommmendations"
+            href="/recommendations"
             key="recommendations"
           >
             Recommendations
