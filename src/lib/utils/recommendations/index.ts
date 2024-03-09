@@ -68,6 +68,9 @@ export async function getTopPicks({
       },
       where: {
         status: PostStatus.PUBLISHED,
+        id: {
+          notIn: recommendations.map((blog) => blog.id),
+        },
       },
       take: take - recommendations.length,
     });
@@ -127,7 +130,7 @@ export async function getPeopleRecommendations({
             },
           },
           id: {
-            not: userId,
+            notIn: [userId, ...recommendations.map((user) => user.id)],
           },
         },
         orderBy: {
@@ -220,6 +223,11 @@ export async function getTopicsRecommendations({
       recommendations: [
         ...recommendations,
         ...(await prisma.topic.findMany({
+          where: {
+            id: {
+              notIn: [...recommendations.map((topic) => topic.id)],
+            },
+          },
           orderBy: {
             BlogPost: {
               _count: "desc",

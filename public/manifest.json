@@ -1,0 +1,22 @@
+{
+  "id": "nextblogs",
+  "name": "NextBlogs",
+  "short_name": "NB",
+  "theme_color": "#111827",
+  "background_color": "#f9fafb",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

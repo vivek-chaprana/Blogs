@@ -29,7 +29,10 @@ export default async function Navbar() {
   return (
     <NavbarComponent className="border-b" maxWidth="xl">
       <NavbarBrand className="flex items-center gap-3 max-w-min">
-        <Link href="/" className="font-bold text-inherit font-brand text-2xl">
+        <Link
+          href="/"
+          className="font-extrabold text-inherit font-brand text-2xl"
+        >
           <span className="inline sm:hidden">{COMPANY_INITIALS}</span>
           <span className="hidden sm:inline">{COMPANY_NAME}</span>
         </Link>

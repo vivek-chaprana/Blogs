@@ -25,7 +25,8 @@ export const fallbackCoverImageUrl =
 
 export const fallbackMetadata = {
   title: COMPANY_NAME,
-  description: `Immerse yourself in a wealth of knowledge and diverse viewpoints at ${COMPANY_NAME}. Explore engaging articles, spark creativity, and join a vibrant community of thinkers. Elevate your online experience with our unique blend of ideas and perspectives.`,
+  description:
+    "Discover stories, thinking, and expertise from writers on any topic.",
   icons: {
     icon: "/favicon.ico",
   },
