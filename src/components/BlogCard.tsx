@@ -77,7 +77,14 @@ const BlogCard = ({
         </div>
 
         <div className="ms-2 sm:ms-10 w-2/5 md:w-[30%] flex items-center  ">
-          {blog.coverImage && <Image alt={blog.title} src={blog.coverImage} />}
+          {blog.coverImage && (
+            <Image
+              alt={blog.title}
+              src={blog.coverImage}
+              width={250}
+              height={155}
+            />
+          )}
         </div>
       </Link>
 
