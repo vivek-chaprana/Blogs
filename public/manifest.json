@@ -1,7 +1,7 @@
 {
   "id": "nextblogs",
   "name": "NextBlogs",
-  "short_name": "NB",
+  "short_name": "NextBlogs",
   "theme_color": "#111827",
   "background_color": "#f9fafb",
   "display": "standalone",
@@ -36,23 +36,63 @@
   "shortcuts": [
     {
       "name": "Home",
-      "url": "/"
+      "shortname": "Home",
+      "description": "Explore the latest stories!",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icons/home.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "New Story",
-      "url": "/new-story"
+      "url": "/new-story",
+      "shortname": "New Story",
+      "description": "Share your story!",
+      "icons": [
+        {
+          "src": "/icons/pencil.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Notifications",
-      "url": "/notifications"
+      "url": "/notifications",
+      "shortname": "Notifications",
+      "description": "Stay updated!",
+      "icons": [
+        {
+          "src": "/icons/bell.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Saved",
-      "url": "/saved"
+      "url": "/saved",
+      "shortname": "Saved",
+      "description": "Saved stories.",
+      "icons": [
+        {
+          "src": "/icons/bookmark.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Settings",
-      "url": "/settings"
+      "url": "/settings",
+      "shortname": "Settings",
+      "description": "Customize your experience!",
+      "icons": [
+        {
+          "src": "/icons/settings.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

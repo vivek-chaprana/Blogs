@@ -12,7 +12,11 @@ import {
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsBell, BsPencilSquare } from "react-icons/bs";
-import { MdInstallMobile, MdOutlineInstallMobile } from "react-icons/md";
+import {
+  MdInstallDesktop,
+  MdInstallMobile,
+  MdOutlineInstallMobile,
+} from "react-icons/md";
 import NavbarUserBlock from "./NavbarUserBlock";
 import NavbarDropdownAccount from "./sub-components/NavbarDropdownAccount";
 import NavbarSearch from "./sub-components/NavbarSearch";
@@ -61,7 +65,7 @@ export default async function Navbar() {
               <PwaInstallButton
                 size="sm"
                 className="text-sm hidden sm:inline-flex"
-                startContent={<MdOutlineInstallMobile className="text-lg" />}
+                startContent={<MdInstallDesktop className="text-lg" />}
               />
               <Button
                 as={Link}
@@ -103,7 +107,7 @@ export default async function Navbar() {
             <PwaInstallButton
               size="sm"
               className="text-sm hidden sm:inline-flex"
-              startContent={<MdOutlineInstallMobile className="text-lg" />}
+              startContent={<MdInstallDesktop className="text-lg" />}
             />
             <PwaInstallButton
               variant="light"
