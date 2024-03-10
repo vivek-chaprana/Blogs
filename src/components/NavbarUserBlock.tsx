@@ -22,7 +22,6 @@ import {
   BsPerson,
   BsQuestionCircle,
   BsStar,
-  BsStars,
 } from "react-icons/bs";
 
 export default function NavbarUserBlock(props: {

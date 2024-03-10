@@ -32,5 +32,27 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "New Story",
+      "url": "/new-story"
+    },
+    {
+      "name": "Notifications",
+      "url": "/notifications"
+    },
+    {
+      "name": "Saved",
+      "url": "/saved"
+    },
+    {
+      "name": "Settings",
+      "url": "/settings"
+    }
   ]
 }

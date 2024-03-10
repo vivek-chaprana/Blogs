@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_INITIALS, COMPANY_NAME } from "@/lib/constants";
+import prisma from "@/prisma";
 import {
   Badge,
   Button,
@@ -11,9 +12,11 @@ import {
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsBell, BsPencilSquare } from "react-icons/bs";
+import { MdInstallMobile, MdOutlineInstallMobile } from "react-icons/md";
 import NavbarUserBlock from "./NavbarUserBlock";
+import NavbarDropdownAccount from "./sub-components/NavbarDropdownAccount";
 import NavbarSearch from "./sub-components/NavbarSearch";
-import prisma from "@/prisma";
+import PwaInstallButton from "./sub-components/PwaInstallButton";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -31,7 +34,7 @@ export default async function Navbar() {
       <NavbarBrand className="flex items-center gap-3 max-w-min">
         <Link
           href="/"
-          className="font-extrabold text-inherit font-brand text-2xl"
+          className="font-extrabold text-inherit font-brand text-2xl "
         >
           <span className="inline sm:hidden">{COMPANY_INITIALS}</span>
           <span className="hidden sm:inline">{COMPANY_NAME}</span>
@@ -43,7 +46,23 @@ export default async function Navbar() {
       <NavbarContent justify="end">
         {!!user ? (
           <>
-            <NavbarItem className="hidden sm:flex">
+            <NavbarItem className="flex items-center">
+              <PwaInstallButton
+                variant="light"
+                className="sm:hidden border-none text-xl"
+                isIconOnly
+                radius="md"
+              >
+                <MdInstallMobile className="text-xl" />
+              </PwaInstallButton>
+            </NavbarItem>
+
+            <NavbarItem className="hidden sm:flex items-center ">
+              <PwaInstallButton
+                size="sm"
+                className="text-sm hidden sm:inline-flex"
+                startContent={<MdOutlineInstallMobile className="text-lg" />}
+              />
               <Button
                 as={Link}
                 href="/new-story"
@@ -80,29 +99,29 @@ export default async function Navbar() {
             />
           </>
         ) : (
-          <NavbarItem className="flex gap-2 text-sm items-center ">
+          <NavbarItem className="flex gap-1 xs:gap-3 text-sm items-center ">
+            <PwaInstallButton
+              size="sm"
+              className="text-sm hidden sm:inline-flex"
+              startContent={<MdOutlineInstallMobile className="text-lg" />}
+            />
+            <PwaInstallButton
+              variant="light"
+              className="sm:hidden border-none text-xl"
+              isIconOnly
+              radius="md"
+            >
+              <MdInstallMobile className="text-xl" />
+            </PwaInstallButton>
+
             <Link
               className="hover:text-black underline-offset-1 hover:underline hidden xs:inline-flex"
               href="/about"
             >
               Our Story
             </Link>
-            <Button
-              as={Link}
-              href="/auth/login"
-              variant="light"
-              className="hidden sm:inline-flex"
-            >
-              Sign in{" "}
-            </Button>
-            <Button
-              as={Link}
-              href="/register"
-              className="text-white bg-dark-200"
-              radius="full"
-            >
-              Get started
-            </Button>
+
+            <NavbarDropdownAccount />
           </NavbarItem>
         )}
       </NavbarContent>
