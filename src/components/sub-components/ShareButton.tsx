@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { BsCheck2, BsCopy, BsShare } from "react-icons/bs";
+import { BsCheck2, BsCopy, BsShare, BsThreeDots } from "react-icons/bs";
 import {
   EmailIcon,
   EmailShareButton,
@@ -136,6 +136,21 @@ export default function ShareButton({
               ) : (
                 <BsCopy className="text-lg" />
               )}
+            </div>
+          </Tooltip>
+
+          <Tooltip content="Other options" closeDelay={0}>
+            <div
+              className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full overflow-hidden hover:scale-110 active:scale-95 transition-transform duration-75 cursor-pointer"
+              onClick={() => {
+                navigator &&
+                  navigator.share({
+                    text: `${title} - ${desc}\n\n`,
+                    url,
+                  });
+              }}
+            >
+              <BsThreeDots className="text-lg" />
             </div>
           </Tooltip>
         </div>

@@ -46,19 +46,29 @@ export default async function ProfilePage({
 
   return (
     <>
-      <div className="flex justify-end gap-5">
-        <BlogSortOptions isOwner={isOwner} />
-      </div>
+      {
+        <Await promise={promise}>
+          {(user) => (
+            <>
+              {!!user?.blogPost.length && (
+                <div className="flex justify-end gap-5">
+                  <BlogSortOptions isOwner={isOwner} />
+                </div>
+              )}
+            </>
+          )}
+        </Await>
+      }
       <Suspense
         fallback={new Array(3).fill(0).map((_, i) => (
           <BlogCardSkeleton key={i} />
         ))}
       >
         <Await promise={promise}>
-          {(user) =>
-            !!user?.blogPost?.length ? (
+          {(foundUser) =>
+            !!foundUser?.blogPost?.length ? (
               <>
-                {user?.blogPost.map((blog) => (
+                {foundUser?.blogPost.map((blog) => (
                   <BlogCard userId={user?.id} key={blog.id} blog={blog} />
                 ))}
               </>

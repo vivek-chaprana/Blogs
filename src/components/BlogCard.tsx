@@ -127,7 +127,6 @@ const BlogCard = ({
               <LikeButton
                 isIconOnly
                 variant="light"
-                size="sm"
                 className="text-lg text-gray-500"
                 userId={userId}
                 blogId={blog.id}
@@ -152,12 +151,10 @@ const BlogCard = ({
                   id={blog.id}
                   isIconOnly
                   variant="light"
-                  size="sm"
                   className="text-lg text-gray-500"
                 />
 
                 <ShareButton
-                  size="sm"
                   className="text-lg text-gray-500"
                   url={`${WEBAPP_URL}/${blog.author.username}/${blog.slug}`}
                   media={blog.coverImage ?? ""}
