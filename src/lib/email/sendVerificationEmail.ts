@@ -1,4 +1,4 @@
-import VerificationEmailTemplate from "@/components/email-templates/VerificationEmailTemplate";
+import { VerificationEmailTemplate } from "@/components/email-templates";
 import hashToken from "@/lib/auth/hashToken";
 import prisma from "@/prisma";
 import { randomBytes } from "crypto";

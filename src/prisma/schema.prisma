@@ -50,6 +50,7 @@ model User {
   isVerified             Boolean   @default(false)
   hasCompletedOnboarding Boolean   @default(false)
   lastEmailSent          DateTime?
+  lastResetRequest       DateTime?
   accounts               Account[]
   sessions               Session[]
   createdAt              DateTime  @default(now())
@@ -69,6 +70,15 @@ model User {
 }
 
 model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model resetToken {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique

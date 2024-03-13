@@ -1,6 +1,6 @@
 "use client";
 
-import registerUser from "@/lib/actions/auth/registerUser";
+import { registerUser } from "@/lib/actions/auth";
 import { WEBAPP_URL } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
@@ -79,7 +79,6 @@ export default function SignUpForm() {
         startContent={
           <div className="pointer-events-none flex items-center  ">
             <span className="text-default-400 text-sm whitespace-nowrap">
-              {/* {url.length < 10 ? url : url.slice(0, 10) + "..."}/ */}
               {WEBAPP_URL.split("/")
                 .filter((part) => part !== "")
                 .slice(-1)[0] + "/"}

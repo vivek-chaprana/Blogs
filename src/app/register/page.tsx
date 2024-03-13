@@ -20,11 +20,11 @@ const RegistrationPage = async () => {
   if (session?.user) redirect("/");
 
   return (
-    <main className="bg-offWhite py-10 min-h-screen px-2 xs:px-5 sm:px-0">
+    <main className="bg-offWhite py-10 flex flex-col justify-center items-center min-h-screen px-2 xs:px-5 sm:px-0">
       <h1 className="text-3xl font-bold font-sans text-center">
         Create your account
       </h1>
-      <div className="mb-3 mt-8 sm:mx-auto sm:w-full sm:max-w-md rounded-md border  p-2 bg-white">
+      <div className="mb-3 mt-8 sm:mx-auto w-full sm:max-w-md rounded-md border  p-2 bg-white">
         <div className="rounded-md px-4 py-5 sm:px-10  ">
           <SignUpForm />
         </div>
@@ -32,7 +32,7 @@ const RegistrationPage = async () => {
           <DividerWithText text="OR CONTINUE WITH" />
         </div>
         <OtherLoginsRegistrationPage />
-        <Divider className="my-3" />
+        <Divider className="mt-3" />
         <TermsAndConditions />
       </div>
       <div className="text-center"></div>

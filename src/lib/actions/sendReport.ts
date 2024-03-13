@@ -3,7 +3,7 @@
 import {
   ReportBlogEmailTemplate,
   ReportCommentEmailTemplate,
-} from "@/components/email-templates/ReportEmailTemplates";
+} from "@/components/email-templates";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/auth-options";
 import { ADMIN_EMAIL } from "../constants";

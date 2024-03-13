@@ -1,6 +1,6 @@
 "use client";
 
-import resendVerificationEmail from "@/lib/actions/auth/resendVerificationEmail";
+import { resendVerificationEmail } from "@/lib/actions/auth";
 import { Button } from "@nextui-org/react";
 import toast from "react-hot-toast";
 
@@ -13,11 +13,9 @@ export default function ResendEmailBtn({ email }: { email: string }) {
         return;
       }
       toast.success("Email sent successfully.");
-
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
     }
-
   };
   return <Button onClick={handleResendEmail}>Resend Email</Button>;
 }

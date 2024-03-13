@@ -1,5 +1,5 @@
 import EmptyScreen from "@/components/EmptyScreen";
-import ResendEmailBtn from "@/components/ResendEmailBtn";
+import ResendEmailBtn from "@/components/sub-components/ResendEmailBtn";
 import { authOptions } from "@/lib/auth/auth-options";
 import { Button } from "@nextui-org/react";
 import { getServerSession } from "next-auth";

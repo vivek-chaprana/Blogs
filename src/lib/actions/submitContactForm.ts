@@ -3,7 +3,7 @@
 import {
   ContactFormSubmissionAdminEmail,
   ContactFormSubmissionUserEmail,
-} from "@/components/email-templates/ContactFormSubmissionEmails";
+} from "@/components/email-templates";
 import { ADMIN_EMAIL } from "../constants";
 import { sendEmail } from "../email";
 

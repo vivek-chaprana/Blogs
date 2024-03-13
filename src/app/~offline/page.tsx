@@ -1,38 +1,15 @@
+import { MdOutlineSignalWifiStatusbarConnectedNoInternet4 } from "react-icons/md";
+
 export default function Page() {
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5rem",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100svh",
-        padding: "2rem",
-        backgroundColor: "rgb(249, 250, 251)",
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: "sans-serif",
-          fontWeight: "500",
-          fontSize: "3rem",
-          lineHeight: "1.2",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-        }}
-      >
+    <main className="flex flex-col items-center justify-center text-center min-h-screen py-12 bg-gray-100 sm:px-6 lg:px-8">
+      <span className="bg-gray-200 rounded-full p-3 xs:p-5">
+        <MdOutlineSignalWifiStatusbarConnectedNoInternet4 className="text-4xl xs:text-6xl TEXT-GRAY-900" />
+      </span>
+      <h1 className="text-4xl xs:text-5xl sm:text-6xl font-medium font-serif uppercase tracking-widest text-gray-900 my-3">
         Offline
       </h1>
-      <p
-        style={{
-          fontFamily: "sans-serif",
-          fontWeight: "400",
-          fontSize: "1.5rem",
-          lineHeight: "1.2",
-          letterSpacing: "0.1em",
-        }}
-      >
+      <p className="text-lg xs:text-xl text-gray-500">
         You are offline. Please check your internet connection.
       </p>
     </main>
