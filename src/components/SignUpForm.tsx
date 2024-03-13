@@ -2,6 +2,7 @@
 
 import { registerUser } from "@/lib/actions/auth";
 import { WEBAPP_URL } from "@/lib/constants";
+import getErrorMessage from "@/lib/utils/getErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
@@ -58,7 +59,7 @@ export default function SignUpForm() {
       router.push("/auth/verify?email=" + (createdUser.email ?? data.email));
       reset();
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getErrorMessage(error));
     } finally {
       setIsLoading(false);
     }

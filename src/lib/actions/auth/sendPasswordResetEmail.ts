@@ -22,6 +22,9 @@ export default async function sendPasswordResetEmail({
 
   if (!user.email || !user.isVerified) throw new Error("Email not verified!");
 
+  if (user.provider !== "email")
+    throw new Error("Reset password isn't available for OAuth providers.");
+
   const token = randomBytes(32).toString("hex");
   const hashedToken = await hash(token, SALT_ROUNDS);
 

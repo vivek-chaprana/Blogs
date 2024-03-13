@@ -21,7 +21,7 @@ export default async function resetPassword({
   if (!user) throw new Error("User not found!");
   if (!user.email || !user.isVerified) throw new Error("Email not verified!");
   if (user.provider !== "email" || !user.hashedPassword)
-    throw new Error("Reset passowrd isn't available for OAuth providers.");
+    throw new Error("Reset password isn't available for OAuth providers.");
 
   const isSamePassword = await compare(newPassword, user.hashedPassword);
   if (isSamePassword)

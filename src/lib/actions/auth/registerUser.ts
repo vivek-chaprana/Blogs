@@ -26,6 +26,6 @@ export default async function registerUser(user: {
     if (error?.code === "P2002") {
       throw new Error("Username or email already exists.");
     }
-    throw new Error(error?.message);
+    throw error;
   }
 }
