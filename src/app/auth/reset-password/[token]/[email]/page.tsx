@@ -16,6 +16,8 @@ export default async function ResetPasswordPage({
 }) {
   const { token, email } = params;
 
+  if (!token || !email) return ErrorPage();
+
   const foundToken = await prisma.resetToken.findFirst({
     where: {
       identifier: decodeURIComponent(email),

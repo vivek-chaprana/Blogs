@@ -13,6 +13,8 @@ const Topics = async () => {
   if (!userId) return null;
   const { recommendations, currentUser } = await getTopicsRecommendations({
     userId,
+    limit: false,
+    take: 10,
   });
 
   if (!recommendations?.length)

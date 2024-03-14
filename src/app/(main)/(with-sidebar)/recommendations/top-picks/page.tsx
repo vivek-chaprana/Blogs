@@ -9,7 +9,7 @@ const TopPicks = async () => {
 
   if (!userId) return null;
 
-  const recommendations = await getTopPicks({ userId });
+  const recommendations = await getTopPicks({ userId, take: 5, limit: false });
 
   if (!recommendations.length)
     return (

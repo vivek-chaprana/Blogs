@@ -193,8 +193,8 @@ export default function GettingStarted({
         hideCloseButton
         scrollBehavior="inside"
         isOpen={shouldOpen && !isOpen}
-        onOpenChange={onOpenChange}
         isDismissable={false}
+        isKeyboardDismissDisabled={false}
         size="4xl"
       >
         <ModalContent>
@@ -209,7 +209,7 @@ export default function GettingStarted({
                     >
                       <span
                         className={cn(
-                          "rounded-full h-1 w-full bg-green-400 scale-x-0 transition-transform duration-300 ease-in-out origin-left transform",
+                          "rounded-full h-1 w-full bg-green-500 scale-x-0 transition-transform duration-300 ease-in-out origin-left transform",
                           currentStep >= index ? "scale-x-100" : ""
                         )}
                       ></span>
@@ -217,7 +217,7 @@ export default function GettingStarted({
                       <h2
                         className={cn(
                           "text-sm font-semibold ",
-                          currentStep >= index ? "text-green-500" : ""
+                          currentStep >= index ? "text-green-700" : ""
                         )}
                       >
                         Step {++index}
@@ -440,7 +440,8 @@ const Step3 = ({
     async function fetchSomePeopleToFollow() {
       try {
         const somePeopleToFollow = await getSomePeopleToFollow(
-          selectedTopics || []
+          selectedTopics || [],
+          userId
         );
         setSomePeopleToFollow(somePeopleToFollow);
       } catch (e) {
@@ -449,7 +450,7 @@ const Step3 = ({
     }
 
     fetchSomePeopleToFollow();
-  }, [selectedTopics]);
+  }, [selectedTopics, userId]);
 
   if (!somePeopleToFollow.length) return <Loading />;
 
@@ -474,10 +475,10 @@ const Step3 = ({
   return (
     <>
       <h2 className="text-base font-semibold">Follow some people :</h2>
-      <div className="flex flex-col gap-4 w-3/4 mx-auto">
+      <div className="flex flex-col gap-4 sm:w-3/4 mx-auto overflow-scroll scrollbar-hide">
         {somePeopleToFollow.map((person) => (
           <div key={person.id} className="flex justify-between">
-            <div className="flex gap-3">
+            <div className="flex gap-1 xs:gap-3">
               <Image
                 className="min-w-[50px] aspect-square"
                 src={person.image || fallbackImageUrl}
@@ -488,14 +489,18 @@ const Step3 = ({
               />
 
               <div className="flex flex-col ">
-                <h4 className="font-semibold m-0 p-0">
+                <h4 className="font-semibold m-0 p-0 text-sm xs:text-base">
                   {person.name || "@" + person.username}
                 </h4>
                 {!!person.name && (
-                  <p className="font-light text-sm">@{person.username}</p>
+                  <p className="font-light text-xs xs:text-sm">
+                    @{person.username}
+                  </p>
                 )}
                 {person.bio && (
-                  <p className="text-xs line-clamp-2">{person.bio}</p>
+                  <p className="text-xs line-clamp-1 xs:line-clamp-2">
+                    {person.bio}
+                  </p>
                 )}
               </div>
             </div>
@@ -505,7 +510,7 @@ const Step3 = ({
                 variant="bordered"
                 radius="full"
                 size="sm"
-                className="border-dark-200"
+                className="border-dark-200 min-w-fit"
                 endContent={<BsCheck />}
                 isDisabled
               >
@@ -518,7 +523,7 @@ const Step3 = ({
                 variant="bordered"
                 radius="full"
                 size="sm"
-                className="border-dark-200"
+                className="border-dark-200 min-w-fit"
               >
                 Follow
               </Button>

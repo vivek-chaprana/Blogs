@@ -1,10 +1,10 @@
-import LandingPage from "@/components/LandingPage";
-import SidebarHomepage from "@/components/SidebarHomepage";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 
 const GettingStarted = dynamic(() => import("@/components/GettingStarted"));
+const LandingPage = dynamic(() => import("@/components/LandingPage"));
+const SidebarHomepage = dynamic(() => import("@/components/SidebarHomepage"));
 
 export default async function WithSidearLayout({
   children,
@@ -27,9 +27,9 @@ export default async function WithSidearLayout({
       {user && !user.hasCompletedOnboarding && (
         <GettingStarted
           shouldOpen={true}
-          image={user?.image}
-          name={user?.name}
-          userId={user?.id}
+          image={user.image}
+          name={user.name}
+          userId={user.id}
         />
       )}
     </main>

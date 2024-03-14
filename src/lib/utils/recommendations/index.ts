@@ -4,9 +4,11 @@ import { PostStatus } from "@prisma/client";
 export async function getTopPicks({
   userId,
   take,
+  limit = true,
 }: {
   userId: string;
   take?: number;
+  limit?: boolean;
 }) {
   const currentUser = await prisma.user.findUnique({
     where: {
@@ -48,7 +50,7 @@ export async function getTopPicks({
       },
       status: PostStatus.PUBLISHED,
     },
-    take,
+    take: limit ? take : undefined,
     include: {
       author: true,
       topic: true,
@@ -84,9 +86,11 @@ export async function getTopPicks({
 export async function getPeopleRecommendations({
   userId,
   take,
+  limit = true,
 }: {
   userId: string;
   take?: number;
+  limit: boolean;
 }) {
   const currentUser = await prisma.user.findUnique({
     where: {
@@ -111,7 +115,7 @@ export async function getPeopleRecommendations({
         },
       },
     },
-    take,
+    take: limit ? take : undefined,
     orderBy: {
       followedBy: {
         _count: "desc",
@@ -148,9 +152,11 @@ export async function getPeopleRecommendations({
 export async function getTopicsRecommendations({
   userId,
   take,
+  limit = true,
 }: {
   userId: string;
   take?: number;
+  limit?: boolean;
 }) {
   const currentUser = await prisma.user.findUnique({
     where: {
@@ -203,7 +209,7 @@ export async function getTopicsRecommendations({
         notIn: currentUser?.followingTopicIDs,
       },
     },
-    take,
+    take: limit ? take : undefined,
     include: {
       BlogPost: {
         include: {

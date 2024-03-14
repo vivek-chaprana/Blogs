@@ -8,7 +8,11 @@ const People = async () => {
   const userId = session?.user?.id;
 
   if (!userId) return null;
-  const recommendations = await getPeopleRecommendations({ userId });
+  const recommendations = await getPeopleRecommendations({
+    userId,
+    limit: false,
+    take: 5,
+  });
 
   if (!recommendations.length)
     return (

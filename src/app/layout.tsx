@@ -1,9 +1,9 @@
 import AuthProvider from "@/components/AuthProvider";
 import { fallbackMetadata } from "@/lib/constants";
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import localFont from "next/font/local";
 
 export const metadata: Metadata = {
   ...fallbackMetadata,
