@@ -67,6 +67,7 @@ model User {
   likedBlogPosts    BlogPost[]     @relation("LikedBlogPosts", fields: [likedBlogPostsIds], references: [id])
   likedBlogPostsIds String[]       @db.ObjectId
   Notification      Notification[]
+  Subscription      Subscription[]
 }
 
 model VerificationToken {
@@ -147,6 +148,18 @@ model Notification {
   link      String
   image     String?
   type      NotificationType
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+
+  endpoint       String
+  p256dh         String
+  auth           String
+  expirationTime DateTime?
 
   user User @relation(fields: [userId], references: [id])
 }

@@ -34,6 +34,7 @@ export default function NavbarSearch() {
         inputWrapper: "h-full font-normal text-default-500 bg-gr/50 ",
       }}
       placeholder="Type to search..."
+      aria-label="Search"
       size="sm"
       startContent={<RiSearch2Line size={18} />}
       type="search"

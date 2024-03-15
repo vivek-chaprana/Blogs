@@ -2,6 +2,7 @@
 
 import prisma from "@/prisma";
 import { NotificationType } from "@prisma/client";
+import { sendPushNotification } from "../push-notifications";
 
 export async function sendNotification({
   userIds,
@@ -19,6 +20,7 @@ export async function sendNotification({
   try {
     if (!userIds.length) return;
 
+    const createdAfter = new Date();
     await prisma.notification.createMany({
       data: userIds.map((userId) => ({
         userId,
@@ -27,6 +29,25 @@ export async function sendNotification({
         type: notificationType,
         image: imageUrl,
       })),
+    });
+
+    const createdNotifications = await prisma.notification.findMany({
+      where: {
+        timestamp: {
+          gte: createdAfter,
+        },
+      },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+
+    createdNotifications.forEach(async (notification) => {
+      await sendPushNotification({
+        userId: notification.userId,
+        notificationId: notification.id,
+      });
     });
   } catch (e) {
     throw e;

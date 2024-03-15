@@ -20,6 +20,7 @@ export default function TopicsSearchBar() {
       radius="full"
       startContent={<BsSearch />}
       placeholder="Search all topics"
+      aria-label="Search all topics"
       classNames={{
         selectorButton: "hidden",
       }}

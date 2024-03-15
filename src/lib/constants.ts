@@ -66,3 +66,9 @@ export const footerLinks = [
   { name: "contact", url: "contact" },
   { name: "FAQs", url: "faqs" },
 ];
+
+// Push Notifications
+export const apiKeys = {
+  publicKey: process.env.NEXT_PUBLIC_PUSH_NOTIFICATION_PUBLIC_KEY as string,
+  privateKey: process.env.PUSH_NOTIFICATION_PRIVATE_KEY as string,
+};

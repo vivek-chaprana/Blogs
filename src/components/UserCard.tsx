@@ -33,14 +33,14 @@ export default function UserCard({
         (user.followedByIDs.includes(signedInUserId) ? (
           <UnfollowButton
             radius="full"
-            className="text-offWhite bg-red-500 ms-3"
+            className="text-offWhite bg-red-500 ms-3 min-w-fit"
             followerId={signedInUserId}
             followingId={user.id}
           />
         ) : (
           <FollowButton
             radius="full"
-            className="text-offWhite bg-dark-200 ms-3 "
+            className="text-offWhite bg-dark-200 ms-3  min-w-fit"
             followerId={signedInUserId}
             followingId={user.id}
           />

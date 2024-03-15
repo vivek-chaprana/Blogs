@@ -1,9 +1,8 @@
-import BlogCard from "@/components/BlogCard";
-import Loading from "@/components/Loading";
+import HomepageBlogs from "@/components/HomepageBlogs";
+import { fetchBlogs } from "@/lib/actions/pagination";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
-import { FullBlog } from "@/types/prisma";
-import { PostStatus } from "@prisma/client";
+import { PostStatus, Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 
@@ -14,7 +13,6 @@ export default async function Home({
 }) {
   const session = await getServerSession(authOptions);
   const currentUser = session?.user;
-
   if (!currentUser) redirect("/auth/login");
 
   const foundUser = await prisma.user.findUnique({
@@ -29,69 +27,49 @@ export default async function Home({
 
   if (!foundUser) return notFound();
 
-  let blogs: FullBlog[] = [];
+  let condition: Prisma.BlogPostWhereInput = {
+    status: PostStatus.PUBLISHED,
+  };
 
   if (!searchParams?.feed || !searchParams?.topic)
-    blogs = await prisma.blogPost.findMany({
-      where: {
-        status: PostStatus.PUBLISHED,
-        authorId: {
-          not: currentUser.id,
-        },
+    condition = {
+      status: PostStatus.PUBLISHED,
+      authorId: {
+        not: currentUser.id,
       },
-      take: 10,
-      include: {
-        author: true,
-        topic: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    };
 
   if (searchParams?.feed === "following")
-    blogs = await prisma.blogPost.findMany({
-      where: {
-        status: PostStatus.PUBLISHED,
-        authorId: {
-          in: foundUser.followingIDs,
-        },
+    condition = {
+      status: PostStatus.PUBLISHED,
+      authorId: {
+        in: foundUser.followingIDs,
       },
-      take: 10,
-      include: {
-        author: true,
-        topic: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    };
 
   if (searchParams?.topic)
-    blogs = await prisma.blogPost.findMany({
-      where: {
-        status: PostStatus.PUBLISHED,
-        topic: {
-          slug: searchParams.topic as string,
-        },
+    condition = {
+      status: PostStatus.PUBLISHED,
+      topic: {
+        slug: searchParams.topic as string,
       },
-      take: 10,
-      include: {
-        author: true,
-        topic: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    };
 
-  return !!blogs.length ? (
-    <>
-      {blogs.map((blog) => (
-        <BlogCard key={blog.id} userId={currentUser.id} blog={blog} />
-      ))}
-      <Loading />
-    </>
+  const fetchedData = await fetchBlogs({
+    take: 3,
+    where: condition,
+    lastCursor: null,
+  });
+
+  return !!fetchedData.data.length ? (
+    // The key prop is used to force a re-render of the component, which is necessary. Can use router.refresh() or revalidate to achieve the same effect. Search Params doesn't cause re-render, so the key prop is necessary. Might have a better solution.
+    <div key={Math.random()}>
+      <HomepageBlogs
+        condition={condition}
+        initialData={fetchedData}
+        userId={currentUser.id}
+      />
+    </div>
   ) : (
     <div className="text-center text-lg py-10">No blogs yet!</div>
   );

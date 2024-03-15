@@ -12,14 +12,11 @@ import {
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { BsBell, BsPencilSquare } from "react-icons/bs";
-import {
-  MdInstallDesktop,
-  MdInstallMobile,
-  MdOutlineInstallMobile,
-} from "react-icons/md";
+import { MdInstallDesktop, MdInstallMobile } from "react-icons/md";
 import NavbarUserBlock from "./NavbarUserBlock";
 import NavbarDropdownAccount from "./sub-components/NavbarDropdownAccount";
 import NavbarSearch from "./sub-components/NavbarSearch";
+import NotificationsPermissionButton from "./sub-components/NotificationsPermissionButton";
 import PwaInstallButton from "./sub-components/PwaInstallButton";
 
 export default async function Navbar() {
@@ -46,6 +43,8 @@ export default async function Navbar() {
       </NavbarBrand>
 
       <NavbarSearch />
+
+      {user && <NotificationsPermissionButton userId={user.id} />}
 
       <NavbarContent justify="end">
         {!!user ? (

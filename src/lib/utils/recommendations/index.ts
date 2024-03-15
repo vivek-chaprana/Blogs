@@ -90,7 +90,7 @@ export async function getPeopleRecommendations({
 }: {
   userId: string;
   take?: number;
-  limit: boolean;
+  limit?: boolean;
 }) {
   const currentUser = await prisma.user.findUnique({
     where: {
