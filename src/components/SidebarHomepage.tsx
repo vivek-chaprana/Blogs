@@ -18,6 +18,7 @@ import { Avatar, Button, Chip, cn } from "@nextui-org/react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { BsBookmark } from "react-icons/bs";
+import SubscribeToNotificationSidebar from "./sub-components/SubscribeToNotificationSidebar";
 
 export default function SidebarHomepage({ userId }: { userId: string }) {
   return (
@@ -26,6 +27,7 @@ export default function SidebarHomepage({ userId }: { userId: string }) {
       <StartWriting />
       <RecommendedTopics userId={userId} />
       <WhoToFollow userId={userId} />
+      <SubscribeToNotificationSidebar />
       <ReadingList userId={userId} />
       <Footer />
     </aside>

@@ -16,7 +16,6 @@ import { MdInstallDesktop, MdInstallMobile } from "react-icons/md";
 import NavbarUserBlock from "./NavbarUserBlock";
 import NavbarDropdownAccount from "./sub-components/NavbarDropdownAccount";
 import NavbarSearch from "./sub-components/NavbarSearch";
-import NotificationsPermissionButton from "./sub-components/NotificationsPermissionButton";
 import PwaInstallButton from "./sub-components/PwaInstallButton";
 
 export default async function Navbar() {
@@ -43,8 +42,6 @@ export default async function Navbar() {
       </NavbarBrand>
 
       <NavbarSearch />
-
-      {user && <NotificationsPermissionButton userId={user.id} />}
 
       <NavbarContent justify="end">
         {!!user ? (
@@ -78,7 +75,13 @@ export default async function Navbar() {
               </Button>
 
               <Badge
-                content={notificationsCount > 0 ? notificationsCount : null}
+                content={
+                  notificationsCount > 0
+                    ? notificationsCount > 99
+                      ? "99+"
+                      : notificationsCount
+                    : null
+                }
                 size="sm"
                 color="danger"
                 shape="circle"

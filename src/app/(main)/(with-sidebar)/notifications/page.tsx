@@ -1,4 +1,5 @@
 import NotificationCard from "@/components/NotificationCard";
+import SubscribeToNotificationModal from "@/components/SubscribeToNotificationModal";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
 import { Notification, NotificationType } from "@prisma/client";
@@ -59,6 +60,7 @@ export default async function Notifications({
 
   return (
     <div className="flex flex-col gap-2 ">
+      <SubscribeToNotificationModal shouldOpen />
       {!!filteredNotifications.length ? (
         filteredNotifications.map((notification) => (
           <NotificationCard key={notification.id} notificaiton={notification} />

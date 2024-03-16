@@ -106,7 +106,8 @@ export async function POST(req: NextRequest) {
       link: `/${user.username}/${slug}`,
       message: `${user.name || "@" + user.username} published a new blog.`,
       notificationType: NotificationType.FOLLOWER_POST,
-      imageUrl: user.image ?? undefined,
+      iconUrl: user.image || undefined,
+      imageUrl: data.coverImage,
     });
 
     // Sending notification to topic followers
@@ -115,7 +116,8 @@ export async function POST(req: NextRequest) {
       link: `/${user.username}/${slug}`,
       message: `A new blog was published in ${topic.name}.`,
       notificationType: NotificationType.TOPIC_POST,
-      imageUrl: user.image ?? undefined,
+      iconUrl: user.image ?? undefined,
+      imageUrl: data.coverImage,
     });
 
     return NextResponse.json({ success: true });

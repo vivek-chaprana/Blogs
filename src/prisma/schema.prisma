@@ -146,6 +146,7 @@ model Notification {
   timestamp DateTime         @default(now())
   seen      Boolean          @default(false)
   link      String
+  icon      String?
   image     String?
   type      NotificationType
 

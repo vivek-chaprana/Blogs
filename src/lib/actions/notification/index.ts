@@ -1,21 +1,23 @@
 "use server";
 
+import { sendBatchPushNotifications } from "@/lib/actions/push-notifications";
 import prisma from "@/prisma";
 import { NotificationType } from "@prisma/client";
-import { sendPushNotification } from "../push-notifications";
 
 export async function sendNotification({
   userIds,
   message,
   link,
-  notificationType,
+  iconUrl,
   imageUrl,
+  notificationType,
 }: {
   userIds: string[];
   message: string;
   link: string;
-  notificationType: NotificationType;
+  iconUrl?: string;
   imageUrl?: string;
+  notificationType: NotificationType;
 }) {
   try {
     if (!userIds.length) return;
@@ -27,6 +29,7 @@ export async function sendNotification({
         message,
         link,
         type: notificationType,
+        icon: iconUrl,
         image: imageUrl,
       })),
     });
@@ -43,12 +46,7 @@ export async function sendNotification({
       },
     });
 
-    createdNotifications.forEach(async (notification) => {
-      await sendPushNotification({
-        userId: notification.userId,
-        notificationId: notification.id,
-      });
-    });
+    await sendBatchPushNotifications(createdNotifications);
   } catch (e) {
     throw e;
   }

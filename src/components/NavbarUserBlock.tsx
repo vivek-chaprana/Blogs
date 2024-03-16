@@ -68,7 +68,11 @@ export default function NavbarUserBlock(props: {
             startContent={
               <Badge
                 content={
-                  props.notificationsCount > 0 ? props.notificationsCount : null
+                  props.notificationsCount > 0
+                    ? props.notificationsCount > 99
+                      ? "99+"
+                      : props.notificationsCount
+                    : null
                 }
                 size="sm"
                 color="danger"

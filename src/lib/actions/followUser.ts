@@ -42,7 +42,7 @@ export default async function followUser(
       } started following you.`,
       link: `/${follower.username}`,
       notificationType: NotificationType.FOLLOW,
-      imageUrl: follower.image ?? undefined,
+      iconUrl: follower.image ?? undefined,
     });
   } catch (error) {
     throw error;

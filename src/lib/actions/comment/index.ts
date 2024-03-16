@@ -53,7 +53,7 @@ export async function createComment(blogId: string, comment: string) {
       message: (user.name || "@" + user.username) + " commented on your post.",
       link: `/${blogPost.author.username}/${blogPost.slug}`,
       notificationType: NotificationType.COMMENT,
-      imageUrl: user.image ?? undefined,
+      iconUrl: user.image ?? undefined,
     });
   } catch (err) {
     throw new Error("Something went wrong!");
@@ -115,7 +115,7 @@ export async function replyToComment(parentCommentId: string, comment: string) {
       message: `${user.name || "@" + user?.username} replied to your comment.`,
       link: `/${parentComment.author.username}/${parentComment.blogPost.slug}`,
       notificationType: NotificationType.REPLY,
-      imageUrl: user.image ?? undefined,
+      iconUrl: user.image ?? undefined,
     });
   } catch (err) {
     throw err;

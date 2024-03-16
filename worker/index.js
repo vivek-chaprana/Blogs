@@ -33,6 +33,11 @@ async function getNotificationDetails(notificationId) {
     return await res.json();
 }
 
+async function markNotificationAsSeen(notificationId) {
+    const res = await fetch(`/api/notifications/${notificationId}/seen`);
+    return await res.json();
+}
+
 self.addEventListener('activate', async () => {
     try {
         const subscription = await self.registration.pushManager.subscribe({
@@ -45,26 +50,65 @@ self.addEventListener('activate', async () => {
     }
 });
 
-
 self.addEventListener('push', async (event) => {
     const notificaitonId = event.data.text();
     const notificationDetails = await getNotificationDetails(notificaitonId);
-    self.registration.showNotification(notificationDetails.data.message || "New Notification", {
-        icon: notificationDetails.data.image,
-        badge: '/android-chrome-192x192.png',
+    self.registration.showNotification(notificationDetails.data.title || "New Notification", {
+        body: notificationDetails.data.message,
+        icon: notificationDetails.data.icon,
+        image: notificationDetails.data.image,
         data: {
-            url: notificationDetails.data.link
-        }
+            id: notificationDetails.data.id,
+            userId: notificationDetails.data.userId,
+            url: notificationDetails.data.link,
+        },
+        badge: '/badge.png',
+        actions: [
+            {
+                action: "open",
+                title: "View "
+            },
+            {
+                action: "seen",
+                title: "Mark as seen"
+            },
+            {
+                action: "close",
+                title: "Close"
+            }
+        ]
+
     })
 })
 
-self.addEventListener('notificationclick', (event) => {
-    console.log(event)
-    event.waitUntil(
-        self.clients.openWindow(`${process.env.NEXT_PUBLIC_WEBAPP_URL}${event.notification.data.url}`)
-    )
-})
+self.addEventListener('notificationclick', async (event) => {
+    const notification = event.notification.data;
+    const action = event.action;
+    const url = process.env.NEXT_PUBLIC_WEBAPP_URL + notification.url;
 
+    if (action === 'seen') await markNotificationAsSeen(notification.id)
+    else if (action === 'close') event.notification.close()
+
+    else event.waitUntil(new Promise(async (resolve, reject) => {
+        try {
+            self.clients.matchAll().then((clientList) => {
+                const client = clientList.find(function (client) {
+                    return client.visibilityState === 'visible';
+                });
+                if (!client) {
+                    self.clients.openWindow(url)
+                    return resolve()
+                }
+                client.navigate(url).then(() => client.focus())
+                resolve()
+            })
+        } catch (err) {
+            console.error('Failed to open URL:', err);
+            reject(err)
+        }
+    }))
+
+})
 
 
 /**
