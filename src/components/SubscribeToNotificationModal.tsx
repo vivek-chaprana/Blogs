@@ -47,8 +47,8 @@ export default function SubscribeToNotificationModal({
                 Enabling push notifications ensures you never miss a beat.
               </p>
               <p>
-                From breaking news to exciting announcements, you'll be among
-                the first to know when something new happens.
+                From breaking news to exciting announcements, you&apos;ll be
+                among the first to know when something new happens.
               </p>
               <p className="hidden md:block">
                 To enable push notifications, visit site settings and enable
@@ -68,7 +68,7 @@ export default function SubscribeToNotificationModal({
               <p className="text-sm">
                 Enable push notifications to get real-time updates on everything
                 you care about. From new posts and comments to mentions and
-                follows, you'll be the first to know.
+                follows, you&apos;ll be the first to know.
               </p>
             </>
           )}

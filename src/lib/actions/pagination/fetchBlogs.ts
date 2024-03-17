@@ -1,15 +1,9 @@
 "use server";
+
 import prisma from "@/prisma";
 import { FullBlog } from "@/types/prisma";
 import { Prisma } from "@prisma/client";
-
-export interface InfiniteScrollData<T> {
-  data: T[];
-  metadata: {
-    lastCursor: string | null;
-    hasNextPage: boolean;
-  };
-}
+import { InfiniteScrollData } from ".";
 
 export async function fetchBlogs({
   take,

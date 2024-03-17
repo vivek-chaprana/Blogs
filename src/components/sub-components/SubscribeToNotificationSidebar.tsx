@@ -2,17 +2,14 @@
 import { IS_SERVER } from "@/lib/constants";
 import requestNotificationPermissions from "@/lib/utils/requestNotificationPermissions";
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SubscribeToNotificationSidebar() {
   const [permission, setPermission] = useState("default");
-  const router = useRouter();
   useEffect(() => {
     if (IS_SERVER) return;
     setPermission(Notification.permission);
-    if (permission === "granted") router.refresh();
-  }, []);
+  }, [permission]);
 
   return (
     <div className="rounded-md bg-green-200 text-black p-5 flex flex-col gap-4">

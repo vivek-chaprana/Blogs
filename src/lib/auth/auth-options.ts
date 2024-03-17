@@ -59,7 +59,10 @@ export const authOptions: AuthOptions = {
 
         const user = await prisma.user.findFirst({
           where: {
-            username: credentials.username,
+            username: {
+              equals: credentials.username,
+              mode: "insensitive",
+            },
           },
         });
 

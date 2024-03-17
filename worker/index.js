@@ -66,15 +66,15 @@ self.addEventListener('push', async (event) => {
         actions: [
             {
                 action: "open",
-                title: "View "
+                title: "View",
             },
             {
                 action: "seen",
-                title: "Mark as seen"
+                title: "Mark as seen",
             },
             {
                 action: "close",
-                title: "Close"
+                title: "Close",
             }
         ]
 
@@ -86,7 +86,11 @@ self.addEventListener('notificationclick', async (event) => {
     const action = event.action;
     const url = process.env.NEXT_PUBLIC_WEBAPP_URL + notification.url;
 
-    if (action === 'seen') await markNotificationAsSeen(notification.id)
+    if (action === 'seen') {
+        await markNotificationAsSeen(notification.id)
+        event.notification.close()
+    }
+
     else if (action === 'close') event.notification.close()
 
     else event.waitUntil(new Promise(async (resolve, reject) => {
