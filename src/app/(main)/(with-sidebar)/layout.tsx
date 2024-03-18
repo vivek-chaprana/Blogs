@@ -25,7 +25,7 @@ export default async function WithSidearLayout({
 
       {user && (
         <SidebarClientWrapper>
-          <SidebarHomepage />
+          <SidebarHomepage userId={user.id} />
         </SidebarClientWrapper>
       )}
 

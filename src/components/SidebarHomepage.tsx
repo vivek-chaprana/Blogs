@@ -7,7 +7,6 @@ import {
   WhoToFollowSkeleton,
 } from "@/components/skeleton";
 import FollowButton from "@/components/sub-components/FollowButton";
-import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME, fallbackImageUrl } from "@/lib/constants";
 import {
   getPeopleRecommendations,
@@ -16,16 +15,12 @@ import {
 } from "@/lib/utils/recommendations";
 import prisma from "@/prisma";
 import { Avatar, Button, Chip, cn } from "@nextui-org/react";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Suspense } from "react";
 import { BsBookmark } from "react-icons/bs";
 import SubscribeToNotificationSidebar from "./sub-components/SubscribeToNotificationSidebar";
 
-export default async function SidebarHomepage() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user.id;
-  if (!userId) return null;
+export default async function SidebarHomepage({ userId }: { userId: string }) {
   return (
     <>
       <TopPicks userId={userId} />
