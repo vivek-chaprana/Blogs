@@ -1,3 +1,4 @@
+import SidebarClientWrapper from "@/components/SidebarClientWrapper";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
@@ -22,7 +23,11 @@ export default async function WithSidearLayout({
         {children}
       </section>
 
-      {user && <SidebarHomepage userId={user.id} />}
+      {user && (
+        <SidebarClientWrapper>
+          <SidebarHomepage />
+        </SidebarClientWrapper>
+      )}
 
       {user && !user.hasCompletedOnboarding && (
         <GettingStarted

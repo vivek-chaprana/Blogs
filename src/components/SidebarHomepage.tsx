@@ -7,6 +7,7 @@ import {
   WhoToFollowSkeleton,
 } from "@/components/skeleton";
 import FollowButton from "@/components/sub-components/FollowButton";
+import { authOptions } from "@/lib/auth/auth-options";
 import { COMPANY_NAME, fallbackImageUrl } from "@/lib/constants";
 import {
   getPeopleRecommendations,
@@ -15,14 +16,18 @@ import {
 } from "@/lib/utils/recommendations";
 import prisma from "@/prisma";
 import { Avatar, Button, Chip, cn } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Suspense } from "react";
 import { BsBookmark } from "react-icons/bs";
 import SubscribeToNotificationSidebar from "./sub-components/SubscribeToNotificationSidebar";
 
-export default function SidebarHomepage({ userId }: { userId: string }) {
+export default async function SidebarHomepage() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user.id;
+  if (!userId) return null;
   return (
-    <aside className="border-l p-3 xl:px-5 flex-col gap-5 h-min w-1/3 hidden -top-[calc(100%+64px)] sticky lg:flex">
+    <>
       <TopPicks userId={userId} />
       <StartWriting />
       <RecommendedTopics userId={userId} />
@@ -30,7 +35,7 @@ export default function SidebarHomepage({ userId }: { userId: string }) {
       <SubscribeToNotificationSidebar />
       <ReadingList userId={userId} />
       <Footer />
-    </aside>
+    </>
   );
 }
 

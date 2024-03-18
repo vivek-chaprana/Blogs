@@ -1,4 +1,5 @@
 import ProfileSidebar from "@/components/ProfileSidebar";
+import ProfileSidebarClientWrapper from "@/components/ProfileSidebarClientWrapper";
 import { COMPANY_NAME, fallbackMetadata } from "@/lib/constants";
 import prisma from "@/prisma";
 import { Metadata } from "next";
@@ -50,7 +51,9 @@ export default async function UserLayout({
   return (
     <main className="max-w-6xl mx-auto min-h-screen my-10 gap-10 flex relative border-red-500 ">
       <section className="min-h-screen flex-1">{children}</section>
-      <ProfileSidebar user={user} />
+      <ProfileSidebarClientWrapper>
+        <ProfileSidebar user={user} />
+      </ProfileSidebarClientWrapper>
     </main>
   );
 }

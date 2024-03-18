@@ -82,17 +82,17 @@ self.addEventListener('push', async (event) => {
 })
 
 self.addEventListener('notificationclick', async (event) => {
+
+    event.notification.close()
+
     const notification = event.notification.data;
     const action = event.action;
     const url = process.env.NEXT_PUBLIC_WEBAPP_URL + notification.url;
 
     if (action === 'seen') {
         await markNotificationAsSeen(notification.id)
-        event.notification.close()
     }
-
-    else if (action === 'close') event.notification.close()
-
+    else if (action === 'close') { }
     else event.waitUntil(new Promise(async (resolve, reject) => {
         try {
             self.clients.matchAll().then((clientList) => {
