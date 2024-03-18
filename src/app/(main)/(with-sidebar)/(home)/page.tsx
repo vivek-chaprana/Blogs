@@ -56,7 +56,7 @@ export default async function Home({
     };
 
   const fetchedData = await fetchBlogs({
-    take: 3,
+    take: 5,
     where: condition,
     lastCursor: null,
   });

@@ -15,7 +15,7 @@ export default function useInfiniteScroll<T>({
   initialData,
   fetchFn,
   condition,
-  take,
+  take = 5,
 }: Props<T>) {
   const [data, setData] = useState<T[]>(initialData.data);
   const [metadata, setMetadata] = useState(initialData.metadata);
@@ -28,7 +28,7 @@ export default function useInfiniteScroll<T>({
       setIsFetching(true);
       try {
         const newData = await fetchFn({
-          take: take || 3,
+          take,
           lastCursor: metadata.lastCursor,
           where: condition,
         });

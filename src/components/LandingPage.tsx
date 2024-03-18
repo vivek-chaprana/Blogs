@@ -130,7 +130,7 @@ export default async function LandingPage() {
           <Loading />
         </div>
 
-        <aside className="w-1/3 border-s px-5 py-10 sticky hidden md:block ">
+        <aside className="w-1/3 border-s px-5 py-10 sticky hidden md:block h-min top-10">
           {/* Topics */}
           <div className="flex flex-col gap-4 mb-10">
             <h3 className="font-semibold">
