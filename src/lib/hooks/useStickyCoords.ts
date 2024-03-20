@@ -12,7 +12,6 @@ export default function useStickyCoords() {
       window.innerHeight;
 
     if (typeof heightDifference === "number") {
-      console.log(heightDifference);
       setYCoords(heightDifference);
     }
   }, []);
