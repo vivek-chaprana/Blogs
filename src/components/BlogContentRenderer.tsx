@@ -81,7 +81,6 @@ export default function BlogContentRenderer({
       progressBarColor: "black",
     }),
   ]);
-
   const purifiedHtml = DOMPurify.sanitize(output, {
     ADD_TAGS: ["iframe"],
     ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
@@ -89,7 +88,7 @@ export default function BlogContentRenderer({
 
   return (
     <main
-      className="prose my-5"
+      className="prose my-5 [&>div[data-youtube-video]>iframe]:max-w-full"
       dangerouslySetInnerHTML={{ __html: purifiedHtml }}
     ></main>
   );
