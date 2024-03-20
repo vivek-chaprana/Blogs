@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import UserCard from "@/components/UserCard";
 import { authOptions } from "@/lib/auth/auth-options";
 import prisma from "@/prisma";
@@ -53,8 +52,6 @@ export default async function Followers({
           Sign in to see who is following {user.name || "@" + user.username}.
         </Link>
       )}
-
-      <Loading />
     </div>
   );
 }

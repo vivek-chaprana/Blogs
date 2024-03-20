@@ -1,3 +1,4 @@
+import SidebarClientWrapper from "@/components/SidebarClientWrapper";
 import SidebarHomepage from "@/components/SidebarHomepage";
 import { authOptions } from "@/lib/auth/auth-options";
 import { getServerSession } from "next-auth";
@@ -16,7 +17,11 @@ export default async function WithSidearLayout({
         {children}
       </section>
 
-      {user && <SidebarHomepage userId={user.id} />}
+      {user && (
+        <SidebarClientWrapper>
+          <SidebarHomepage userId={user.id} />
+        </SidebarClientWrapper>
+      )}
     </main>
   );
 }
