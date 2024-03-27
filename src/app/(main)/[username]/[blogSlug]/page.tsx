@@ -124,6 +124,7 @@ export default async function Blog(params: {
               </Link>
             </div>
             {userId &&
+              userId != blog.authorId &&
               (blog.author.followedByIDs.includes(userId) ? (
                 <UnfollowButton
                   variant="solid"

@@ -88,7 +88,7 @@ export default function BlogContentRenderer({
 
   return (
     <main
-      className="prose my-5 [&>div[data-youtube-video]>iframe]:max-w-full"
+      className="prose my-5 [&>div[data-youtube-video]>iframe]:max-w-full min-w-full"
       dangerouslySetInnerHTML={{ __html: purifiedHtml }}
     ></main>
   );
