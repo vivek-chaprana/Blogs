@@ -70,19 +70,19 @@ Here is what you need to be able to run this project
 git clone https://github.com/vivek-chaprana/Blogs.git
 ```
 
-1. Go to the project directory
+2. Go to the project directory
 
 ```sh
 cd blogs
 ```
 
-1. Install the dependencies using yarn or npm (recommended yarn)
+3. Install the dependencies using yarn or npm (recommended yarn)
 
 ```sh
 yarn install
 ```
 
-1. Setup the `.env` file:
+4. Setup the `.env` file:
 
    - Duplicate the `.env.example` to `.env`
    - Use `openssl rand -base64 32` to generate a key and add it under `NEXTAUTH_SECRET` in the `.env` file.
@@ -91,19 +91,19 @@ yarn install
    - Add the SMTP details under `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` in the `.env` file.
    - For auth providers follow the [next-auth](https://next-auth.js.org/providers) documentation.
 
-1. Generate the Prisma client
+5. Generate the Prisma client
 
 ```sh
     prisma generate
 ```
 
-1. Push the Prisma schema to the database
+6. Push the Prisma schema to the database
 
 ```sh
     prisma db push
 ```
 
-1. Run the project
+7. Run the project
 
    - Development
 
@@ -117,4 +117,4 @@ yarn install
        yarn build && yarn start
    ```
 
-1. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
